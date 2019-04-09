@@ -1,5 +1,4 @@
 exports.ToBigQuery = (event, callback) => {
-	console.log(JSON.stringify(event.data));
   const file = event.data;
   const context = event.context;
 

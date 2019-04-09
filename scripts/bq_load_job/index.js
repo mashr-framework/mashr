@@ -6,8 +6,8 @@ exports.ToBigQuery = (event, callback) => {
   const BigQuery = require('@google-cloud/bigquery');
   const Storage = require('@google-cloud/storage');
 
-  const projectId = "7514393867";
-  const datasetId = "mashr";
+  const projectId = "<PROJECT_ID>";
+  const datasetId = "<DATASET_ID";
   const bucketName = file.bucket;
   const filename = file.name;
 

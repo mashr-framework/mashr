@@ -1,0 +1,10 @@
+
+
+Co-authored-by: Mat Sachs <matochondrion@gmail.com>
+Co-authored-by: Linus Phan <phanlinus@gmail.com>
+Co-authored-by: Jacob Coker <jacobleecd@gmail.com>
+
+# use the following command to set the local repo commit template
+# to this file
+# git config commit.template /absolute/path/to/file(.stCommitMsg)
+

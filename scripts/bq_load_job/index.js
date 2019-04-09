@@ -13,7 +13,7 @@ exports.ToBigQuery = (event, callback) => {
   const gcsFile = `gs://${file.bucket}/${file.name}`;  
   const tableId = "new_table";
 
-  console.log(`Load ${filename} into ${tableId}.`);
+  console.log(`Loading ${filename} into ${tableId}.`);
 
   const bigquery = new BigQuery({
     projectId: projectId,

@@ -1,21 +1,20 @@
 BigQuery = require('@google-cloud/bigquery');
 Storage = require('@google-cloud/storage');
 
-exports._FUNCTION_NAME_ = (event, callback) => {
+exports.ToBigQuery = (event, callback) => {
 
   const file = event.data;
-  if (file.name.indexOf('_GCS_PATH_') == -1) { return; }
+  if (file.name.indexOf('staging/dataset/test_data') == -1) { return; }
+  const filePath = file.name;
+  const [,datasetId,tableId,fileName] = filePath.split('/');
   const context = event.context;
 
-  const projectId = "_PROJECT_ID_";
-  const datasetId = "_DATASET_ID_";
+  const projectId = "kinetic-guild-235620";
   const bucketName = file.bucket;
-  const filename = file.name;
 
-  const gcsFile = `gs://${file.bucket}/${file.name}`;  
-  const tableId = "_TABLE_ID_";
+  const gcsFile = `gs://${file.bucket}/${filePath}`;  
 
-  console.log(`Loading ${filename} into ${tableId}.`);
+  console.log(`Loading ${filePath} into ${tableId}.`);
 
   const bigquery = new BigQuery({
     projectId: projectId,
@@ -26,18 +25,17 @@ exports._FUNCTION_NAME_ = (event, callback) => {
   });
 
   const metadata = {
-    sourceFormat: 'CSV',
-    skipLeadingRows: 1,
+    sourceFormat: 'NEWLINE_DELIMITED_JSON',
     autodetect: true,
     location: 'US',
-	};
+  };
 
   let job;
 
   bigquery
     .dataset(datasetId)
     .table(tableId)
-    .load(storage.bucket(bucketName).file(filename), metadata)
+    .load(storage.bucket(bucketName).file(filePath), metadata)
     .then(results => {
       job = results[0];
       console.log(`Job ${job.id} started.`);

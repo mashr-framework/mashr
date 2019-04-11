@@ -8,7 +8,7 @@ var configFiles = (() => {
   return { mashrConfig, embulkConfig };
 })();
 
-var gcs_path_prefix = `staging/${mashrConfig.dataset_id}`;
+var gcs_path_prefix = `${mashrConfig.dataset_id}/${mashrConfig.table_id}`;
 
 var functionName = `mashr_${mashrConfig.dataset_id}` +
                    `_${embulkConfig.in.type}` +
@@ -59,10 +59,8 @@ function updateCloudFunctionName() {
 
   fs.readFile(functionTemplate, 'utf8', (e, data) => {
     const result = data.replace('_FUNCTION_NAME_', functionName)
-                       .replace('_PROJECT_ID_', configFiles.mashrConfig.project_id)
-                       .replace('_DATASET_ID_', configFiles.mashrConfig.dataset_id)
-                       .replace('_TABLE_ID_', configFiles.mashrConfig.table_id)
-                       .replace('_GCS_PATH_', gcs_path_prefix);
+                       .replace('_PROJECT_NAME_', configFiles.mashrConfig.project_id)
+                       .replace('_FOLDER_', gcs_path_prefix);
     const functionFile = './cloud_function/index.js'
     fs.writeFile(functionFile, result, 'utf8', (e) => {
       console.log('Updated function name in index.js.');

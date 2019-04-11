@@ -1,15 +1,15 @@
-const {BigQuery} = require('@google-cloud/bigquery');
-const {Storage} = require('@google-cloud/storage');
+const { BigQuery } = require('@google-cloud/bigquery');
+const { Storage } = require('@google-cloud/storage');
 
-exports.ToBigQuery = (event, callback) => {
+exports._FUNCTION_NAME_ = (event, callback) => {
 
   const file = event.data;
-  if (file.name.indexOf('staging/dataset/test_data') == -1) { return; }
+  if (file.name.indexOf('_FOLDER_') == -1) { return; }
   const filePath = file.name;
   const [,datasetId,tableId,fileName] = filePath.split('/');
   const context = event.context;
 
-  const projectId = "kinetic-guild-235620";
+  const projectId = "_PROJECT_NAME_";
   const bucketName = file.bucket;
 
   const gcsFile = `gs://${file.bucket}/${filePath}`;  

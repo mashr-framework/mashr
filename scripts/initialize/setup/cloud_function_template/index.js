@@ -1,5 +1,5 @@
-BigQuery = require('@google-cloud/bigquery');
-Storage = require('@google-cloud/storage');
+const {BigQuery} = require('@google-cloud/bigquery');
+const {Storage} = require('@google-cloud/storage');
 
 exports.ToBigQuery = (event, callback) => {
 
@@ -20,7 +20,7 @@ exports.ToBigQuery = (event, callback) => {
     projectId: projectId,
   });
 
-  const storage = Storage({
+  const storage = new Storage({
     projectId: projectId,
   });
 

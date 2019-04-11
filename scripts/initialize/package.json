@@ -1,0 +1,18 @@
+{
+  "name": "mashr",
+  "version": "0.0.1",
+  "description": "An easy to use data pipeline framework that orchestrates moving data from external sources into BigQuery for small applications.",
+  "main": "index.js",
+  "dependencies": {
+    "babel": "^6.23.0",
+    "google-cloud-bigquery": "^0.4.2",
+    "google-cloud-storage": "^2.0.2",
+    "js-yaml": "^3.13.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -50,6 +50,15 @@ exports.ToBigQuery = (event, callback) => {
     })
     .then(() => {
       console.log(`Job ${job.id} completed.`);
+      const file = storage.bucket(bucketName).file(filePath);
+      const newFilePath = `gs://mashr_archive_matochondrion/${datasetId}/${tableId}/${fileName}`;
+      file.move(newFilePath, (err) => {
+        if (err) {
+          console.error('ERROR:', err);
+        } else {
+          console.log(`${filePath} moved to archives "${newFilePath}"`);
+        }
+      });
     })
     .catch(err => {
       console.error('ERROR:', err);

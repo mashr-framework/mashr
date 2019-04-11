@@ -1,0 +1,50 @@
+{
+  "name": "mashr",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": "mashr",
+  "repository": "git@github.com:last-error-benders/mashr.git",
+  "description": "Simple data pipeline framework for GCP's BigQuery",
+  "engines": {
+    "node": ">=8"
+  },
+  "keywords": [
+    "mashr",
+    "gcp",
+    "google cloud platform",
+    "bigquery",
+    "pipeline",
+    "etl",
+    "elt",
+    "data pipeline",
+    "framework",
+    "embulk",
+    "google cloud storage",
+    "compute engine"
+  ],
+  "contributors": [
+    {
+      "name": "Jacob Coker-Dukowitz",
+      "email": "jacobleecd@gmail.com"
+    },
+    {
+      "name": "Linus Phan",
+      "email": "phanlinus@gmail.com"
+    },
+    {
+      "name": "Mat Sachs",
+      "email": "matochondrion@gmail.com" 
+    }
+  ],
+  "preferGlobal": true,
+  "bin": {
+    "mashr": "./bin/cli.js"
+  },
+  "scripts": {},
+  "devDependencies": {},
+  "dependencies": {
+    "axios": "^0.18.0",
+    "minimist": "^1.2.0",
+    "ora": "^3.4.0"
+  }
+}

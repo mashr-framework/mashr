@@ -13,6 +13,9 @@ if (args.help || args.h) {
 }
 
 switch (cmd) {
+  case 'init':
+    require('../src/commands/init')(args);
+    break;
   case 'version':
     require('../src/commands/version')(args);
     break;

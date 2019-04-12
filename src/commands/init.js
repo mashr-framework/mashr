@@ -1,17 +1,10 @@
-const path = require("path");
-const fs = require('fs');
-const ora = require('ora');
+const path = require('path');
+const { copyFile } = require('../utils/fileUtils.js')
 
 module.exports = async (args) => {
-  const spinner = ora().start();
-
-  try {
-    const workingDir = path.resolve("./");
-    const destination = `${workingDir}/mashr_config.yml`;
-    const configTemplate = `${__dirname}/${'../../templates/mashr_template.yml'}`
-    await fs.copyFile(configTemplate, destination);
-    spinner.stop()
-  } catch (err) {
-    spinner.stop()
-  }
+  const workingDir = path.resolve('./');
+  const destination = `${workingDir}/mashr_config.yml`;
+  const configTemplate = `${__dirname}/${'../../templates/mashr_template.yml'}`
+  
+  await copyFile(configTemplate, destination);
 }

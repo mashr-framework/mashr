@@ -8,22 +8,21 @@ var configFiles = (() => {
   return { mashrConfig, embulkConfig };
 })();
 
-var gcs_path_prefix = `${mashrConfig.dataset_id}/${mashrConfig.table_id}`;
+const { mashrConfig, embulkConfig } = configFiles;
 
-var functionName = `mashr_${mashrConfig.dataset_id}` +
-                   `_${embulkConfig.in.type}` +
-                   `_${mashrConfig.table_id}`;
+const name = mashrConfig.integration_name;
+const source = embulkConfig.in.type;
+const dataset = mashrConfig.dataset_id;
+const table = mashrConfig.table_id;
+
+const bucketName = `mashr_${name}_${source}_to_${dataset}_${table}`;
+const functionName = bucketName;
 
 function generateEmbulkConfig() {
-  const { mashrConfig, embulkConfig } = configFiles;
-  const gcs_full_path = gcs_path_prefix + 
-                        `/${embulkConfig.in.type}_to_` +
-                        `${mashrConfig.table_id}_{{ env.DATE }}`;
-
   embulkConfig['out'] = {
     type: 'gcs',
-    bucket: mashrConfig.bucket,
-    path_prefix: gcs_full_path,
+    bucket: bucketName,
+    path_prefix: '{{ env.DATE }}',
     file_ext: '.json',
     auth_method: 'json_key',
     service_account_email: mashrConfig.service_account_email,
@@ -39,28 +38,15 @@ function generateEmbulkConfig() {
     console.log('Generated embulk_config.yml file.')
   });
 }
-// mashr_datasetId_source_tableName
-function generateCloudFunctionInstallScript() {
-  const { mashrConfig, embulkConfig } = configFiles;
 
-  let command = `#!/bin/bash\n\n`;
-  command += `gcloud functions deploy ${functionName} --runtime nodejs6` +
-            `--trigger-resource ${gcs_path_prefix} --trigger-event` +
-            `google.storage.object.finalize`;
-  fs.writeFile('./cloud_function/install.sh', command, (e) => {
-    console.log('Generated install.sh file.');
-  });
-}
-
-function updateCloudFunctionName() {
+function generateCloudFunction() {
   const functionTemplate = './setup/cloud_function_template/index.js'
   const projectId = configFiles.mashrConfig.project_id;
   const datasetId = configFiles.mashrConfig.dataset_id;
 
   fs.readFile(functionTemplate, 'utf8', (e, data) => {
     const result = data.replace('_FUNCTION_NAME_', functionName)
-                       .replace('_PROJECT_NAME_', configFiles.mashrConfig.project_id)
-                       .replace('_FOLDER_', gcs_path_prefix);
+                       .replace('_PROJECT_NAME_', configFiles.mashrConfig.project_id);
     const functionFile = './cloud_function/index.js'
     fs.writeFile(functionFile, result, 'utf8', (e) => {
       console.log('Updated function name in index.js.');
@@ -70,6 +56,5 @@ function updateCloudFunctionName() {
 
 module.exports = {
   generateEmbulkConfig,
-  generateCloudFunctionInstallScript,
-  updateCloudFunctionName,
+  generateCloudFunction,
 }

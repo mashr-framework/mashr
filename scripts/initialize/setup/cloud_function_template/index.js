@@ -4,17 +4,17 @@ const { Storage } = require('@google-cloud/storage');
 exports._FUNCTION_NAME_ = (event, callback) => {
 
   const file = event.data;
-  if (file.name.indexOf('_FOLDER_') == -1) { return; }
-  const filePath = file.name;
-  const [,datasetId,tableId,fileName] = filePath.split('/');
+  const fileName = file.name;
   const context = event.context;
 
   const projectId = "_PROJECT_NAME_";
+
   const bucketName = file.bucket;
+  const [,,,, datasetId, tableId] = bucketName.split('_');
 
-  const gcsFile = `gs://${file.bucket}/${filePath}`;  
+  const gcsFile = `gs://${bucketName}/${fileName}`;
 
-  console.log(`Loading ${filePath} into ${tableId}.`);
+  console.log(`Loading ${fileName} into ${tableId}.`);
 
   const bigquery = new BigQuery({
     projectId: projectId,
@@ -35,7 +35,7 @@ exports._FUNCTION_NAME_ = (event, callback) => {
   bigquery
     .dataset(datasetId)
     .table(tableId)
-    .load(storage.bucket(bucketName).file(filePath), metadata)
+    .load(storage.bucket(bucketName).file(fileName), metadata)
     .then(results => {
       job = results[0];
       console.log(`Job ${job.id} started.`);
@@ -50,13 +50,14 @@ exports._FUNCTION_NAME_ = (event, callback) => {
     })
     .then(() => {
       console.log(`Job ${job.id} completed.`);
-      const file = storage.bucket(bucketName).file(filePath);
-      const newFilePath = `gs://mashr_archive_matochondrion/${datasetId}/${tableId}/${fileName}`;
+      const file = storage.bucket(bucketName).file(fileName);
+
+      const newFilePath = `gs://${bucketName}_archive/${fileName}`;
       file.move(newFilePath, (err) => {
         if (err) {
           console.error('ERROR:', err);
         } else {
-          console.log(`${filePath} moved to archives "${newFilePath}"`);
+          console.log(`${fileName} moved to archives "${newFilePath}"`);
         }
       });
     })

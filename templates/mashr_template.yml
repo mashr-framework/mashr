@@ -5,8 +5,7 @@ mashr:
   table_id:     '' #'table_id'
   dataset_id:   '' #'dataset_id'
   project_id:   '' #'project_id'
-  # A GCS bucket where your files will be stored before transfer to BigQuery:
-  bucket: '' #'mashr'
+  integration_name: '' # name the integration for bucket and function name
   # You can set the command that runs embulk here. The example given is for
   # incremental loading. embulk_config.yml is the default name of the config 
   # file generated for embulk:

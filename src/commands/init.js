@@ -15,12 +15,12 @@ const { copyFile,
 const homedir = os.homedir();
 
 module.exports = async (args) => {
-  const workingDir = path.resolve('./');
-  const destination = `${workingDir}/mashr_config.yml`;
-  const configTemplate = `${__dirname}/${'../../templates/mashr_template.yml'}`
+  // const workingDir = path.resolve('./');
+  // const destination = `${workingDir}/mashr_config.yml`;
+  // const configTemplate = `${__dirname}/${'../../templates/mashr_template.yml'}`
 
-  await copyFile(configTemplate, destination);
-  console.log('"mashr_config.yml" template file created.');
+  // await copyFile(configTemplate, destination);
+  // console.log('"mashr_config.yml" template file created.');
 
   await catchSetupAndConfig(homedir);
   // check if the .mashr directory exists (if not then create it)

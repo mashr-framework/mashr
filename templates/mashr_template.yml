@@ -1,5 +1,5 @@
 mashr:
-  service_account_email: '' #user@project.iam.gserviceaccount.com
+  service_account_email: '_SERVICE_ACCOUNT_EMAIL_' #user@project.iam.gserviceaccount.com
   # the keyfile must be in the root directory of this file:
   json_keyfile: '' # postgres-234090-218q34tg8e4.json
   table_id:     '' #'table_id'

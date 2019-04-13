@@ -3,6 +3,7 @@ const {
   exists,
   createDirectory,
 } = require('./fileUtils');
+const setupDirectoriesAndFiles = require ('./setupDirectoriesAndFiles');
 
 module.exports = async function catchSetupAndConfig(homeDir) {
   const mashrPath = await getMashrPath(homeDir);
@@ -14,13 +15,7 @@ module.exports = async function catchSetupAndConfig(homeDir) {
 
   return true;
 };
-
-function setupDirectoriesAndFiles(homeDir) {
-  createDirectory('.mashr', homeDir);
-}
-// check if the .mashr directory exists (if not then create it)
-//
-// create service account for integreation
 // save the key file to working directory
+// create service account for integreation
 //
 // add service account email to mashr_config file

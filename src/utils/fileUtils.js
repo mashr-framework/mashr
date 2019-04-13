@@ -2,7 +2,7 @@ const fs = require('fs');
 const { promisify } = require('util');
 
 const mkdir = promisify(fs.mkdir);
-// const writeFile = promisify(fs.writeFile);
+const writeFile = promisify(fs.writeFile);
 // const readFile = promisify(fs.readFile);
 const copyFile = promisify(fs.copyFile);
 // const changePermissions = promisify(fs.chmod);
@@ -27,10 +27,10 @@ const createDirectory = async (name, path) => {
   }
 };
 
-// const createJSONFile = async (fileName, path, json) => {
-//   const configStr = JSON.stringify(json, null, 2);
-//   await writeFile(`${path}/${fileName}.json`, configStr);
-// };
+const createJSONFile = async (fileName, path, json) => {
+  const configStr = JSON.stringify(json, null, 2);
+  await writeFile(`${path}/${fileName}.json`, configStr);
+};
 
 const getMashrPath = homedir => (`${homedir}/.mashr`);
 
@@ -92,13 +92,11 @@ const getMashrPath = homedir => (`${homedir}/.mashr`);
 // module.exports = {
 //   readConfig,
 //   createDirectory,
-//   createJSONFile,
 //   getNamiPath,
 //   exists,
 //   createKeyPairFile,
 //   copyFile,
 //   readFile,
-//   writeFile,
 //   mkdir,
 //   getStagingPath,
 //   copyEC2SetupScript,
@@ -112,6 +110,8 @@ const getMashrPath = homedir => (`${homedir}/.mashr`);
 module.exports = {
   copyFile,
   createDirectory,
+  createJSONFile,
   exists,
   getMashrPath,
+  writeFile,
 };

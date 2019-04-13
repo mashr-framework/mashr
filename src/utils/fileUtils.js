@@ -9,14 +9,14 @@ const copyFile = promisify(fs.copyFile);
 
 // // clean up homedir parameters
 
-// const exists = async path => (
-//   new Promise((res) => {
-//     fs.stat(path, (err) => {
-//       if (err === null) res(true);
-//       res(false);
-//     });
-//   })
-// );
+const exists = async (path) => (
+  new Promise((res) => {
+    fs.stat(path, (err) => {
+      if (err === null) res(true);
+      res(false);
+    });
+  })
+);
 
 // const createDirectory = async (name, path) => {
 //   const dir = `${path}/${name}`;
@@ -32,7 +32,7 @@ const copyFile = promisify(fs.copyFile);
 //   await writeFile(`${path}/${fileName}.json`, configStr);
 // };
 
-// const getNamiPath = homedir => (`${homedir}/.nami`);
+const getMashrPath = homedir => (`${homedir}/.mashr`);
 
 // const getStagingPath = homedir => (`${getNamiPath(homedir)}/staging`);
 
@@ -111,4 +111,6 @@ const copyFile = promisify(fs.copyFile);
 
 module.exports = {
   copyFile,
+  getMashrPath,
+  exists,
 };

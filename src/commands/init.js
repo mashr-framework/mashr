@@ -8,9 +8,10 @@ Todos:
 
 const os = require('os');
 const path = require('path');
-const { copyFile } = require('../utils/fileUtils.js');
-const { getMashrPath, exists } = require('../utils/fileUtils');
-
+const catchSetupAndConfig = require('../utils/catchSetupAndConfig');
+const { copyFile,
+        getMashrPath,
+        exists } = require('../utils/fileUtils');
 const homedir = os.homedir();
 
 module.exports = async (args) => {

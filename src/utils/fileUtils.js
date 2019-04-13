@@ -9,13 +9,13 @@ const copyFile = promisify(fs.copyFile);
 
 // // clean up homedir parameters
 
-const exists = async (path) => (
+const exists = async path => (
   new Promise((res) => {
     fs.stat(path, (err) => {
       if (err === null) res(true);
       res(false);
     });
-  });
+  })
 );
 
 const createDirectory = async (name, path) => {

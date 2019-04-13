@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const os = require('os');
 const minimist = require('minimist');
-const executeCommand = require('../src/commands/executeCommand');
+const executeCommands = require('../src/commands/executeCommands');
 const catchSetupAndConfig = require('../src/utils/catchSetupAndConfig');
 
 const homedir = os.homedir();
@@ -22,7 +22,7 @@ let cmd = args._[0] || 'help';
       return;
     }
 
-    await executeCommand(cmd, args);
+    await executeCommands(cmd, args);
   } catch (err) {
     console.error(`Command Line Interface error => ${err.message}`);
   }

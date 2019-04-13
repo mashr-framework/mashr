@@ -17,10 +17,6 @@ module.exports = async function catchSetupAndConfig(homeDir) {
 
   // createServiceAccount, returns {json keyfile, serviceA email}
   let serviceAccount = await createServiceAccount();
-  //
-  // setupMashrConfig(object)
-  // - copy mashr_config template
-  // - add serviceA email to mashr_config
   await setupMashrConfig(serviceAccount);
 
   return true;

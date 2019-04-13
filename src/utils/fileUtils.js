@@ -3,7 +3,7 @@ const { promisify } = require('util');
 
 const mkdir = promisify(fs.mkdir);
 const writeFile = promisify(fs.writeFile);
-// const readFile = promisify(fs.readFile);
+const readFile = promisify(fs.readFile);
 const copyFile = promisify(fs.copyFile);
 // const changePermissions = promisify(fs.chmod);
 
@@ -96,7 +96,6 @@ const getMashrPath = homedir => (`${homedir}/.mashr`);
 //   exists,
 //   createKeyPairFile,
 //   copyFile,
-//   readFile,
 //   mkdir,
 //   getStagingPath,
 //   copyEC2SetupScript,
@@ -113,5 +112,6 @@ module.exports = {
   createJSONFile,
   exists,
   getMashrPath,
+  readFile,
   writeFile,
 };

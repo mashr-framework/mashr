@@ -15,7 +15,7 @@ const exists = async (path) => (
       if (err === null) res(true);
       res(false);
     });
-  })
+  });
 );
 
 // const createDirectory = async (name, path) => {

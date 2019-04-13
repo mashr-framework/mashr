@@ -22,7 +22,6 @@ let cmd = args._[0] || 'help';
       return;
     }
 
-    await catchSetupAndConfig(homedir, cmd);
     await executeCommand(cmd, args);
   } catch (err) {
     console.error(`Command Line Interface error => ${err.message}`);

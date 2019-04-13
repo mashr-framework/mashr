@@ -3,7 +3,6 @@ Todos:
   - define catchsetupandconfig to do these:
       // check if the .mashr directory exists (if not then create it)
       // put in .mashr the json file for service account email, service account keyfile
-
 */
 
 
@@ -18,15 +17,17 @@ module.exports = async (args) => {
   const workingDir = path.resolve('./');
   const destination = `${workingDir}/mashr_config.yml`;
   const configTemplate = `${__dirname}/${'../../templates/mashr_template.yml'}`
-  
+
   await copyFile(configTemplate, destination);
   console.log('"mashr_config.yml" template file created.');
 
   await catchSetupAndConfig(homedir);
-
   // check if the .mashr directory exists (if not then create it)
-  // put in .mashr the json file for service account email, service account keyfile
-
+  //
+  // create service account for integreation
+  // save the key file to working directory
+  //
+  // add service account email to mashr_config file
 
   const mashrPath = await getMashrPath();
 

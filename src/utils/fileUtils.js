@@ -1,7 +1,7 @@
 const fs = require('fs');
 const { promisify } = require('util');
 
-// const mkdir = promisify(fs.mkdir);
+const mkdir = promisify(fs.mkdir);
 // const writeFile = promisify(fs.writeFile);
 // const readFile = promisify(fs.readFile);
 const copyFile = promisify(fs.copyFile);
@@ -18,14 +18,14 @@ const exists = async (path) => (
   });
 );
 
-// const createDirectory = async (name, path) => {
-//   const dir = `${path}/${name}`;
+const createDirectory = async (name, path) => {
+  const dir = `${path}/${name}`;
 
-//   const dirExists = await exists(dir);
-//   if (!dirExists) {
-//     await mkdir(dir);
-//   }
-// };
+  const dirExists = await exists(dir);
+  if (!dirExists) {
+    await mkdir(dir);
+  }
+};
 
 // const createJSONFile = async (fileName, path, json) => {
 //   const configStr = JSON.stringify(json, null, 2);
@@ -111,6 +111,7 @@ const getMashrPath = homedir => (`${homedir}/.mashr`);
 
 module.exports = {
   copyFile,
-  getMashrPath,
+  createDirectory,
   exists,
+  getMashrPath,
 };

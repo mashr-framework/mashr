@@ -4,7 +4,7 @@ module.exports = async function executeCommand(cmd, args) {
       require('./init')(args);
       break;
     case 'deploy':
-      await require('./deploy')(args);
+      require('./deploy')(args);
       break;
     case 'version':
       require('./version')(args);

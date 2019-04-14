@@ -14,13 +14,12 @@
 // 7 - Launches a function with the same name
 
 const { Storage } = require('@google-cloud/storage');
-
+const { configureCredentials } = require('../utils/fileUtils');
 const storage = new Storage();
 
 
 module.exports = async (args) => {
-  configureCredentials('./mashr_config.yml');
-
+  await configureCredentials('./mashr_config.yml');
   const bucketName = 'mashr';
   await bucketsAreAvailable(bucketName);
 }
@@ -32,31 +31,8 @@ function bucketsAreAvailable(bucketName) {
 function bucketExists(bucketName) {
   bucket = storage.bucket(bucketName);
   bucket.exists().then(function(data) {
-    if (data[0]) { return true; }
+    if (data[0]) { console.log(data[0]); }
   }).catch(function(error) {
     console.log('ERROR: ', error);
   });
-}
-
-// utils:
-const yaml = require('js-yaml');
-const fs = require('fs');
-
-function readYaml(path) {
-  return yaml.safeLoad(fs.readFileSync(path, 'utf8'));
-}
-
-const path = require('path');
-function getPathToKeyFile(mashr_config) {
-  const keyFile = readYaml(mashr_config).mashr.json_keyfile;
-  return `${path.resolve('./')}/${keyFile}`;
-}
-// gcp:
-function setGoogleAppCredentials(keyPath) {
-  process.env.GOOGLE_APPLICATION_CREDENTIALS = keyPath;
-}
-// utils
-function configureCredentials(path_to_mashr_config) {
-  const keyPath = getPathToKeyFile(path_to_mashr_config);
-  setGoogleAppCredentials(keyPath);
 }

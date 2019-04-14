@@ -8,11 +8,11 @@ export PROJECT_ID
 gcloud iam service-accounts delete mashr-account@$PROJECT_ID.iam.gserviceaccount.com || echo "No service Account, creating one..."
 # gcloud iam service-accounts delete mashr-account@postgres-233900.iam.gserviceaccount.com
 
-gcloud iam service-accounts create mashr-account
+gcloud iam service-accounts create mashr-account --display-name=mashr-account
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member "serviceAccount:mashr-account@${PROJECT_ID}.iam.gserviceaccount.com" \
---role "roles/editor"
+--role "roles/owner"
 
 gcloud iam service-accounts keys create keyfile.json \
 --iam-account mashr-account@$PROJECT_ID.iam.gserviceaccount.com

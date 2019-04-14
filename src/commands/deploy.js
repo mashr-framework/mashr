@@ -17,6 +17,9 @@ const { Storage } = require('@google-cloud/storage');
 const { configureCredentials } = require('../utils/fileUtils');
 const storage = new Storage();
 
+// next step: get bucket name from mashr_config file
+// see if it exists for staging/archives
+// throw an error if it does
 
 module.exports = async (args) => {
   await configureCredentials('./mashr_config.yml');

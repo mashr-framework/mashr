@@ -4,8 +4,7 @@ const {
   createDirectory,
 } = require('./fileUtils');
 const setupDirectoriesAndFiles = require ('./setupDirectoriesAndFiles');
-const createServiceAccount = require ('../gcp/createServiceAccount');
-const setupMashrConfig = require ('./setupMashrConfig');
+const copyMashrConfigTemplate = require('./copyMashrConfigTemplate');
 
 module.exports = async function catchSetupAndConfig(homeDir) {
   const mashrPath = await getMashrPath(homeDir);
@@ -15,13 +14,6 @@ module.exports = async function catchSetupAndConfig(homeDir) {
     await setupDirectoriesAndFiles(homeDir);
   }
 
-  // createServiceAccount, returns {json keyfile, serviceA email}
-  let serviceAccount = await createServiceAccount();
-  await setupMashrConfig(serviceAccount);
-
+  copyMashrConfigTemplate();
   return true;
 };
-// save the key file to working directory
-// create service account for integreation
-//
-// add service account email to mashr_config file

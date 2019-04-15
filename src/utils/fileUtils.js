@@ -5,6 +5,10 @@ const mkdir = promisify(fs.mkdir);
 const writeFile = promisify(fs.writeFile);
 const readFile = promisify(fs.readFile);
 const copyFile = promisify(fs.copyFile);
+const setGoogleAppCredentials = require('../gcp/setGoogleAppCredentials');
+const yaml = require('js-yaml');
+const path = require('path');
+
 // const changePermissions = promisify(fs.chmod);
 
 // // clean up homedir parameters
@@ -33,6 +37,20 @@ const createJSONFile = async (fileName, path, json) => {
 };
 
 const getMashrPath = homedir => (`${homedir}/.mashr`);
+
+function getPathToKeyFile(mashr_config) {
+  const keyFile = readYaml(mashr_config).mashr.json_keyfile;
+  return `${path.resolve('./')}/${keyFile}`;
+}
+
+function configureCredentials(path_to_mashr_config) {
+  const keyPath = getPathToKeyFile(path_to_mashr_config);
+  setGoogleAppCredentials(keyPath);
+}
+
+function readYaml(path) {
+  return yaml.safeLoad(fs.readFileSync(path, 'utf8'));
+}
 
 // const getStagingPath = homedir => (`${getNamiPath(homedir)}/staging`);
 
@@ -114,4 +132,6 @@ module.exports = {
   getMashrPath,
   readFile,
   writeFile,
+  configureCredentials,
+  readYaml
 };

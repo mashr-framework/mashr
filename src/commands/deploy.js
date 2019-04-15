@@ -14,20 +14,18 @@
 // 7 - Launches a function with the same name
 
 const { Storage } = require('@google-cloud/storage');
+const { configureCredentials } = require('../utils/fileUtils');
 const storage = new Storage();
 
+// next step: get bucket name from mashr_config file
+// see if it exists for staging/archives
+// throw an error if it does
+
 module.exports = async (args) => {
-// gcp functions:
-// gcp - bucketsAreAvailable()
-//   gcp - bucketExists()
-
-// if buckets are available, continue; if not provide error
-// 
-  const bucketName = 'asdgadfhg45hweh';
-  bucketsAreAvailable(bucketName);
+  await configureCredentials('./mashr_config.yml');
+  const bucketName = 'mashr';
+  await bucketsAreAvailable(bucketName);
 }
-
-
 
 function bucketsAreAvailable(bucketName) {
   bucketExists(bucketName);
@@ -36,7 +34,8 @@ function bucketsAreAvailable(bucketName) {
 function bucketExists(bucketName) {
   bucket = storage.bucket(bucketName);
   bucket.exists().then(function(data) {
-    console.log(data)
+    if (data[0]) { console.log(data[0]); }
+  }).catch(function(error) {
+    console.log('ERROR: ', error);
   });
-  // return storage.get(bucketName, Storage.BucketGetOption.fields()) != null;
 }

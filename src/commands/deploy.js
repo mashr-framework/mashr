@@ -6,6 +6,7 @@
 
 /*
   - it should:
+    - get the mashr_config file as an object
     - it sets up new name: mashr_<name>_<source>_to_<dataset>_<table>
     - checks if name above is available
     - checks if name above + "_archive" is available
@@ -33,13 +34,13 @@ const storage = new Storage();
 
 // requires fs::readYaml
 const { readYaml } = require('../utils/fileUtils');
-function setupBucketName() {
+function setupBucketName(mashrConfig) {
 
 }
 
 module.exports = async (args) => {
   await configureCredentials('./mashr_config.yml');
-  const bucketName = setupBucketName(mashrConfig);
+  // const bucketName = setupBucketName(mashrConfig);
 
   // const bucketName = 'mashr';
   // await bucketsAreAvailable(bucketName);

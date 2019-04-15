@@ -41,24 +41,25 @@ const getMashrPath = homedir => (`${homedir}/.mashr`);
 const validateKeyfile = async (path) => {
   const parts = path.split('.');
   const hasValidName = parts[parts.length - 1] === 'json' && parts[0].length > 1;
-  const fileExists = await exists(path);
 
-  if (hasValidName && fileExists) {
-    return path;
-  } else {
-    throw new Error('No keyfile. Keyfile path is required in mashr_config and must be in the root of the working directory.');
+  try {
+    const fileExists = await exists(path);
+    if (hasValidName && fileExists) {
+      return path;
+    } else {
+      throw new Error('No keyfile. Keyfile path is required in mashr_config and must be in the root of the working directory.');
+    }
+  } catch(e) {
+    throw(e);
   }
 }
 
 const getPathToKeyFile = async (mashr_config) => {
   const filename = readYaml(mashr_config).mashr.json_keyfile;
   const pathname = `${path.resolve('./')}/${filename}`;
-  
-  try {
-    const keyFile = await validateKeyfile(pathname);
-  } catch (err) {
-    throw(err);
-  }
+  let keyFile;
+
+  keyFile = await validateKeyfile(pathname);
 
   if (keyFile) { return keyFile; }
 }

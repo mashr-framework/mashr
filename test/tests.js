@@ -8,15 +8,13 @@ describe "init"
 
 describe "deploy"
   it configures credentials
-    it should:
-      - take a mashr_config file and sets google application credentials to that
-      - if no mashr_config file, then it provides an error
+    it should take a mashr_config file and sets google application credentials to that
+    it should provide an error if no file at the keyfile path
+    it should provide an error if mashr_config file does not exist 
   it manages buckets
     - it should:
       - it sets up new name: mashr_<name>_<source>_to_<dataset>_<table>
       - checks if name above is available
       - checks if name above + "_archive" is available
       - if not available then provides an error
-  it 
-
 */

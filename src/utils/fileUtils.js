@@ -38,13 +38,37 @@ const createJSONFile = async (fileName, path, json) => {
 
 const getMashrPath = homedir => (`${homedir}/.mashr`);
 
-function getPathToKeyFile(mashr_config) {
-  const keyFile = readYaml(mashr_config).mashr.json_keyfile;
-  return `${path.resolve('./')}/${keyFile}`;
+const validateKeyfile = async (path) => {
+  const parts = path.split('.');
+  const hasValidName = parts[parts.length - 1] === 'json' && parts[0].length > 1;
+  const fileExists = await exists(path);
+
+  if (hasValidName && fileExists) {
+    return path;
+  } else {
+    throw new Error('No keyfile. Keyfile path is required in mashr_config and must be in the root of the working directory.');
+  }
 }
 
-function configureCredentials(path_to_mashr_config) {
-  const keyPath = getPathToKeyFile(path_to_mashr_config);
+const getPathToKeyFile = async (mashr_config) => {
+  const filename = readYaml(mashr_config).mashr.json_keyfile;
+  const pathname = `${path.resolve('./')}/${filename}`;
+  
+  try {
+    const keyFile = await validateKeyfile(pathname);
+  } catch (err) {
+    throw(err);
+  }
+
+  if (keyFile) { return keyFile; }
+}
+
+function mashrConfigExists(path) {
+
+}
+
+const configureCredentials = async (path_to_mashr_config) => {
+  const keyPath = await getPathToKeyFile(path_to_mashr_config);
   setGoogleAppCredentials(keyPath);
 }
 

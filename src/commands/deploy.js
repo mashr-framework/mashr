@@ -4,6 +4,16 @@
 // 2 - Check if an archive bucket with the same name exists, 
 //  error to provide a different integration_name if it does.
 
+/*
+  - it should:
+    - it sets up new name: mashr_<name>_<source>_to_<dataset>_<table>
+    - checks if name above is available
+    - checks if name above + "_archive" is available
+    - if not available then provides an error
+*/
+
+
+
 // 3 - Create the archive and staging bucket
 // 4 - Check if BigQuery dataset exists, create the dataset 
 //  if it does not
@@ -21,10 +31,18 @@ const storage = new Storage();
 // see if it exists for staging/archives
 // throw an error if it does
 
+// requires fs::readYaml
+const { readYaml } = require('../utils/fileUtils');
+function setupBucketName() {
+
+}
+
 module.exports = async (args) => {
   await configureCredentials('./mashr_config.yml');
-  const bucketName = 'mashr';
-  await bucketsAreAvailable(bucketName);
+  const bucketName = setupBucketName(mashrConfig);
+
+  // const bucketName = 'mashr';
+  // await bucketsAreAvailable(bucketName);
 }
 
 function bucketsAreAvailable(bucketName) {

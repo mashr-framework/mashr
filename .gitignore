@@ -26,3 +26,5 @@ tags
 .byebug_history
 /public/packs
 /node_modules
+kinetic-guild-*
+

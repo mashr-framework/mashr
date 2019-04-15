@@ -39,3 +39,4 @@ function bucketExists(bucketName) {
     console.log('ERROR: ', error);
   });
 }
+

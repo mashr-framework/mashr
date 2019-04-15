@@ -25,7 +25,7 @@
 // 7 - Launches a function with the same name
 
 const { Storage } = require('@google-cloud/storage');
-const { configureCredentials } = require('../utils/fileUtils');
+const { configureCredentials, readYaml} = require('../utils/fileUtils');
 const storage = new Storage();
 
 // next step: get bucket name from mashr_config file
@@ -33,13 +33,20 @@ const storage = new Storage();
 // throw an error if it does
 
 // requires fs::readYaml
-const { readYaml } = require('../utils/fileUtils');
 function setupBucketName(mashrConfig) {
 
 }
 
 module.exports = async (args) => {
-  await configureCredentials('./mashr_config.yml');
+  const mashrConfigObj = await readYaml('./mashr_config.yml');
+  await configureCredentials(mashrConfigObj);
+  const name = mashrConfigObj.mashr.integration_name;
+  const source = mashrConfigObj.embulk.in.type;
+  const dataset = mashrConfigObj.mashr.dataset_id;
+  const table = mashrConfigObj.mashr.table_id;
+
+  const bucketName = `mashr_${name}_${source}_to_${dataset}_${table}`
+  bucketsAreAvailable(bucketName);
   // const bucketName = setupBucketName(mashrConfig);
 
   // const bucketName = 'mashr';
@@ -48,14 +55,22 @@ module.exports = async (args) => {
 
 function bucketsAreAvailable(bucketName) {
   bucketExists(bucketName);
+  bucketExists(bucketName + '_archive');
 }
 
-function bucketExists(bucketName) {
-  bucket = storage.bucket(bucketName);
-  bucket.exists().then(function(data) {
-    if (data[0]) { console.log(data[0]); }
-  }).catch(function(error) {
-    console.log('ERROR: ', error);
-  });
+const bucketExists = async (bucketName) => {
+  try {
+    bucket = storage.bucket(bucketName);
+    console.log(bucketName);
+    const data = await bucket.exists();
+    if (!data[0]) {
+      return true;
+    } else {
+      throw new Error('Bucket name unavailable. Choose a different ' +
+                      'integration_name.');
+    }
+  } catch(e) {
+    throw(e);
+  }
 }
 

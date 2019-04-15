@@ -24,6 +24,7 @@ let cmd = args._[0] || 'help';
 
     await executeCommands(cmd, args);
   } catch (err) {
-    console.error(`Command Line Interface error => ${err.message}`);
+    throw(err);
+    // console.error(`Command Line Interface error => ${err.message}`);
   }
 })();

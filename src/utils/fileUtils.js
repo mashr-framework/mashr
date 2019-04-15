@@ -54,22 +54,19 @@ const validateKeyfile = async (path) => {
   }
 }
 
-const getPathToKeyFile = async (mashr_config) => {
-  const filename = readYaml(mashr_config).mashr.json_keyfile;
+const getPathToKeyFile = async (mashrConfigObj) => {
+  const filename = mashrConfigObj.mashr.json_keyfile;
   const pathname = `${path.resolve('./')}/${filename}`;
-  let keyFile;
 
-  keyFile = await validateKeyfile(pathname);
-
-  if (keyFile) { return keyFile; }
+  return await validateKeyfile(pathname);
 }
 
 function mashrConfigExists(path) {
 
 }
 
-const configureCredentials = async (path_to_mashr_config) => {
-  const keyPath = await getPathToKeyFile(path_to_mashr_config);
+const configureCredentials = async (mashrConfigObj) => {
+  const keyPath = await getPathToKeyFile(mashrConfigObj);
   setGoogleAppCredentials(keyPath);
 }
 

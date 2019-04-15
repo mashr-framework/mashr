@@ -28,32 +28,29 @@ const { Storage } = require('@google-cloud/storage');
 const { configureCredentials, readYaml} = require('../utils/fileUtils');
 const storage = new Storage();
 
-// next step: get bucket name from mashr_config file
-// see if it exists for staging/archives
-// throw an error if it does
-
-// requires fs::readYaml
-function setupBucketName(mashrConfig) {
-
-}
-
 module.exports = async (args) => {
   const mashrConfigObj = await readYaml('./mashr_config.yml');
   await configureCredentials(mashrConfigObj);
+  const bucketName = getBucketName(mashrConfigObj);
+  console.log(bucketName);
+  await bucketsAreAvailable(bucketName);
+  // TODO:
+  //  if deploy is run twice on the same mashr_config,
+  //  does it provide an error (current action) or does it 
+  //  overwrite?
+
+}
+
+const getBucketName = (mashrConfigObj) => {
   const name = mashrConfigObj.mashr.integration_name;
   const source = mashrConfigObj.embulk.in.type;
   const dataset = mashrConfigObj.mashr.dataset_id;
   const table = mashrConfigObj.mashr.table_id;
 
-  const bucketName = `mashr_${name}_${source}_to_${dataset}_${table}`
-  bucketsAreAvailable(bucketName);
-  // const bucketName = setupBucketName(mashrConfig);
-
-  // const bucketName = 'mashr';
-  // await bucketsAreAvailable(bucketName);
+  return `mashr_${name}_${source}_to_${dataset}_${table}`;
 }
 
-function bucketsAreAvailable(bucketName) {
+const bucketsAreAvailable = async (bucketName) => {
   bucketExists(bucketName);
   bucketExists(bucketName + '_archive');
 }

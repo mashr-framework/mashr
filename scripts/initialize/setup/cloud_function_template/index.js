@@ -11,7 +11,7 @@ exports._FUNCTION_NAME_ = (event, callback) => {
 
   const bucketName = file.bucket;
   const [,,,, datasetId, tableId] = bucketName.split('_');
-
+  // use replace for DATASET_ID and TABLE_ID
   const gcsFile = `gs://${bucketName}/${fileName}`;
 
   console.log(`Loading ${fileName} into ${tableId}.`);

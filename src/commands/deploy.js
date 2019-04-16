@@ -35,11 +35,22 @@ module.exports = async (args) => {
 // createBucket
 // createGCEInstance
 // createFunction
+const { Storage } = require('@google-cloud/storage');
+const storage = new Storage();
+
 async function createBuckets(integrationName) {
   createBucket(integrationName);
-  // createBucket(integrationName + '_archive');
+  createBucket(integrationName + '_archive', {isArchive: true});
 }
 
-async function createBucket(integrationName) {
-  console.log('create bucket: ', integrationName);
+async function createBucket(integrationName, options = {isArchive: false}) {
+  const bucketOptions = {};
+
+  if (options.isArchive) {
+    bucketOptions.storageClass = 'COLDLINE';
+  }
+
+  const bucket = await storage.createBucket(integrationName, bucketOptions);
+
+  console.log('create bucket: ', bucket);
 }

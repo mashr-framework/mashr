@@ -29,11 +29,11 @@ async function functionNameIsAvailable(integrationName) {
 
 const bucketsAreAvailable = async (bucketName) => {
   validateBucketName(bucketName);
-  Promise.all([
-    bucketExists(bucketName),
-    bucketExists(bucketName + '_archive'),
-  ]);
-  console.log('Bucket Name validated.')
+    await Promise.all([
+      bucketExists(bucketName),
+      bucketExists(bucketName + '_archive'),
+    ]);
+    console.log('Bucket Name validated.')
 }
 
 const validateBucketName = (bucketName) => {
@@ -45,7 +45,6 @@ const validateBucketName = (bucketName) => {
 }
 
 const bucketExists = async (bucketName) => {
-  try {
     bucket = storage.bucket(bucketName);
     const data = await bucket.exists();
     if (!data[0]) {
@@ -54,7 +53,4 @@ const bucketExists = async (bucketName) => {
       throw new Error('Bucket name unavailable. Choose a different ' +
                       'integration_name.');
     }
-  } catch(e) {
-    throw(e);
-  }
 }

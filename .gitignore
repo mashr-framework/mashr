@@ -6,6 +6,7 @@
 
 # ignore vim
 tags
+*.swp
 
 # Ignore bundler config.
 /.bundle

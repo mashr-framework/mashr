@@ -45,12 +45,15 @@ const validateBucketName = (bucketName) => {
 }
 
 const bucketExists = async (bucketName) => {
-    bucket = storage.bucket(bucketName);
-    const data = await bucket.exists();
-    if (!data[0]) {
-      return true;
-    } else {
-      throw new Error('Bucket name unavailable. Choose a different ' +
-                      'integration_name.');
-    }
+  const bucket = storage.bucket(bucketName);
+  const error = new Error(`Bucket name "${bucketName}" unavailable. ` +
+                      ' Choose a different integration_name.');
+  let data;
+  try {
+    data = await bucket.exists();
+  } catch (e) {
+      throw error;
+  }
+
+  if (data[0]) { throw error; } 
 }

@@ -40,8 +40,12 @@
   "bin": {
     "mashr": "./bin/cli.js"
   },
-  "scripts": {},
-  "devDependencies": {},
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^24.7.1"
+  },
   "dependencies": {
     "@google-cloud/storage": "^2.5.0",
     "google-cloud-storage": "^2.0.2",

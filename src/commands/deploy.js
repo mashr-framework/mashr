@@ -7,7 +7,8 @@
 //  embulk_config.yml in it, and a cron job running
 // 7 - Launches a function with the same name
 
-const { configureCredentials, readYaml} = require('../utils/fileUtils');
+const { readYaml} = require('../utils/fileUtils');
+const configureCredentials = require('../utils/configureCredentials');
 const validateIntegrationName = require('../gcp/validateIntegrationName');
 const createBuckets = require('../gcp/createBuckets');
 const addIntegrationToDirectory = require('../utils/addIntegrationToDirectory');
@@ -16,14 +17,11 @@ module.exports = async (args) => {
   const mashrConfigObj = await readYaml('./mashr_config.yml');
   await configureCredentials(mashrConfigObj);
   const integrationName = mashrConfigObj.mashr.integration_name.trim();
-  // await validateIntegrationName(integrationName)
-  // await createBuckets(integrationName);
+  await validateIntegrationName(integrationName)
+  await createBuckets(integrationName);
 
   addIntegrationToDirectory(mashrConfigObj);
-  // try {
-  // } catch(e) {
-    // throw(e);
-  // }
+
   // TODO:
   //  - if deploy is run twice on the same mashr_config,
   //  does it provide an error (current action) or does it

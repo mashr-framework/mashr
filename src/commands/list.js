@@ -2,30 +2,18 @@ const { readResources } = require('../utils/fileUtils');
 
 module.exports = async (args) => {
   const infoObj = await readResources();
-  var result = Object.keys(infoObj.integrations).map(function (name) {
+  const integrationNames = Object.keys(infoObj.integrations);
 
+  const result = integrationNames.map(function (name) {
+    var integration = infoObj.integrations[name];
+
+    return `
+    ${name}:
+      projectId: ${integration.projectId}
+      datasetId: ${integration.datasetId}
+        tableId: ${integration.tableId}
+    `;
   });
 
-
-  // ['<name>', '']
-
-  console.log(infoObj);
+  console.log(result.join('\n'));
 };
-
-// const readResources = async (homedir) => {
-//   const namiPath = getNamiPath(homedir);
-//   const resourceInfo = await readFile(`${namiPath}/resources.json`);
-//   return JSON.parse(resourceInfo);
-// };
-
-
-/*
-main: `
-//     outside [command] <options>
-
-//     today.............. show weather for today
-//     version............ show package version
-//     help............... show help menu for a command
-//     `,
-
-*/

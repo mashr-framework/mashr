@@ -31,7 +31,7 @@ const storage = new Storage();
 module.exports = async (args) => {
   const mashrConfigObj = await readYaml('./mashr_config.yml');
   await configureCredentials(mashrConfigObj);
-  const integrationName = mashrConfigObj.mashr.integration_name;
+  const integrationName = mashrConfigObj.mashr.integration_name.trim();
   // validate bucketName
   //  'dataset', 'table', 'intergration_name'
   //  - cannot include '_';
@@ -49,24 +49,43 @@ module.exports = async (args) => {
 
 // gcp
 const validateName = async (integrationName) => {
-  bucketsAreAvailable(integrationName);
-  functionNameIsAvailable(integrationName);
+  try {
+    bucketsAreAvailable(integrationName);
+    functionNameIsAvailable(integrationName);
+  } catch (e) {
+    throw(e);
+  }
+}
+
+const { promisify } = require('util');
+const exec = promisify(require('child_process').exec);
+
+async function functionNameIsAvailable(integrationName) {
+  const { stdout, stderr } = await exec('gcloud functions list');
+  let lines = stdout.split('\n');
+  for (let i = 1; i < lines.length; i++) {
+    name = lines[i].split(/\s/)[0].trim();
+    if (name === integrationName) { 
+      throw new Error('Function name is taken. Please provide a different integration_name in the mashr_config.yml file.') 
+    }
+  }
+  console.log('Function Name validated.')
 }
 
 // gcp
-const execSync = require('child_process').execSync;
+// const execSync = require('child_process').execSync;
 
-async function functionNameIsAvailable(integrationName) {
-  const stdout = execSync('gcloud functions list').toString();
-  let lines = stdout.split('\n');
-  for (let i = 1; i < lines.length; i++) {
-    name = lines[i].split(/\s/)[0];
-    if (name.indexOf(integrationName) > -1) { 
-      throw new Error(`Function name "${integrationName}" is taken, please choose a different integration name.`)
-    }
-  }
-  console.log('Function name is ok!')
-}
+// async function functionNameIsAvailable(integrationName) {
+//   const stdout = execSync('gcloud functions list').toString();
+//   let lines = stdout.split('\n');
+//   for (let i = 1; i < lines.length; i++) {
+//     name = lines[i].split(/\s/)[0];
+//     if (name.indexOf(integrationName) > -1) { 
+//       throw new Error(`Function name "${integrationName}" is taken, please choose a different integration name.`)
+//     }
+//   }
+//   console.log('Function name is ok!')
+// }
 
 const validateBucketName = (bucketName) => {
   // this is not throwing as expected
@@ -79,13 +98,13 @@ const bucketsAreAvailable = async (bucketName) => {
   validateBucketName(bucketName);
   bucketExists(bucketName);
   bucketExists(bucketName + '_archive');
+  console.log('Bucket Name validated.')
 }
 
 // gcp
 const bucketExists = async (bucketName) => {
   try {
     bucket = storage.bucket(bucketName);
-    console.log(bucketName);
     const data = await bucket.exists();
     if (!data[0]) {
       return true;

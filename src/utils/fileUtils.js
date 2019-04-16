@@ -44,7 +44,7 @@ const getMashrPath = homedir => (`${homedir}/.mashr`);
 
 // }
 
-function readYaml(path) {
+async function readYaml(path) {
   return yaml.safeLoad(fs.readFileSync(path, 'utf8'));
 }
 

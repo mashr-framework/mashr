@@ -10,13 +10,16 @@
 const { configureCredentials, readYaml} = require('../utils/fileUtils');
 const validateIntegrationName = require('../gcp/validateIntegrationName');
 const createBuckets = require('../gcp/createBuckets');
+const addIntegrationToDirectory = require('../utils/addIntegrationToDirectory');
 
 module.exports = async (args) => {
   const mashrConfigObj = await readYaml('./mashr_config.yml');
   await configureCredentials(mashrConfigObj);
   const integrationName = mashrConfigObj.mashr.integration_name.trim();
-  await validateIntegrationName(integrationName)
-  await createBuckets(integrationName);
+  // await validateIntegrationName(integrationName)
+  // await createBuckets(integrationName);
+
+  addIntegrationToDirectory(mashrConfigObj);
   // try {
   // } catch(e) {
     // throw(e);

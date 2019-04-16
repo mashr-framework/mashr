@@ -8,6 +8,9 @@ const copyFile = promisify(fs.copyFile);
 const setGoogleAppCredentials = require('../gcp/setGoogleAppCredentials');
 const yaml = require('js-yaml');
 const path = require('path');
+const os = require('os');
+
+const homedir = os.homedir();
 
 // const changePermissions = promisify(fs.chmod);
 
@@ -82,22 +85,27 @@ function readYaml(path) {
 //   return JSON.parse(config);
 // };
 
-// const readResources = async (homedir) => {
-//   const namiPath = getNamiPath(homedir);
-//   const resourceInfo = await readFile(`${namiPath}/resources.json`);
-//   return JSON.parse(resourceInfo);
-// };
+const readResources = async () => {
+  const mashrPath = getMashrPath(homedir);
+  const filePath = `${mashrPath}/info.json`;
+  const resourceInfo = await readFile(filePath);
 
-// const writeResources = async (homedir, resource, idString) => {
-//   const namiPath = getNamiPath(homedir);
-//   let resourcesJSON = await readFile(`${namiPath}/resources.json`);
+  return JSON.parse(resourceInfo);
+};
 
-//   resourcesJSON = JSON.parse(resourcesJSON);
-//   resourcesJSON[resource] = idString;
-//   resourcesJSON = JSON.stringify(resourcesJSON, null, 2);
+const writeResources = async (resource, key, object) => {
+  const mashrDir = getMashrPath(homedir);
+  const filePath = `${mashrDir}/info.json`;
+  const data = await readFile(filePath);
 
-//   await writeFile(`${namiPath}/resources.json`, resourcesJSON);
-// };
+  let info = JSON.parse(data);
+  info[resource][key] = object;
+
+  info = JSON.stringify(info, null, 2);
+
+  await writeFile(filePath, info);
+}
+
 
 // const writeTemplateToStage = async (lambdaName, template, homedir) => {
 //   await mkdir(`${getNamiPath(homedir)}/staging/${lambdaName}`);
@@ -155,5 +163,7 @@ module.exports = {
   readFile,
   writeFile,
   configureCredentials,
-  readYaml
+  readYaml,
+  writeResources,
+  readResources,
 };

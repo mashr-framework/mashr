@@ -6,6 +6,9 @@ module.exports = async function executeCommand(cmd, args) {
     case 'deploy':
       require('./deploy')(args);
       break;
+    case 'list':
+      require('./list')(args);
+      break;
     case 'version':
       require('./version')(args);
       break;

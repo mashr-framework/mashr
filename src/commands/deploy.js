@@ -31,9 +31,15 @@ const storage = new Storage();
 module.exports = async (args) => {
   const mashrConfigObj = await readYaml('./mashr_config.yml');
   await configureCredentials(mashrConfigObj);
-  const bucketName = getBucketName(mashrConfigObj);
-  console.log(bucketName);
-  await bucketsAreAvailable(bucketName);
+  const integrationName = mashrConfigObj.mashr.integration_name;
+  // validate bucketName
+  //  'dataset', 'table', 'intergration_name'
+  //  - cannot include '_';
+  //  - cannot be uppercase
+
+  // console.log(bucketName);
+  await validateName(integrationName)
+  // await bucketsAreAvailable(bucketName);
   // TODO:
   //  if deploy is run twice on the same mashr_config,
   //  does it provide an error (current action) or does it 
@@ -41,20 +47,41 @@ module.exports = async (args) => {
 
 }
 
-const getBucketName = (mashrConfigObj) => {
-  const name = mashrConfigObj.mashr.integration_name;
-  const source = mashrConfigObj.embulk.in.type;
-  const dataset = mashrConfigObj.mashr.dataset_id;
-  const table = mashrConfigObj.mashr.table_id;
-
-  return `mashr_${name}_${source}_to_${dataset}_${table}`;
+// gcp
+const validateName = async (integrationName) => {
+  bucketsAreAvailable(integrationName);
+  functionNameIsAvailable(integrationName);
 }
 
+// gcp
+const execSync = require('child_process').execSync;
+
+async function functionNameIsAvailable(integrationName) {
+  const stdout = execSync('gcloud functions list').toString();
+  let lines = stdout.split('\n');
+  for (let i = 1; i < lines.length; i++) {
+    name = lines[i].split(/\s/)[0];
+    if (name.indexOf(integrationName) > -1) { 
+      throw new Error(`Function name "${integrationName}" is taken, please choose a different integration name.`)
+    }
+  }
+  console.log('Function name is ok!')
+}
+
+const validateBucketName = (bucketName) => {
+  // this is not throwing as expected
+  if (bucketName !== bucketName.toLowerCase()) {
+    throw new Error('Bucket name invalid, must be lower case.')
+  }
+}
+// gcp
 const bucketsAreAvailable = async (bucketName) => {
+  validateBucketName(bucketName);
   bucketExists(bucketName);
   bucketExists(bucketName + '_archive');
 }
 
+// gcp
 const bucketExists = async (bucketName) => {
   try {
     bucket = storage.bucket(bucketName);

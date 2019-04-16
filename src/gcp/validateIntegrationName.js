@@ -5,8 +5,10 @@ const exec = promisify(require('child_process').exec);
 
 module.exports = async (integrationName) => {
   try {
-    bucketsAreAvailable(integrationName);
-    functionNameIsAvailable(integrationName);
+    await Promise.all([
+      bucketsAreAvailable(integrationName),
+      functionNameIsAvailable(integrationName),
+    ]);
   } catch (e) {
     throw(e);
   }
@@ -27,8 +29,10 @@ async function functionNameIsAvailable(integrationName) {
 
 const bucketsAreAvailable = async (bucketName) => {
   validateBucketName(bucketName);
-  bucketExists(bucketName);
-  bucketExists(bucketName + '_archive');
+  Promise.all([
+    bucketExists(bucketName),
+    bucketExists(bucketName + '_archive'),
+  ]);
   console.log('Bucket Name validated.')
 }
 

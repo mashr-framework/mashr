@@ -15,9 +15,31 @@ module.exports = async (args) => {
   await configureCredentials(mashrConfigObj);
   const integrationName = mashrConfigObj.mashr.integration_name.trim();
   await validateIntegrationName(integrationName)
+  await createBuckets(integrationName);
+  // try {
+  // } catch(e) {
+    // throw(e);
+  // }
   // TODO:
-  //  if deploy is run twice on the same mashr_config,
+  //  - if deploy is run twice on the same mashr_config,
   //  does it provide an error (current action) or does it
   //  overwrite?
+  //  - if default region doesn't exist in init, where is the bucket, GCE, and
+  //  GCF created? Does it matter?
+}
 
+// PEDAC
+// createBuckets(integrationName)
+// - storage
+// - archive
+// createBucket
+// createGCEInstance
+// createFunction
+async function createBuckets(integrationName) {
+  createBucket(integrationName);
+  // createBucket(integrationName + '_archive');
+}
+
+async function createBucket(integrationName) {
+  console.log('create bucket: ', integrationName);
 }

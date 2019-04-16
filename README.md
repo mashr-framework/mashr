@@ -12,4 +12,4 @@
   - Click "Cloud Functions API"
   - Click "enable" to enable the API
 * Download and install the [gcloud CLI
-  SDK](https://cloud.google.com/sdk/docs/quickstarts), from Google.
+  SDK](https://cloud.google.com/sdk/docs/quickstarts) from Google.

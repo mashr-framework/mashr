@@ -3,7 +3,9 @@ describe "init"
   it executes catchSetupAndConfig
     it should:
       - checks if existing .mashr and creates it if not
+      - [TODO: ask user if they want to override mashr_config file]
       - copies the mashr_config file template to working directory
+
 
 describe "deploy"
   it configures credentials
@@ -20,7 +22,8 @@ describe "deploy"
       - checks that bucket name is lowercase, numbers, dashes and underscores,
       starts with a number or letter, throws error if
       - checks if function name is available, throws error if not
-  it add integration name to info.json file .mashr/ dir
+  it "addIntegrationToDirectory"
+    - add integration name to info.json file .mashr/ dir
   it createStorageBuckets
     - it should:
       - create storage bucket

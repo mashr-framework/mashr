@@ -9,6 +9,7 @@
 
 const { configureCredentials, readYaml} = require('../utils/fileUtils');
 const validateIntegrationName = require('../gcp/validateIntegrationName');
+const createBuckets = require('../gcp/createBuckets');
 
 module.exports = async (args) => {
   const mashrConfigObj = await readYaml('./mashr_config.yml');
@@ -26,31 +27,4 @@ module.exports = async (args) => {
   //  overwrite?
   //  - if default region doesn't exist in init, where is the bucket, GCE, and
   //  GCF created? Does it matter?
-}
-
-// PEDAC
-// createBuckets(integrationName)
-// - storage
-// - archive
-// createBucket
-// createGCEInstance
-// createFunction
-const { Storage } = require('@google-cloud/storage');
-const storage = new Storage();
-
-async function createBuckets(integrationName) {
-  createBucket(integrationName);
-  createBucket(integrationName + '_archive', {isArchive: true});
-}
-
-async function createBucket(integrationName, options = {isArchive: false}) {
-  const bucketOptions = {};
-
-  if (options.isArchive) {
-    bucketOptions.storageClass = 'COLDLINE';
-  }
-
-  const bucket = await storage.createBucket(integrationName, bucketOptions);
-
-  console.log('create bucket: ', bucket);
 }

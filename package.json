@@ -44,7 +44,6 @@
   "devDependencies": {},
   "dependencies": {
     "@google-cloud/storage": "^2.5.0",
-    "axios": "^0.18.0",
     "google-cloud-storage": "^2.0.2",
     "js-yaml": "^3.13.1",
     "minimist": "^1.2.0",

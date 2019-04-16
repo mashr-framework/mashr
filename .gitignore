@@ -7,7 +7,7 @@
 # ignore vim
 tags
 *.swp
-
+keyfile.json
 # Ignore bundler config.
 /.bundle
 

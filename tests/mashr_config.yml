@@ -1,0 +1,37 @@
+mashr:
+  service_account_email: 'mashr-888@postgres-233900.iam.gserviceaccount.com' #user@project.iam.gserviceaccount.com
+  # the keyfile must be in the root directory of this file:
+  json_keyfile: 'postgres-233900-185cfc671186.json' # postgres-234090-218q34tg8e4.json
+  table_id:     'random' #'table_id'
+  dataset_id:   'testingDataSet' #'dataset_id'
+  project_id:   'postgres-233900' #'project_id'
+  integration_name: 'my_integration' # name the integration for bucket and function name
+  # You can set the command that runs embulk here. The example given is for
+  # incremental loading. embulk_config.yml is the default name of the config 
+  # file generated for embulk:
+  # embulk_run_command: 'embulk run embulk_config.yml -c embulk_diff.yml'
+embulk:
+  exec:
+    min_output_tasks: 1
+  in:
+    type: random
+    rows: 10
+    threads: 1
+    schema:
+      myid: primary_key
+      name: string
+      score: integer
+  filters:
+    - type: add_time
+      to_column:
+        name: mashr_added_at
+        type: timestamp
+      from_value:
+        mode: upload_time
+        timestamp_format: "%Y-%m-%d %H:%M:%S %z"
+    - type: to_json
+      column:
+        name: record
+        type: string
+      skip_if_null: [id]
+      default_timezone: Asia/Tokyo

@@ -1,9 +1,14 @@
+const configureCredentials = require('../src/utils/configureCredentials');
+
 describe('mashr deploy'), async () => {
   beforeEach(async () => {});
 
   afterEach(async () => {});
   
-  describe('configureCredentials()', async () = {
+  describe('configureCredentials()', async () => {
+    test('Sets the keyfile in the mashr_config.yml to an env variable', async () => {
+
+    });
   //     it should take a mashr_config file and sets google application credentials
   //     to that
   //     it should provide an error if no file at the keyfile path

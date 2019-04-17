@@ -85,6 +85,16 @@ describe('mashr deploy', function() {
   //     - add integration name to info.json file .mashr/ dir
   // })
 
+  // describe('createCloudFunction()', async () => {
+    // it should('copies the function template and replaces it with values from mashrConfigObj')
+
+    // it should('creates function directory inside working directory, saves the function there')
+
+    // it saves path to function in .mashr/info.json
+
+    // it deploys the function from the function directory with exec
+  //})
+
 });
 
 

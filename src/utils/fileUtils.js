@@ -64,6 +64,7 @@ const readResources = async () => {
   return JSON.parse(resourceInfo);
 };
 
+// [TODO: change to singular writeResource]
 const writeResources = async (resource, key, object) => {
   const mashrDir = getMashrPath(homedir);
   const filePath = `${mashrDir}/info.json`;
@@ -71,6 +72,19 @@ const writeResources = async (resource, key, object) => {
 
   let info = JSON.parse(data);
   info[resource][key] = object;
+
+  info = JSON.stringify(info, null, 2);
+
+  await writeFile(filePath, info);
+}
+
+const removeResource = async (resource, key) => {
+  const mashrDir = getMashrPath(homedir);
+  const filePath = `${mashrDir}/info.json`;
+  const data = await readFile(filePath);
+
+  let info = JSON.parse(data);
+  delete info[resource][key]
 
   info = JSON.stringify(info, null, 2);
 
@@ -136,4 +150,6 @@ module.exports = {
   readYaml,
   writeResources,
   readResources,
+  removeResource,
+  mkdir,
 };

@@ -7,11 +7,11 @@ exports._FUNCTION_NAME_ = (event, callback) => {
   const fileName = file.name;
   const context = event.context;
 
-  const projectId = "_PROJECT_NAME_";
+  const projectId = "_PROJECT_ID_";
+  const datasetId = "_DATASET_ID_";
+  const tableId = "_TABLE_ID_"
 
   const bucketName = file.bucket;
-  const [,,,, datasetId, tableId] = bucketName.split('_');
-  // use replace for DATASET_ID and TABLE_ID
   
   const gcsFile = `gs://${bucketName}/${fileName}`;
 

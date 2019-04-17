@@ -15,7 +15,7 @@ const validateIntegrationName = async (integrationName) => {
 }
 
 async function functionNameIsAvailable(integrationName) {
-  console.log('Validating function Name validated.')
+  console.log(`Validating function name "${integrationName}"...`)
 
   const { stdout, stderr } = await exec('gcloud functions list');
   let lines = stdout.split('\n');
@@ -66,4 +66,5 @@ const bucketExists = async (bucketName) => {
 module.exports = {
   validateIntegrationName,
   bucketExists,
+  validateBucketName
 };

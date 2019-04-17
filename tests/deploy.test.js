@@ -3,7 +3,9 @@ const { readYaml, readFile, writeFile} = require('../src/utils/fileUtils');
 const path = require('path');
 const fs = require('fs');
 const createBuckets = require('../src/gcp/createBuckets');
-const { validateIntegrationName, bucketExists } = require('../src/gcp/validateIntegrationName');
+const { validateIntegrationName, 
+        bucketExists,
+        validateBucketName } = require('../src/gcp/validateIntegrationName');
 
 describe('mashr deploy', function() {
   // beforeEach(async () => {});
@@ -40,22 +42,28 @@ describe('mashr deploy', function() {
     // });
   });
 
-  describe('validateIntegrationName()', () => {
-    it('Checks that the bucket name is lowercase, numbers, dashes, ' +
-      'or underscores', async () => {
-        const bucketName = 'mashr_test_bucket12345';
-        await expect(validateIntegrationName('AAA')).rejects.toThrow('invalid');
-        await expect(validateIntegrationName('-aaa')).rejects.toThrow('invalid');
-        await expect(validateIntegrationName('_aaa')).rejects.toThrow('invalid');
-        await expect(validateIntegrationName('aaa-')).rejects.toThrow('invalid');
-        await expect(validateIntegrationName('aaa_')).rejects.toThrow('invalid');
-        await expect(validateIntegrationName('a aa')).rejects.toThrow('invalid');
-      });
+  // describe('validateIntegrationName()', () => {
+  //   // [TODO: separate these out into separate it statements]
+  //   it('Checks that the bucket name is lowercase, numbers, dashes, ' +
+  //     'or underscores', () => {
+  //       expect(validateBucketName('AAA')).toThrowError(/invalid/);
+  //       // expect(validateBucketName('-aaa')).toThrow(/invalid/);
+  //       // expect(validateBucketName('_aaa')).toThrow(/invalid/);
+  //       // expect(validateBucketName('aaa-')).toThrow(/invalid/);
+  //       // expect(validateBucketName('aaa_')).toThrow(/invalid/);
+  //       // expect(validateBucketName('a aa')).toThrow(/invalid/);
+  //   });
+
+    // it('Throws an error if a bucket with the same name already exists', async () => {
+    //   // const bucketName = ''
+    //   // create a bucket
+    //   // await expect(bucketExists(bucketName)).rejects.toThrow(//)
+    //   // destroy bucket
+    // });
 
   //     - it should:
   //       - [TODO: checks .mashr/info.json if integration name already exists.
   //       error if it exists]
-  //       - checks that bucket name is lowercase, numbers, dashes and underscores,
   //       - checks if bucket already exists, throws an error if bucket exists
   //       starts with a number or letter, throws error if
   //       - checks if function name is available, throws error if not
@@ -72,19 +80,12 @@ describe('mashr deploy', function() {
     // it('add integration name to .mashr/info.json', async () => {
 
     // });
-  //   it createStorageBuckets
-  //     - it should:
-  //       - create storage bucket
-  //       - add storage name to .mashr/info.json
-  //       - create archive storage bucket
-  //       - add archive storage name to .mashr/info.json
-  // });
-
-});
 
   // describe('addIntegrationToDirectory()', async () = {
   //     - add integration name to info.json file .mashr/ dir
   // })
-  // test('what we test', async () => {
-  //   // code
-  // });
+
+});
+
+
+

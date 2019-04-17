@@ -82,16 +82,5 @@ const setupCloudFunction = async (functionTemplatePath, mashrConfigObj) => {
 
   await writeFile('./function/index.js', content);
 
-
-  // await readFile(`${functionTemplatePath}/index.js`, 'utf8', (e, data) => {
-    // const cloudFunction = data.replace('_FUNCTION_NAME_', mashrConfigObj.mashr.integration_name )
-    //                           .replace('_PROJECT_ID_', mashrConfigObj.mashr.project_id )
-    //                           .replace('_DATASET_ID_', mashrConfigObj.mashr.dataset_id)
-    //                           .replace('_TABLE_ID_', mashrConfigObj.mashr.table_id);
-
-    // fs.writeFileSync('./function/index.js', cloudFunction, 'utf8', (e) => {
-    //   console.log('Copied and replaced cloud function index.js.');
-    // });
-
-  // });
-}
+  console.log('Copied and replaced cloud function index.js.');
+};

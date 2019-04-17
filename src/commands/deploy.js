@@ -11,6 +11,7 @@ const { readYaml} = require('../utils/fileUtils');
 const configureCredentials = require('../utils/configureCredentials');
 const { validateIntegrationName } = require('../gcp/validateIntegrationName');
 const createBuckets = require('../gcp/createBuckets');
+const { createCloudFunction } = require('../gcp/createCloudFunction');
 const addIntegrationToDirectory = require('../utils/addIntegrationToDirectory');
 
 module.exports = async (args) => {
@@ -20,9 +21,10 @@ module.exports = async (args) => {
 
   const integrationName = mashrConfigObj.mashr.integration_name.trim();
   await validateIntegrationName(integrationName);
+  // [TODO: createBuckets continue to happen in the background during createCloudFunction. Examine this.]
   await createBuckets(integrationName);
-
   await createCloudFunction(mashrConfigObj);
+
   // [TODO: createGCEInstance(integrationName)]
   await addIntegrationToDirectory(mashrConfigObj);
 
@@ -33,54 +35,3 @@ module.exports = async (args) => {
   //  - if default region doesn't exist in init, where is the bucket, GCE, and
   //  GCF created? Does it matter?
 }
-
-
-const { copyFile, mkdir, readFile, writeFile } = require('../utils/fileUtils');
-
-const createCloudFunction = async (mashrConfigObj) => {
-  const functionTemplatePath = `${__dirname}/../../templates/functionTemplate`;
-  const packageJson = await readFile(`${functionTemplatePath}/package.json`);
-
-  await mkdir('./function');
-  await writeFile('./function/package.json', packageJson);
-  
-  await setupCloudFunction(functionTemplatePath, mashrConfigObj);
-  await deployCloudFunction(mashrConfigObj);
-
-  // deploys the function from the function directory with exec
-}
-
-const { exec } = require('../utils/fileUtils');
-const path = require('path');
-
-const deployCloudFunction = async (mashrConfigObj) => {
-  const functionName = mashrConfigObj.mashr.integration_name;
-  const bucketName = functionName;
-
-                  
-  const command = `gcloud functions deploy ${functionName} --runtime nodejs8 ` + 
-                  `--trigger-resource ${bucketName} ` +
-                  `--trigger-event google.storage.object.finalize`;
-  
-  const { stdout, stderr } = await exec(command, {
-    cwd: `${path.resolve('./')}/function`,
-  });
-};
-
-
-// gcp
-const fs = require('fs');
-
-const setupCloudFunction = async (functionTemplatePath, mashrConfigObj) => {
-  let content = await readFile(`${functionTemplatePath}/index.js`);
-  content = content.toString();
-
-  content = content.replace('_FUNCTION_NAME_', mashrConfigObj.mashr.integration_name)
-                   .replace('_PROJECT_ID_', mashrConfigObj.mashr.project_id)
-                   .replace('_DATASET_ID_', mashrConfigObj.mashr.dataset_id)
-                   .replace('_TABLE_ID_', mashrConfigObj.mashr.table_id);
-
-  await writeFile('./function/index.js', content);
-
-  console.log('Copied and replaced cloud function index.js.');
-};

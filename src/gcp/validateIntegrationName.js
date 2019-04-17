@@ -13,20 +13,37 @@ const validateIntegrationName = async (integrationName) => {
   }
 }
 
-async function functionNameIsAvailable(integrationName) {
-  console.log(`Validating function name "${integrationName}"...`)
+/*
+functionExists;
+input:
+outout:
+  - returns true if exists, false if not
 
+functionExist
+*/
+
+const functionExists = async (integrationName) => {
   const { stdout, stderr } = await exec('gcloud functions list');
   let lines = stdout.split('\n');
 
   for (let i = 1; i < lines.length; i++) {
     name = lines[i].split(/\s/)[0].trim();
-    if (name === integrationName) {
-      throw new Error('Function name is taken. Please provide a different ' +
-        'integration_name in the mashr_config.yml file.')
-    }
+    if (name === integrationName) { return true; }
   }
-  return true;
+
+  return false;
+};
+
+
+async function functionNameIsAvailable(integrationName) {
+  console.log(`Validating function name "${integrationName}"...`);
+
+  if (await functionExists(integrationName)) {
+    const error = new Error(`Cloud function name "${integrationName}" is taken. ` +
+                            'Please provide a different integration_name in the ' + 
+                            'mashr_config.yml file.');
+    throw(error);
+  }
 }
 
 const bucketsAreAvailable = async (bucketName) => {
@@ -83,5 +100,6 @@ const bucketExists = async (bucketName) => {
 module.exports = {
   validateIntegrationName,
   bucketExists,
-  validateBucketName
+  validateBucketName,
+  functionExists,
 };

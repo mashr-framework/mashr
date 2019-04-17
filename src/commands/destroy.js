@@ -1,6 +1,12 @@
-const { removeResource, readYaml, readResources } = require('../utils/fileUtils');
+const {
+  removeResource,
+  readYaml,
+  readResources,
+  exec
+} = require('../utils/fileUtils');
 const { destroyBuckets } = require('../gcp/destroyBuckets');
 const configureCredentials = require('../utils/configureCredentials');
+const { functionExists } = require('../gcp/validateIntegrationName');
 
 module.exports = async (args) => {
   const mashrConfigObj = await readYaml('./mashr_config.yml');
@@ -15,10 +21,28 @@ module.exports = async (args) => {
                     `"mashr list" to see all integrations.`
     console.log(message);
   } else {
-    await Promise.all([removeResource('integrations', integrationName),
-    destroyBuckets(integrationName)]);
+    await Promise.all([
+      removeResource('integrations', integrationName),
+      destroyBuckets(integrationName),
+      destroyCloudFunction(integrationName),
+    ]);
   }
 }
+
+const destroyCloudFunction = async (integrationName) => {
+  const command = `gcloud functions delete ${integrationName}`;
+
+  if (await functionExists(integrationName)) {
+    const { stdout, stderr } = await exec(command);
+
+    console.log(`Cloud function "${integrationName}" is destroyed.`);
+  } else {
+    console.log(
+      `Cloud function "${integrationName}" does not exist ` +
+      'and cannot be destroyed.'
+    );
+  }
+};
 
 // gcp
 // destroyFunction(integrationName)

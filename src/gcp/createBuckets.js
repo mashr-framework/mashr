@@ -14,5 +14,8 @@ async function createBucket(integrationName, options = {isArchive: false}) {
   }
 
   const bucket = await storage.createBucket(integrationName, bucketOptions);
+
+  console.log(`Bucket "${integrationName}" is created.`);
+
   return bucket;
 }

@@ -30,7 +30,7 @@ module.exports = async (args) => {
 }
 
 const destroyCloudFunction = async (integrationName) => {
-  const command = `gcloud functions delete ${integrationName}`;
+  const command = `gcloud functions delete ${integrationName} --quiet`;
 
   if (await functionExists(integrationName)) {
     const { stdout, stderr } = await exec(command);

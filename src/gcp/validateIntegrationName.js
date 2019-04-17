@@ -3,7 +3,7 @@ const storage = new Storage();
 const { promisify } = require('util');
 const exec = promisify(require('child_process').exec);
 
-module.exports = async (integrationName) => {
+const validateIntegrationName = async (integrationName) => {
   try {
     await Promise.all([
       bucketsAreAvailable(integrationName),
@@ -15,8 +15,11 @@ module.exports = async (integrationName) => {
 }
 
 async function functionNameIsAvailable(integrationName) {
+  console.log('Validating function Name validated.')
+
   const { stdout, stderr } = await exec('gcloud functions list');
   let lines = stdout.split('\n');
+
   for (let i = 1; i < lines.length; i++) {
     name = lines[i].split(/\s/)[0].trim();
     if (name === integrationName) {
@@ -24,7 +27,7 @@ async function functionNameIsAvailable(integrationName) {
         'integration_name in the mashr_config.yml file.')
     }
   }
-  console.log('Function Name validated.')
+  return true;
 }
 
 const bucketsAreAvailable = async (bucketName) => {
@@ -33,7 +36,7 @@ const bucketsAreAvailable = async (bucketName) => {
       bucketExists(bucketName),
       bucketExists(bucketName + '_archive'),
     ]);
-    console.log('Bucket Name validated.')
+  return true;
 }
 
 const validateBucketName = (bucketName) => {
@@ -49,11 +52,18 @@ const bucketExists = async (bucketName) => {
   const error = new Error(`Bucket name "${bucketName}" unavailable. ` +
                       ' Choose a different integration_name.');
   let data;
+
+  console.log(`Validating bucket name, "${bucketName}".`)
   try {
     data = await bucket.exists();
   } catch (e) {
       throw error;
   }
 
-  if (data[0]) { throw error; } 
+  if (data[0]) { throw error; }
 }
+
+module.exports = {
+  validateIntegrationName,
+  bucketExists,
+};

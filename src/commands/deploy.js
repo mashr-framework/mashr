@@ -9,7 +9,7 @@
 
 const { readYaml} = require('../utils/fileUtils');
 const configureCredentials = require('../utils/configureCredentials');
-const validateIntegrationName = require('../gcp/validateIntegrationName');
+const { validateIntegrationName } = require('../gcp/validateIntegrationName');
 const createBuckets = require('../gcp/createBuckets');
 const addIntegrationToDirectory = require('../utils/addIntegrationToDirectory');
 

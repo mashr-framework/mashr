@@ -21,7 +21,7 @@ module.exports = async (args) => {
   // await validateIntegrationName(integrationName)
   // await createBuckets(integrationName);
   await createCloudFunction(mashrConfigObj)
-  // createGCEInstance(integrationName)
+  // [TODO: createGCEInstance(integrationName)]
   
   // addIntegrationToDirectory(mashrConfigObj);
 
@@ -50,6 +50,8 @@ const createCloudFunction = async (mashrConfigObj) => {
   // deploys the function from the function directory with exec
 }
 
+
+// gcp
 const setupCloudFunction = async (functionTemplatePath, mashrConfigObj) => {
   await readFile(`${functionTemplatePath}/index.js`, 'utf8', async (e, data) => {
     const cloudFunction = data.replace('_FUNCTION_NAME_', mashrConfigObj.mashr.integration_name )
@@ -61,24 +63,6 @@ const setupCloudFunction = async (functionTemplatePath, mashrConfigObj) => {
    })                                           
   });
 }
-
-
-
-
-// function generateCloudFunction() {
-//   const functionTemplate = './setup/cloud_function_template/index.js'
-//   const projectId = configFiles.mashrConfig.project_id;
-//   const datasetId = configFiles.mashrConfig.dataset_id;
-
-//   fs.readFile(functionTemplate, 'utf8', (e, data) => {
-//     const result = data.replace('_FUNCTION_NAME_', functionName)
-//                        .replace('_PROJECT_NAME_', configFiles.mashrConfig.project_id);
-//     const functionFile = './cloud_function/index.js'
-//     fs.writeFile(functionFile, result, 'utf8', (e) => {
-//       console.log('Updated function name in index.js.');
-//     })
-//   });
-// }
 
 
 

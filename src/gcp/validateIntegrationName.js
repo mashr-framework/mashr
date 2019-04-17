@@ -1,7 +1,6 @@
 const { Storage } = require('@google-cloud/storage');
 const storage = new Storage();
-const { promisify } = require('util');
-const exec = promisify(require('child_process').exec);
+const { exec } = require('../utils/fileUtils');
 
 const validateIntegrationName = async (integrationName) => {
   try {
@@ -32,14 +31,26 @@ async function functionNameIsAvailable(integrationName) {
 
 const bucketsAreAvailable = async (bucketName) => {
   validateBucketName(bucketName);
-    await Promise.all([
-      bucketExists(bucketName),
-      bucketExists(bucketName + '_archive'),
-    ]);
-  return true;
+
+  const results = await Promise.all([
+    bucketExists(bucketName),
+    bucketExists(bucketName + '_archive'),
+  ]);
+
+  const anyExists = results.some(function (result) {
+    return result === true;
+  });
+
+  if (anyExists) {
+    const error = new Error(`Bucket name "${bucketName}" unavailable. ` +
+                            ' Choose a different integration_name.');
+    throw(error);
+  }
 }
 
 const validateBucketName = (bucketName) => {
+  console.log(`Validating bucket name, "${bucketName}"...`);
+
   if (!bucketName.match(/^[a-z0-9]([a-z0-9_-]|\.)*[a-z0-9]$/)) {
     throw new Error(`Bucket name '${bucketName}' invalid, needs to only ` +
       'include lowercase numbers, dashes and underscores. Can only begin ' +
@@ -47,20 +58,26 @@ const validateBucketName = (bucketName) => {
   }
 }
 
+/*
+if no bucket => false [ false ]
+if bucket exist but we don't have permission => catch error and return true
+if we have bucket + access => true
+*/
 const bucketExists = async (bucketName) => {
   const bucket = storage.bucket(bucketName);
-  const error = new Error(`Bucket name "${bucketName}" unavailable. ` +
-                      ' Choose a different integration_name.');
   let data;
 
-  console.log(`Validating bucket name, "${bucketName}".`)
   try {
     data = await bucket.exists();
   } catch (e) {
-      throw error;
+      if (e.errors[0].reason === 'forbidden') {
+        return true;
+      } else {
+        throw(e);
+      }
   }
 
-  if (data[0]) { throw error; }
+  return data[0];
 }
 
 module.exports = {

@@ -8,6 +8,7 @@ const copyFile = promisify(fs.copyFile);
 const yaml = require('js-yaml');
 const path = require('path');
 const os = require('os');
+const exec = promisify(require('child_process').exec);
 
 const homedir = os.homedir();
 
@@ -152,4 +153,5 @@ module.exports = {
   readResources,
   removeResource,
   mkdir,
+  exec,
 };

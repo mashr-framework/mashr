@@ -12,6 +12,7 @@ module.exports = async (args) => {
       projectId: ${integration.projectId}
       datasetId: ${integration.datasetId}
         tableId: ${integration.tableId}
+           path: ${integration.path}
     `;
   });
 

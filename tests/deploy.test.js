@@ -67,7 +67,7 @@ describe('mashr deploy', function() {
   //       - checks if bucket already exists, throws an error if bucket exists
   //       starts with a number or letter, throws error if
   //       - checks if function name is available, throws error if not
-  });
+  // });
 
   // describe('createBuckets()', async () => {
     // it('Creates storage and archive buckets', async () => {
@@ -85,15 +85,22 @@ describe('mashr deploy', function() {
   //     - add integration name to info.json file .mashr/ dir
   // })
 
-  // describe('createCloudFunction()', async () => {
+  /*
+    
+
+  */
+  // describe('createCloudFunction()', () => {
+  //   it('creates the ./function directory', async () => {
+      
+
+  //   });
+
+
     // it should('copies the function template and replaces it with values from mashrConfigObj')
-
     // it should('creates function directory inside working directory, saves the function there')
-
     // it saves path to function in .mashr/info.json
-
     // it deploys the function from the function directory with exec
-  //})
+  // });
 
 });
 

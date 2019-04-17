@@ -15,15 +15,16 @@ const addIntegrationToDirectory = require('../utils/addIntegrationToDirectory');
 
 module.exports = async (args) => {
   const mashrConfigObj = await readYaml('./mashr_config.yml');
+
   await configureCredentials(mashrConfigObj);
 
   const integrationName = mashrConfigObj.mashr.integration_name.trim();
-  // await validateIntegrationName(integrationName)
-  // await createBuckets(integrationName);
-  await createCloudFunction(mashrConfigObj)
+  await validateIntegrationName(integrationName);
+  await createBuckets(integrationName);
+
+  await createCloudFunction(mashrConfigObj);
   // [TODO: createGCEInstance(integrationName)]
-  
-  // addIntegrationToDirectory(mashrConfigObj);
+  await addIntegrationToDirectory(mashrConfigObj);
 
   // TODO:
   //  - if deploy is run twice on the same mashr_config,
@@ -44,42 +45,53 @@ const createCloudFunction = async (mashrConfigObj) => {
   await writeFile('./function/package.json', packageJson);
   
   await setupCloudFunction(functionTemplatePath, mashrConfigObj);
-
-  // saves path to function in .mashr/info.json
+  await deployCloudFunction(mashrConfigObj);
 
   // deploys the function from the function directory with exec
 }
 
+const { exec } = require('../utils/fileUtils');
+const path = require('path');
+
+const deployCloudFunction = async (mashrConfigObj) => {
+  const functionName = mashrConfigObj.mashr.integration_name;
+  const bucketName = functionName;
+
+                  
+  const command = `gcloud functions deploy ${functionName} --runtime nodejs8 ` + 
+                  `--trigger-resource ${bucketName} ` +
+                  `--trigger-event google.storage.object.finalize`;
+  
+  const { stdout, stderr } = await exec(command, {
+    cwd: `${path.resolve('./')}/function`,
+  });
+};
+
 
 // gcp
+const fs = require('fs');
+
 const setupCloudFunction = async (functionTemplatePath, mashrConfigObj) => {
-  await readFile(`${functionTemplatePath}/index.js`, 'utf8', async (e, data) => {
-    const cloudFunction = data.replace('_FUNCTION_NAME_', mashrConfigObj.mashr.integration_name )
-                              .replace('_PROJECT_ID_', mashrConfigObj.mashr.project_id )
-                              .replace('_DATASET_ID_', mashrConfigObj.mashr.dataset_id)
-                              .replace('_TABLE_ID_', mashrConfigObj.mashr.table_id);
-   await writeFile('./function/index.js', cloudFunction, 'utf8', (e) => {
-     console.log('Created cloud function index.js.');
-   })                                           
-  });
+  let content = await readFile(`${functionTemplatePath}/index.js`);
+  content = content.toString();
+
+  content = content.replace('_FUNCTION_NAME_', mashrConfigObj.mashr.integration_name)
+                   .replace('_PROJECT_ID_', mashrConfigObj.mashr.project_id)
+                   .replace('_DATASET_ID_', mashrConfigObj.mashr.dataset_id)
+                   .replace('_TABLE_ID_', mashrConfigObj.mashr.table_id);
+
+  await writeFile('./function/index.js', content);
+
+
+  // await readFile(`${functionTemplatePath}/index.js`, 'utf8', (e, data) => {
+    // const cloudFunction = data.replace('_FUNCTION_NAME_', mashrConfigObj.mashr.integration_name )
+    //                           .replace('_PROJECT_ID_', mashrConfigObj.mashr.project_id )
+    //                           .replace('_DATASET_ID_', mashrConfigObj.mashr.dataset_id)
+    //                           .replace('_TABLE_ID_', mashrConfigObj.mashr.table_id);
+
+    // fs.writeFileSync('./function/index.js', cloudFunction, 'utf8', (e) => {
+    //   console.log('Copied and replaced cloud function index.js.');
+    // });
+
+  // });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

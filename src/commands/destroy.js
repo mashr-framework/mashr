@@ -27,7 +27,7 @@ module.exports = async (args) => {
       destroyCloudFunction(integrationName),
     ]);
   }
-}
+};
 
 const destroyCloudFunction = async (integrationName) => {
   const command = `gcloud functions delete ${integrationName} --quiet`;

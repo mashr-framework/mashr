@@ -11,7 +11,7 @@ const validateIntegrationName = async (integrationName) => {
   } catch (e) {
     throw(e);
   }
-}
+};
 
 /*
 functionExists;
@@ -63,7 +63,7 @@ const bucketsAreAvailable = async (bucketName) => {
                             ' Choose a different integration_name.');
     throw(error);
   }
-}
+};
 
 const validateBucketName = (bucketName) => {
   console.log(`Validating bucket name, "${bucketName}"...`);
@@ -73,7 +73,7 @@ const validateBucketName = (bucketName) => {
       'include lowercase numbers, dashes and underscores. Can only begin ' +
       'and end with number or letter.');
   }
-}
+};
 
 /*
 if no bucket => false [ false ]

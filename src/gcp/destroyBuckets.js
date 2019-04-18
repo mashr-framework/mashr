@@ -5,7 +5,7 @@ const { bucketExists } = require('./validateIntegrationName');
 const destroyBuckets = async (integrationName) => {
   await Promise.all([destroyBucket(integrationName),
     destroyBucket(integrationName + '_archive')]);
-}
+};
 
 const destroyBucket = async (integrationName) => {
   const bucket = storage.bucket(integrationName);
@@ -16,9 +16,9 @@ const destroyBucket = async (integrationName) => {
   } else {
     console.log(`Bucket "${integrationName}" doesn't exist!`);
   }
-}
+};
 
 module.exports = {
   destroyBuckets,
-  destroyBucket
-}
+  destroyBucket,
+};

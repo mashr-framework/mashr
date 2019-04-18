@@ -9,7 +9,7 @@ const createCloudFunction = async (mashrConfigObj) => {
   
   await setupCloudFunction(functionTemplatePath, mashrConfigObj);
   await deployCloudFunction(mashrConfigObj);
-}
+};
 
 const { exec } = require('../utils/fileUtils');
 const path = require('path');

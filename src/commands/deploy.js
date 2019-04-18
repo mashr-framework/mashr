@@ -34,4 +34,4 @@ module.exports = async (args) => {
   //  overwrite?
   //  - if default region doesn't exist in init, where is the bucket, GCE, and
   //  GCF created? Does it matter?
-}
+};

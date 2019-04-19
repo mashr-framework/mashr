@@ -10,7 +10,7 @@ in:
     score: integer
 out:
   type: gcs
-  bucket: int_name3
+  bucket: mashr
   path_prefix: my-bucket
   file_ext: .json
   auth_method: json_key

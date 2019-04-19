@@ -13,30 +13,52 @@ const compute = new Compute();
 const zone = compute.zone('us-central1-a');
 
 const dockerfile = fs.readFileSync('./Dockerfile');
+const install_gems = fs.readFileSync('./mashr/install_gems.sh');
+const embulk_config = fs.readFileSync('./mashr/embulk_config.yml');
+const keyfile = fs.readFileSync('./mashr/keyfile.json');
+const crontab = fs.readFileSync('./crontab');
 
-// Create a new VM, using default ubuntu image. The startup script
-// installs Node and starts a Node server.
 
+// Machine type
+// You must stop the VM instance to edit its machine type
+// n1-standard-1 (1 vCPU, 3.75 GB memory)
+// debian-9
 const config = {
-  os: 'debian-9-stretch-v20190326',
+  os: 'cos-69-10895-211-0',
   http: true,
+  machineType: 'g1-small',
+  tags: ["mashr"],
   metadata: {
     items: [
       {
         key: 'startup-script',
         value: `#! /bin/bash
-        echo $(pwd)
-        cd /
-        sudo touch /text.txt
-        sudo echo $(pwd) >> /text.txt
-        sudo touch Dockerfile
-        sudo echo "${dockerfile.toString()}" >> Dockerfile
+        cd ~
+        echo "${dockerfile.toString()}" > Dockerfile
+        echo "${crontab.toString()}" > crontab 
+        mkdir mashr
+        echo "${install_gems.toString()}" > mashr/install_gems.sh
+        echo "${embulk_config.toString()}" > mashr/embulk_config.yml
+        echo "${keyfile.toString()}" > mashr/keyfile.json
+
         `
       },
     ],
   },
 };
 
-const vm = zone.vm('vm-with-node-server');
+const vm = zone.vm('testingcos');
 
-vm.create(config);
+console.log(vm);
+vm.create(config, function(err, vm, operation, apiResponse) {
+  // `vm` is a VM object.
+
+  // `operation` is an Operation object that can be used to check the
+  // status of the request.
+  console.log('!!!!!!!!!!!!!!');
+  console.log('VM: ', vm);
+  console.log('!!!!!!!!!!!!!!');
+  console.log('operation: ', operation);
+  console.log('!!!!!!!!!!!!!!');
+  console.log('apiResponse: ', apiResponse);
+});

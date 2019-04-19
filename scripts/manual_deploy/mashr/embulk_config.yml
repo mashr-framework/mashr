@@ -1,0 +1,20 @@
+exec:
+  min_output_tasks: 1
+in:
+  type: random
+  rows: 10
+  threads: 1
+  schema:
+    myid: primary_key
+    name: string
+    score: integer
+out:
+  type: gcs
+  bucket: int_name3
+  path_prefix: my-bucket
+  file_ext: .json
+  auth_method: json_key
+  service_account_email: ''
+  json_keyfile: /root/mashr/keyfile.json
+  formatter:
+    type: jsonl

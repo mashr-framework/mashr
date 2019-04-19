@@ -1,5 +1,29 @@
 # mashr
 
+## Steps
+* happens on the users machine:
+  - create the install_gems.sh
+  - create the embulk_config file
+* nodejs create a compute instance
+  - with a startup script in the nodejs create compute instance, script.
+  - cp the install_gems.sh
+  - cp the keyfile
+  - cp the embulk_config file
+  - cp Dockerfile from and build the image
+    OR
+    pull image from public directory on dockerhub
+  - run dockerfile
+* when Docker container first runs:
+  - copies the install_gems, keyfile, and embulk_config.yml into container
+  - installs the embulk gems
+  - sets volume for persisting data like a diff file, etc.
+  - starts cron job
+    - embulk run embulk_config.yml
+* need another .sh file for the cron job to run
+  - based on what user gives us from mashr_config
+
+  Dockerfile > build > image > start a container from the image
+
 ## Getting Started
 
 * Make sure you have a Google Cloud Platform (GCP) account

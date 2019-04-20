@@ -16,7 +16,7 @@ const validateKeyfile = async (path) => {
     if (hasValidName && fileExists) {
       return path;
     } else {
-      throw new Error('No keyfile. Keyfile path is required in mashr_config ' + 
+      throw new Error('No keyfile. Keyfile path is required in mashr_config ' +
                       'and must be in the root of the working directory.');
     }
   } catch(e) {

@@ -17,6 +17,12 @@ const addIntegrationToDirectory = require('../utils/addIntegrationToDirectory');
 module.exports = async (args) => {
   const mashrConfigObj = await readYaml('./mashr_config.yml');
 
+  // TODO: add mashr_config validation
+  // - move validateKeyFile from configureCredentials
+  // - add embulkRunCommandValidation
+  //   - if no embulk_config.yml throw error
+  //   - if no '-c...yml' throw warning
+
   await configureCredentials(mashrConfigObj);
 
   const integrationName = mashrConfigObj.mashr.integration_name.trim();
@@ -36,7 +42,9 @@ module.exports = async (args) => {
   //  GCF created? Does it matter?
 };
 
-const installGems = (gems) => {
+const createGemInstallationScript = (gems) => {
+  if (!gems) return '#!/bin/bash';
+
   const installGemsArray = gems.map((name) => (
       `embulk gem install ${name}`
     )
@@ -48,8 +56,10 @@ const installGems = (gems) => {
 const { readFile } = require('../utils/fileUtils');
 const generateGCEResources = async (mashrConfigObj) => {
   const dockerfile = await readFile(`${__dirname}/../../templates/docker/Dockerfile`);
-  
-  installGems(mashrConfigObj.mashr.embulk_gems);
+
+  const gemInstallationScript = createGemInstallationScript(mashrConfigObj.mashr.embulk_gems);
+  const keyfile = await readFile(`${mashrConfigObj.mashr.json_keyfile}`);
+  const crontab = createCrontab();
 
   /*
     iterate over array of gems
@@ -66,15 +76,32 @@ const generateGCEResources = async (mashrConfigObj) => {
   // const keyfile = fs.readFileSync('./keyfile.json');
   // const crontab = fs.readFileSync(`${__dirname}/../../templates/docker/crontab`);
 
+  console.log(crontab);
   return {
     dockerfile,
-    // install_gems,
-    // embulk_config,
-    // keyfile,
-    // crontab,
+    gemInstallationScript,
+    embulk_config,
+    keyfile,
+    crontab,
   };
 };
 
+const createCrontab() {
+  // TODO: place logs in stackdriver
+  // TODO: what to do with logs? Does the log file get too large?
+  let crontabCommand = mashrConfigObj.mashr.embulk_run_command;
+  crontabCommand = crontabCommand.replace(
+  'embulk_config.yml', '/root/mashr/embulk_config.yml');
+
+  const crontab =
+`PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+* * * * * ${crontabCommand} >> /var/log/cron.log 2>&1
+# An empty line is required at the end of this file for a valid cron file.
+`;
+
+
+}
 const Compute = require('@google-cloud/compute');
 const createGCEInstance = async (mashrConfigObj) => {
   const compute = new Compute();
@@ -99,7 +126,7 @@ const createGCEInstance = async (mashrConfigObj) => {
   //       {
   //         key: 'startup-script',
   //         value: `#! /bin/bash
-          
+
   //         sudo apt-get update
   //         sudo apt install apt-transport-https ca-certificates curl gnupg2 software-properties-common -y
   //         curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
@@ -111,9 +138,9 @@ const createGCEInstance = async (mashrConfigObj) => {
   //         sudo mkdir app
   //         cd app
   //         echo "${dockerfile.toString()}" > Dockerfile
-  //         echo "${crontab.toString()}" > crontab 
+  //         echo "${crontab.toString()}" > crontab
   //         sudo mkdir mashr
-  //         echo "${install_gems.toString()}" > mashr/install_gems.sh
+  //         echo "${gemInstallationScript}" > mashr/install_gems.sh
   //         echo "${embulk_config.toString()}" > mashr/embulk_config.yml
   //         printf "%s\n" '${keyfile.toString()}' > mashr/keyfile.json
 

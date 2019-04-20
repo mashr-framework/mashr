@@ -1,7 +1,7 @@
 mashr:
   service_account_email: '_SERVICE_ACCOUNT_EMAIL_' #user@project.iam.gserviceaccount.com
   # the keyfile must be in the root directory of this file:
-  json_keyfile: '' # postgres-234090-218q34tg8e4.json
+  json_keyfile: '' # keyfile.json
   table_id:     '' #'table_id'
   dataset_id:   '' #'dataset_id'
   project_id:   '' #'project_id'
@@ -9,7 +9,11 @@ mashr:
   # You can set the command that runs embulk here. The example given is for
   # incremental loading. embulk_config.yml is the default name of the config 
   # file generated for embulk:
-  # embulk_run_command: 'embulk run embulk_config.yml -c embulk_diff.yml'
+  embulk_run_command: 'embulk run embulk_config.yml' # 'embulk run embulk_config.yml -c embulk_diff.yml'
+  embulk_gems:
+    # - embulk-output-gcs
+    # - embulk-input-random
+    # - embulk-formatter-jsonl
 embulk:
   # exec:
   #   min_output_tasks: 1

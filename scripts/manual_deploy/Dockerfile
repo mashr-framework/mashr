@@ -1,7 +1,8 @@
 FROM jacobleecd/mashr:latest
-WORKDIR /root
+WORKDIR /root/
 
 COPY mashr/ mashr/
+RUN chmod +x mashr/install_gems.sh
 RUN mashr/install_gems.sh
 
 COPY crontab /etc/cron.d/mashr-cron

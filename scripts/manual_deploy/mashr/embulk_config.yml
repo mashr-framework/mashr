@@ -1,13 +1,16 @@
 exec:
   min_output_tasks: 1
 in:
-  type: random
-  rows: 10
-  threads: 1
-  schema:
-    myid: primary_key
-    name: string
-    score: integer
+  type: http
+  url: https://jsonplaceholder.typicode.com/posts/42
+  method: get
+  parser:
+    type: jsonpath
+    columns:
+        - { name: "json", type: string }
+        - { name: "id", type: long }
+        - { name: "title", type: string }
+        - { name: "body", type: string }
 out:
   type: gcs
   bucket: mashr

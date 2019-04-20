@@ -84,7 +84,7 @@ const config = {
   },
 };
 
-const vm = zone.vm('testings');
+const vm = zone.vm('testingjsonpath');
 
 console.log(vm);
 vm.create(config, function(err, vm, operation, apiResponse) {

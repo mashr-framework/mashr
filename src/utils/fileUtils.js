@@ -49,6 +49,11 @@ async function readYaml(path) {
   return yaml.safeLoad(fs.readFileSync(path, 'utf8'));
 }
 
+// async function writeYaml(path, content) {
+//   const yamlContent = yaml.safeDump(content);
+//   await writeFile(path, yamlContent);
+// }
+
 // const getStagingPath = homedir => (`${getNamiPath(homedir)}/staging`);
 
 // const readConfig = async (homedir) => {

@@ -76,8 +76,9 @@ const config = {
 
         sudo docker pull jacobleecd/mashr:latest
         sudo docker build -t mashr .
-        sudo docker run -d --name container1 mashr
+        sudo docker run -d -v /mashr --name container1 mashr
         `
+        // sudo docker run -d -v /mashr --name container1 mashr
       },
     ],
   },

@@ -23,6 +23,11 @@ module.exports = async (args) => {
   //   - if no embulk_config.yml throw error
   //   - if no '-c...yml' throw warning
   //   - give a warning/error if embulk is undefined, or there is no 'in:type'
+  // - add a field to mashrConfigObj: gce_instance_name
+  //    - if the integration_name matches (?:[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?)
+  //    then use that as gce_instance_name
+  //    - if it does not pass regex, replace uppercase with lowercase, replace non [-a-z0-9] with -
+  //    ... in worse case return the error 'Rename your integration...' w/ google's error
 
   await configureCredentials(mashrConfigObj);
 
@@ -51,7 +56,7 @@ const generateGCEResources = async (mashrConfigObj) => {
   const keyfile = await readFile(`${mashrConfigObj.mashr.json_keyfile}`);
   const crontab = createCrontab(mashrConfigObj.mashr.embulk_run_command);
   const embulkConfig = createEmbulkConfig(mashrConfigObj);
-
+  console.log(embulkConfig);
   return {
     dockerfile,
     gemInstallationScript,
@@ -87,9 +92,10 @@ const createEmbulkConfig = (mashrConfigObj) => {
 const createCrontab = (runCommand) => {
   // TODO: place logs in stackdriver
   // TODO: what to do with logs? Does the log file get too large?
+  // diff file run from root of container. Can't use it after?
   let crontabCommand = runCommand;
   crontabCommand = crontabCommand.replace(
-  'embulk_config.yml', '/root/mashr/embulk_config.yml');
+  'embulk_config.yml', '/root/mashr/embulk_config.yml.liquid');
 // do we need to export DATE?
   const crontab =
 `PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
@@ -127,58 +133,59 @@ const createGCEInstance = async (mashrConfigObj) => {
     crontab,
   } = await generateGCEResources(mashrConfigObj);
 
-  const config = {
-    os: 'debian-9',
-    http: true,
-    machineType: 'g1-small',
-    tags: ["mashr"],
-    metadata: {
-      items: [
-        {
-          key: 'startup-script',
-          value: `#! /bin/bash
+  // const config = {
+  //   os: 'debian-9',
+  //   http: true,
+  //   machineType: 'g1-small',
+  //   tags: ["mashr"],
+  //   metadata: {
+  //     items: [
+  //       {
+  //         key: 'startup-script',
+  //         value: `#! /bin/bash
 
-          sudo apt-get update
-          sudo apt install apt-transport-https ca-certificates curl gnupg2 software-properties-common -y
-          curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
-          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
-          sudo apt update
-          sudo apt install docker-ce -y
+  //         sudo apt-get update
+  //         sudo apt install apt-transport-https ca-certificates curl gnupg2 software-properties-common -y
+  //         curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
+  //         sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+  //         sudo apt update
+  //         sudo apt install docker-ce -y
 
-          cd /
-          sudo mkdir app
-          cd app
-          echo "${dockerfile.toString()}" > Dockerfile
-          echo "${crontab.toString()}" > crontab
-          sudo mkdir mashr
-          echo "${gemInstallationScript}" > mashr/install_gems.sh
-          echo "${embulkConfig}" > mashr/embulk_config.yml.liquid
-          printf "%s\n" '${keyfile.toString()}' > mashr/keyfile.json
+  //         cd /
+  //         sudo mkdir app
+  //         cd app
+  //         echo "${dockerfile.toString()}" > Dockerfile
+  //         echo '${crontab.toString()}' > crontab
+  //         sudo mkdir mashr
+  //         echo "${gemInstallationScript}" > mashr/install_gems.sh
+  //         echo "${embulkConfig}" > mashr/embulk_config.yml.liquid
+  //         printf "%s\n" '${keyfile.toString()}' > mashr/keyfile.json
 
-          sudo docker pull jacobleecd/mashr:latest
-          sudo docker build -t mashr .
-          sudo docker run -d -v /mashr --name container1 mashr
-          `
-        },
-      ],
-    },
-  };
+  //         sudo docker pull jacobleecd/mashr:latest
+  //         sudo docker build -t mashr .
+  //         sudo docker run -d -v /mashr --name container1 mashr
+  //         `
+  //       },
+  //     ],
+  //   },
+  // };
 
-  const vm = zone.vm(mashrConfigObj.mashr.integration_name);
+  // const vm = zone.vm(mashrConfigObj.mashr.integration_name);
+  // // const vm = zone.vm('newname');
 
-  vm.create(config, function(err, vm, operation, apiResponse) {
-    // `vm` is a VM object.
+  // vm.create(config, function(err, vm, operation, apiResponse) {
+  //   // `vm` is a VM object.
 
-    // `operation` is an Operation object that can be used to check the
-    // status of the request.
-    console.log('!!!!!!!!!!!!!!');
-    console.log('VM: ', vm);
-    console.log('!!!!!!!!!!!!!!');
-    console.log('operation: ', operation);
-    console.log('!!!!!!!!!!!!!!');
-    console.log('apiResponse: ', apiResponse);
-    console.log('!!!!!!!!!!!!!!');
-    console.log('error: ', err);
-  });
+  //   // `operation` is an Operation object that can be used to check the
+  //   // status of the request.
+  //   console.log('!!!!!!!!!!!!!!');
+  //   console.log('VM: ', vm);
+  //   console.log('!!!!!!!!!!!!!!');
+  //   console.log('operation: ', operation);
+  //   console.log('!!!!!!!!!!!!!!');
+  //   console.log('apiResponse: ', apiResponse);
+  //   console.log('!!!!!!!!!!!!!!');
+  //   console.log('error: ', err);
+  // });
 
 };

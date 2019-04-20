@@ -1,0 +1,26 @@
+exec:
+  min_output_tasks: 1
+in:
+  type: postgresql
+  host: psql.ip.range.here
+  user: postgres
+  password: "password"
+  database: postgres
+  table: users
+  incremental: true
+  incremental_columns: [updated_at, id]
+filters:
+  - type: add_time
+    to_column:
+      name: mashr_added_at
+      type: timestamp
+    from_value:
+      mode: upload_time
+      timestamp_format: "%Y-%m-%d %H:%M:%S"
+  - type: timestamp_format
+    default_from_timestamp_format: ["yyyy-MM-dd HH:mm:ss.SSS z", "yyyy-MM-dd HH:mm:ss z", "yyyy-MM-dd HH:mm:ss"]
+    default_to_timestamp_format: "yyyy-MM-dd HH:mm:ss"
+    columns:
+      - {name: updated_at}
+      - {name: mashr_added_at}
+

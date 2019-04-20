@@ -1,0 +1,24 @@
+exec:
+  min_output_tasks: 1
+in:
+  type: random
+  rows: 10
+  threads: 1
+  schema:
+    myid: primary_key
+    name: string
+    score: integer
+filters:
+  - type: add_time
+    to_column:
+      name: mashr_added_at
+      type: timestamp
+    from_value:
+      mode: upload_time
+      timestamp_format: "%Y-%m-%d %H:%M:%S %z"
+  - type: to_json
+    column:
+      name: record
+      type: string
+    skip_if_null: [id]
+    default_timezone: Asia/Tokyo

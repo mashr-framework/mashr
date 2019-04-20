@@ -1,0 +1,14 @@
+exec:
+  min_output_tasks: 1
+in:
+  type: http
+  url: https://jsonplaceholder.typicode.com/posts/42
+  method: get
+  parser:
+    type: json
+    schema:
+        - { name: "userId", type: string }
+        - { name: "id", type: long }
+        - { name: "title", type: string }
+        - { name: "body", type: string }
+

@@ -28,6 +28,7 @@ module.exports = async (args) => {
   //    then use that as gce_instance_name
   //    - if it does not pass regex, replace uppercase with lowercase, replace non [-a-z0-9] with -
   //    ... in worse case return the error 'Rename your integration...' w/ google's error
+  // - validate that the dataset is there (or create it if not?)
 
   await configureCredentials(mashrConfigObj);
 

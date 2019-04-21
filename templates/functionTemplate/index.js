@@ -9,7 +9,7 @@ exports._FUNCTION_NAME_ = (event, callback) => {
   const datasetId = "_DATASET_ID_";
   const tableId = "_TABLE_ID_";
 
-  const bucketName = evnt.bucket;
+  const bucketName = event.bucket;
   
   const gcsFile = `gs://${bucketName}/${fileName}`;
 

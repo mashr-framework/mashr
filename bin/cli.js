@@ -14,6 +14,7 @@ let cmd = args._[0] || 'help';
 
     if (args.version || args.v) { cmd = 'version'; }
     if (args.help || args.h) { cmd = 'help'; }
+    if (args.list || args.ls) { cmd = 'list'; }
 
     if (Object.keys(args) === 1) {
       // ...

@@ -32,14 +32,14 @@ module.exports = async (args) => {
   await configureCredentials(mashrConfigObj);
 
   const integrationName = mashrConfigObj.mashr.integration_name.trim();
-  // await validateIntegrationName(integrationName);
+  await validateIntegrationName(integrationName);
   // [TODO: add validateGCEInstanceName(integrationName)]
   // [TODO: createBuckets continue to happen in the background during createCloudFunction. Examine this.]
-  // await createBuckets(integrationName);
-  // await createCloudFunction(mashrConfigObj);
+  await createBuckets(integrationName);
+  await createCloudFunction(mashrConfigObj);
   await createGCEInstance(mashrConfigObj);
 
-  // await addIntegrationToDirectory(mashrConfigObj);
+  await addIntegrationToDirectory(mashrConfigObj);
 
   // TODO:
   //  - if deploy is run twice on the same mashr_config,

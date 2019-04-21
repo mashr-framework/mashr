@@ -3,15 +3,13 @@ const { Storage } = require('@google-cloud/storage');
 
 exports._FUNCTION_NAME_ = (event, callback) => {
 
-  const file = event.data;
-  const fileName = file.name;
-  const context = event.context;
+  const fileName = event.name;
 
   const projectId = "_PROJECT_ID_";
   const datasetId = "_DATASET_ID_";
-  const tableId = "_TABLE_ID_"
+  const tableId = "_TABLE_ID_";
 
-  const bucketName = file.bucket;
+  const bucketName = evnt.bucket;
   
   const gcsFile = `gs://${bucketName}/${fileName}`;
 
@@ -66,5 +64,5 @@ exports._FUNCTION_NAME_ = (event, callback) => {
       console.error('ERROR:', err);
     });
 
-  callback();
+  if (callback) { callback(); }
 };

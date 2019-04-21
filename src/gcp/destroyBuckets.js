@@ -2,6 +2,9 @@ const {Storage} = require('@google-cloud/storage');
 const storage = new Storage();
 const { bucketExists } = require('./validateIntegrationName');
 
+
+// (node:62879) UnhandledPromiseRejectionWarning: Error: The bucket you tried to delete was not empty.
+//     at Util.parseHttpRespBody (/Users/jacobcoker-dukowitz/development/launch_school/capstone/mashr/node_modules/@google-cloud/common/build/src/util.js:191:38)
 const destroyBuckets = async (integrationName) => {
   await Promise.all([destroyBucket(integrationName),
     destroyBucket(integrationName + '_archive')]);

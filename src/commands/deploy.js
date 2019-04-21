@@ -32,14 +32,14 @@ module.exports = async (args) => {
   await configureCredentials(mashrConfigObj);
 
   const integrationName = mashrConfigObj.mashr.integration_name.trim();
-  await validateIntegrationName(integrationName);
+  // await validateIntegrationName(integrationName);
   // [TODO: add validateGCEInstanceName(integrationName)]
   // [TODO: createBuckets continue to happen in the background during createCloudFunction. Examine this.]
-  await createBuckets(integrationName);
-  await createCloudFunction(mashrConfigObj);
+  // await createBuckets(integrationName);
+  // await createCloudFunction(mashrConfigObj);
   await createGCEInstance(mashrConfigObj);
 
-  await addIntegrationToDirectory(mashrConfigObj);
+  // await addIntegrationToDirectory(mashrConfigObj);
 
   // TODO:
   //  - if deploy is run twice on the same mashr_config,
@@ -54,15 +54,17 @@ const generateGCEResources = async (mashrConfigObj) => {
   const dockerfile = await readFile(`${__dirname}/../../templates/docker/Dockerfile`);
   const gemInstallationScript = createGemInstallationScript(mashrConfigObj.mashr.embulk_gems);
   const keyfile = await readFile(`${mashrConfigObj.mashr.json_keyfile}`);
-  const crontab = createCrontab(mashrConfigObj.mashr.embulk_run_command);
+  const embulkScript = createEmbulkScript(mashrConfigObj.mashr.embulk_run_command);
+  const crontab = await readFile(`${__dirname}/../../templates/docker/crontab`);
   const embulkConfig = createEmbulkConfig(mashrConfigObj);
 
   return {
     dockerfile,
     gemInstallationScript,
-    embulkConfig,
     keyfile,
+    embulkScript,
     crontab,
+    embulkConfig,
   };
 };
 
@@ -81,7 +83,7 @@ const createEmbulkConfig = (mashrConfigObj) => {
     file_ext: '.json',
     auth_method: 'json_key',
     service_account_email: mashrConfig.service_account_email,
-    json_keyfile: `/app/mashr/${mashrConfig.json_keyfile}`,
+    json_keyfile: `/root/mashr/${mashrConfig.json_keyfile}`,
     formatter: {
       type: 'jsonl'
     },
@@ -90,22 +92,21 @@ const createEmbulkConfig = (mashrConfigObj) => {
   return yaml.safeDump(embulkConfig);
 }
 
-const createCrontab = (runCommand) => {
+const createEmbulkScript = (runCommand) => {
   // TODO: place logs in stackdriver
   // TODO: what to do with logs? Does the log file get too large?
   // diff file run from root of container. Can't use it after?
-  let crontabCommand = runCommand;
-  crontabCommand = crontabCommand.replace(
-  'embulk_config.yml', '/app/mashr/embulk_config.yml.liquid');
+  runCommand = runCommand.replace(
+    'embulk_config.yml', '/root/mashr/embulk_config.yml.liquid');
 
-  const crontab =
-`PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-DATE=date +"%Y-%m-%d-%H_%M_%S_%3N;
-export DATE
-* * * * * ${crontabCommand} >> /var/log/cron.log 2>&1
-# An empty line is required at the end of this file for a valid cron file.
+  const script =
+`#!/bin/bash
+export DATE=$(date +"%Y-%m-%dT%H-%M-%S-%3N")
+
+${runCommand} >> /var/log/cron.log 2>&1
 `;
-  return crontab;
+
+  return script;
 }
 
 const createGemInstallationScript = (gems) => {
@@ -131,6 +132,7 @@ const createGCEInstance = async (mashrConfigObj) => {
     gemInstallationScript,
     embulkConfig,
     keyfile,
+    embulkScript,
     crontab,
   } = await generateGCEResources(mashrConfigObj);
 
@@ -156,6 +158,7 @@ const createGCEInstance = async (mashrConfigObj) => {
           sudo mkdir app
           cd app
           echo "${dockerfile.toString()}" > Dockerfile
+          echo '${embulkScript}' > embulkScript.sh
           echo '${crontab.toString()}' > crontab
           sudo mkdir mashr
           echo "${gemInstallationScript}" > mashr/install_gems.sh
@@ -164,7 +167,7 @@ const createGCEInstance = async (mashrConfigObj) => {
 
           sudo docker pull jacobleecd/mashr:latest
           sudo docker build -t mashr .
-          sudo docker run -d -v /mashr --name container1 mashr
+          sudo docker run -d -v /mashr --name embulk-container mashr
           `
         },
       ],
@@ -174,19 +177,20 @@ const createGCEInstance = async (mashrConfigObj) => {
   const vm = zone.vm(mashrConfigObj.mashr.integration_name);
   // const vm = zone.vm('newname');
 
-  vm.create(config, function(err, vm, operation, apiResponse) {
-    // `vm` is a VM object.
+  vm.create(config);
+  // vm.create(config, function(err, vm, operation, apiResponse) {
+  //   // `vm` is a VM object.
 
-    // `operation` is an Operation object that can be used to check the
-    // status of the request.
-    console.log('!!!!!!!!!!!!!!');
-    console.log('VM: ', vm);
-    console.log('!!!!!!!!!!!!!!');
-    console.log('operation: ', operation);
-    console.log('!!!!!!!!!!!!!!');
-    console.log('apiResponse: ', apiResponse);
-    console.log('!!!!!!!!!!!!!!');
-    console.log('error: ', err);
-  });
+  //   // `operation` is an Operation object that can be used to check the
+  //   // status of the request.
+  //   console.log('!!!!!!!!!!!!!!');
+  //   console.log('VM: ', vm);
+  //   console.log('!!!!!!!!!!!!!!');
+  //   console.log('operation: ', operation);
+  //   console.log('!!!!!!!!!!!!!!');
+  //   console.log('apiResponse: ', apiResponse);
+  //   console.log('!!!!!!!!!!!!!!');
+  //   console.log('error: ', err);
+  // });
 
 };

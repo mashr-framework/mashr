@@ -32,14 +32,14 @@ module.exports = async (args) => {
   await configureCredentials(mashrConfigObj);
 
   const integrationName = mashrConfigObj.mashr.integration_name.trim();
-  // await validateIntegrationName(integrationName);
+  await validateIntegrationName(integrationName);
   // [TODO: add validateGCEInstanceName(integrationName)]
   // [TODO: createBuckets continue to happen in the background during createCloudFunction. Examine this.]
-  // await createBuckets(integrationName);
-  // await createCloudFunction(mashrConfigObj);
+  await createBuckets(integrationName);
+  await createCloudFunction(mashrConfigObj);
   await createGCEInstance(mashrConfigObj);
 
-  // await addIntegrationToDirectory(mashrConfigObj);
+  await addIntegrationToDirectory(mashrConfigObj);
 
   // TODO:
   //  - if deploy is run twice on the same mashr_config,
@@ -56,7 +56,7 @@ const generateGCEResources = async (mashrConfigObj) => {
   const keyfile = await readFile(`${mashrConfigObj.mashr.json_keyfile}`);
   const crontab = createCrontab(mashrConfigObj.mashr.embulk_run_command);
   const embulkConfig = createEmbulkConfig(mashrConfigObj);
-  console.log(embulkConfig);
+
   return {
     dockerfile,
     gemInstallationScript,
@@ -73,14 +73,15 @@ const createEmbulkConfig = (mashrConfigObj) => {
   const mashrConfig = mashrConfigObj.mashr;
   const embulkConfig = mashrConfigObj.embulk;
   
+  const date = '{{ env.DATE }}';
   embulkConfig['out'] = {
     type: 'gcs',
     bucket: mashrConfig.integration_name,
-    path_prefix: '{{ env.DATE }}',
+    path_prefix: date,
     file_ext: '.json',
     auth_method: 'json_key',
     service_account_email: mashrConfig.service_account_email,
-    json_keyfile: mashrConfig.json_keyfile,
+    json_keyfile: `/app/mashr/${mashrConfig.json_keyfile}`,
     formatter: {
       type: 'jsonl'
     },
@@ -95,12 +96,12 @@ const createCrontab = (runCommand) => {
   // diff file run from root of container. Can't use it after?
   let crontabCommand = runCommand;
   crontabCommand = crontabCommand.replace(
-  'embulk_config.yml', '/root/mashr/embulk_config.yml.liquid');
-// do we need to export DATE?
+  'embulk_config.yml', '/app/mashr/embulk_config.yml.liquid');
+
   const crontab =
 `PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 DATE=date +"%Y-%m-%d-%H_%M_%S_%3N;
-
+export DATE
 * * * * * ${crontabCommand} >> /var/log/cron.log 2>&1
 # An empty line is required at the end of this file for a valid cron file.
 `;
@@ -133,59 +134,59 @@ const createGCEInstance = async (mashrConfigObj) => {
     crontab,
   } = await generateGCEResources(mashrConfigObj);
 
-  // const config = {
-  //   os: 'debian-9',
-  //   http: true,
-  //   machineType: 'g1-small',
-  //   tags: ["mashr"],
-  //   metadata: {
-  //     items: [
-  //       {
-  //         key: 'startup-script',
-  //         value: `#! /bin/bash
+  const config = {
+    os: 'debian-9',
+    http: true,
+    machineType: 'g1-small',
+    tags: ["mashr"],
+    metadata: {
+      items: [
+        {
+          key: 'startup-script',
+          value: `#! /bin/bash
 
-  //         sudo apt-get update
-  //         sudo apt install apt-transport-https ca-certificates curl gnupg2 software-properties-common -y
-  //         curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
-  //         sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
-  //         sudo apt update
-  //         sudo apt install docker-ce -y
+          sudo apt-get update
+          sudo apt install apt-transport-https ca-certificates curl gnupg2 software-properties-common -y
+          curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
+          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+          sudo apt update
+          sudo apt install docker-ce -y
 
-  //         cd /
-  //         sudo mkdir app
-  //         cd app
-  //         echo "${dockerfile.toString()}" > Dockerfile
-  //         echo '${crontab.toString()}' > crontab
-  //         sudo mkdir mashr
-  //         echo "${gemInstallationScript}" > mashr/install_gems.sh
-  //         echo "${embulkConfig}" > mashr/embulk_config.yml.liquid
-  //         printf "%s\n" '${keyfile.toString()}' > mashr/keyfile.json
+          cd /
+          sudo mkdir app
+          cd app
+          echo "${dockerfile.toString()}" > Dockerfile
+          echo '${crontab.toString()}' > crontab
+          sudo mkdir mashr
+          echo "${gemInstallationScript}" > mashr/install_gems.sh
+          echo "${embulkConfig}" > mashr/embulk_config.yml.liquid
+          printf "%s\n" '${keyfile.toString()}' > mashr/keyfile.json
 
-  //         sudo docker pull jacobleecd/mashr:latest
-  //         sudo docker build -t mashr .
-  //         sudo docker run -d -v /mashr --name container1 mashr
-  //         `
-  //       },
-  //     ],
-  //   },
-  // };
+          sudo docker pull jacobleecd/mashr:latest
+          sudo docker build -t mashr .
+          sudo docker run -d -v /mashr --name container1 mashr
+          `
+        },
+      ],
+    },
+  };
 
-  // const vm = zone.vm(mashrConfigObj.mashr.integration_name);
-  // // const vm = zone.vm('newname');
+  const vm = zone.vm(mashrConfigObj.mashr.integration_name);
+  // const vm = zone.vm('newname');
 
-  // vm.create(config, function(err, vm, operation, apiResponse) {
-  //   // `vm` is a VM object.
+  vm.create(config, function(err, vm, operation, apiResponse) {
+    // `vm` is a VM object.
 
-  //   // `operation` is an Operation object that can be used to check the
-  //   // status of the request.
-  //   console.log('!!!!!!!!!!!!!!');
-  //   console.log('VM: ', vm);
-  //   console.log('!!!!!!!!!!!!!!');
-  //   console.log('operation: ', operation);
-  //   console.log('!!!!!!!!!!!!!!');
-  //   console.log('apiResponse: ', apiResponse);
-  //   console.log('!!!!!!!!!!!!!!');
-  //   console.log('error: ', err);
-  // });
+    // `operation` is an Operation object that can be used to check the
+    // status of the request.
+    console.log('!!!!!!!!!!!!!!');
+    console.log('VM: ', vm);
+    console.log('!!!!!!!!!!!!!!');
+    console.log('operation: ', operation);
+    console.log('!!!!!!!!!!!!!!');
+    console.log('apiResponse: ', apiResponse);
+    console.log('!!!!!!!!!!!!!!');
+    console.log('error: ', err);
+  });
 
 };

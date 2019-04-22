@@ -11,7 +11,7 @@ RUN chmod +x /etc/cron.d/embulkScript.sh
 
 # Copy and make executable crontab, mashr-cron
 COPY crontab /etc/cron.d/mashr-cron
-RUN chmod 0644 /etc/cron.d/mashr-cron
+RUN chmod +x /etc/cron.d/mashr-cron
 
 # activate crontab, mashr-cron
 RUN crontab /etc/cron.d/mashr-cron

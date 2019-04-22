@@ -31,7 +31,6 @@ module.exports = async (args) => {
   await configureCredentials(mashrConfigObj);
 
   const integrationName = mashrConfigObj.mashr.integration_name.trim();
-  const datasetId = mashrConfigObj.mashr.dataset_id.trim();
   // await validateIntegrationName(integrationName);
   // [TODO: add validateGCEInstanceName(integrationName)]
   // [TODO: createBuckets continue to happen in the background during createCloudFunction. Examine this.]
@@ -39,7 +38,7 @@ module.exports = async (args) => {
   // await createCloudFunction(mashrConfigObj);
   // await createGCEInstance(mashrConfigObj);
 
-  await createDataset(datasetId);
+  await createDataset(mashrConfigObj);
 
   // await addIntegrationToDirectory(mashrConfigObj);
 
@@ -51,10 +50,28 @@ module.exports = async (args) => {
   //  GCF created? Does it matter?
 };
 
-const { BigQuery } = require('@google-cloud/bigquery');
 
-const createDataset = async (datasetId) => {
-  const bigquery = new BigQuery();
 
-  console.log(bigquery.createDataset.toString());
+const { exec } = require('../utils/fileUtils');
+
+const createDataset = async (mashrConfigObj) => {
+  const integrationName = mashrConfigObj.mashr.integration_name.trim();
+  const datasetId = mashrConfigObj.mashr.dataset_id.trim();
+  const projectId = mashrConfigObj.mashr.project_id.trim();
+
+  // Using bq command line tool because unhelpful error using nodejs client library API
+  const command = "bq --location=US mk --dataset " +
+                  `--description "The dataset for ${integrationName}." ` +
+                  `${projectId}:${datasetId}`;
+
+  try {
+    await exec(command);
+    console.log(`Created dataset ${datasetId}`);
+  } catch (e) {
+    if (e.stdout.includes('already exists')) {
+      console.log(`Dataset ${datasetId} already exists... continuing`);
+    } else {
+      throw(e);
+    }
+  }
 };

@@ -1,11 +1,12 @@
 mashr:
-  service_account_email: '_SERVICE_ACCOUNT_EMAIL_' #user@project.iam.gserviceaccount.com
   # the keyfile must be in the root directory of this file:
   json_keyfile: '' # keyfile.json
-  table_id:     '' #'table_id'
-  dataset_id:   '' #'dataset_id'
-  project_id:   '' #'project_id'
-  integration_name: '' # name the integration for bucket and function name
+  table_id:     ''
+  dataset_id:   '' 
+  project_id:   '' 
+  # name the integration for bucket, instance and function name.
+  # integration_name must match regex (?:[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?)
+  integration_name: ''
   # You can set the command that runs embulk here. The example given is for
   # incremental loading. embulk_config.yml is the default name of the config 
   # file generated for embulk:

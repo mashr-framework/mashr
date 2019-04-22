@@ -51,7 +51,10 @@ module.exports = async (args) => {
   //  GCF created? Does it matter?
 };
 
-const createDataset = async (datasetId) => {
-  console.log(datasetId);
-};
+const { BigQuery } = require('@google-cloud/bigquery');
 
+const createDataset = async (datasetId) => {
+  const bigquery = new BigQuery();
+
+  console.log(bigquery.createDataset.toString());
+};

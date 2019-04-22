@@ -17,7 +17,7 @@ const destroyBucket = async (integrationName) => {
     await bucket.delete();
     console.log(`Bucket "${integrationName}" is destroyed.`);
   } else {
-    console.log(`Bucket "${integrationName}" doesn't exist!`);
+    console.log(`Bucket "${integrationName}" does not exist... continuing`);
   }
 };
 

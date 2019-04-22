@@ -61,9 +61,7 @@ const createEmbulkConfig = (mashrConfigObj) => {
     bucket: mashrConfig.integration_name,
     path_prefix: date,
     file_ext: '.json',
-    auth_method: 'json_key',
-    service_account_email: mashrConfig.service_account_email,
-    json_keyfile: `/root/mashr/${mashrConfig.json_keyfile}`,
+    auth_method: 'compute_engine',
     formatter: {
       type: 'jsonl'
     },

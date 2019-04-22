@@ -1,5 +1,5 @@
 const Compute = require('@google-cloud/compute');
-const generateGCEResources = require('./generateGCEResources');
+const { generateGCEResources } = require('./generateGCEResources');
 
 module.exports = async function createGCEInstance(mashrConfigObj) {
 

@@ -1,13 +1,16 @@
 const { readFile } = require('../utils/fileUtils');
 const yaml = require('js-yaml');
 
-module.exports = async function generateGCEResources(mashrConfigObj) {
-  const dockerfile = await readFile(`${__dirname}/../../templates/docker/Dockerfile`);
+const generateGCEResources = async (mashrConfigObj) => {
   const gemInstallationScript = createGemInstallationScript(mashrConfigObj.mashr.embulk_gems);
-  const keyfile = await readFile(`${mashrConfigObj.mashr.json_keyfile}`);
   const embulkScript = createEmbulkScript(mashrConfigObj.mashr.embulk_run_command);
-  const crontab = await readFile(`${__dirname}/../../templates/docker/crontab`);
   const embulkConfig = createEmbulkConfig(mashrConfigObj);
+
+  const [ dockerfile, keyfile, crontab ] = await Promise.all([
+    readFile(`${__dirname}/../../templates/docker/Dockerfile`),
+    readFile(`${mashrConfigObj.mashr.json_keyfile}`),
+    readFile(`${__dirname}/../../templates/docker/crontab`),
+  ]);
 
   return {
     dockerfile,
@@ -67,4 +70,11 @@ const createEmbulkConfig = (mashrConfigObj) => {
   };
 
   return yaml.safeDump(embulkConfig);
+}
+
+module.exports = {
+  generateGCEResources,
+  createEmbulkScript,
+  createGemInstallationScript,
+  createEmbulkConfig,
 }

@@ -14,6 +14,7 @@ const yaml = require('js-yaml');
 const path = require('path');
 const os = require('os');
 const exec = promisify(require('child_process').exec);
+const rimraf = require("rimraf"); // similar to `rm -Rf` for recursive remove
 
 const homedir = os.homedir();
 
@@ -164,14 +165,15 @@ module.exports = {
   copyFile,
   createDirectory,
   createJSONFile,
+  exec,
   exists,
   getMashrPath,
-  readFile,
-  writeFile,
-  readYaml,
-  writeResources,
-  readResources,
-  removeResource,
   mkdir,
-  exec,
+  readFile,
+  readResources,
+  readYaml,
+  removeResource,
+  rimraf,
+  writeFile,
+  writeResources,
 };

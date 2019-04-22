@@ -1,12 +1,26 @@
-const { copyFile, mkdir, readFile, writeFile } = require('../utils/fileUtils');
+const {
+  copyFile,
+  exists,
+  mkdir,
+  readFile,
+  rimraf,
+  writeFile,
+} = require('../utils/fileUtils');
 
 const createCloudFunction = async (mashrConfigObj) => {
   const functionTemplatePath = `${__dirname}/../../templates/functionTemplate`;
   const packageJson = await readFile(`${functionTemplatePath}/package.json`);
 
+  if (await exists('./function')) {
+    console.log('Deleting previously existing function directory.');
+    rimraf.sync('./function');
+  }
+
+  console.log('Creating function directory.');
   await mkdir('./function');
+
   await writeFile('./function/package.json', packageJson);
-  
+
   await setupCloudFunction(functionTemplatePath, mashrConfigObj);
   await deployCloudFunction(mashrConfigObj);
 };
@@ -18,11 +32,11 @@ const deployCloudFunction = async (mashrConfigObj) => {
   const functionName = mashrConfigObj.mashr.integration_name;
   const bucketName = functionName;
 
-                  
-  const command = `gcloud functions deploy ${functionName} --runtime nodejs8 ` + 
+
+  const command = `gcloud functions deploy ${functionName} --runtime nodejs8 ` +
                   `--trigger-resource ${bucketName} ` +
                   `--trigger-event google.storage.object.finalize`;
-  
+
   const { stdout, stderr } = await exec(command, {
     cwd: `${path.resolve('./')}/function`,
   });

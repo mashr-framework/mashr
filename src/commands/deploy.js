@@ -27,16 +27,19 @@ module.exports = async (args) => {
   //    ... in worse case return the error 'Rename your integration...' w/ google's error
   // - validate that the dataset is there (or create it if not?)
 
-  await validateMashrConfig('./mashr_config.yml');
-  // await configureCredentials(mashrConfigObj);
+  const mashrConfigObj = await validateMashrConfig('./mashr_config.yml');
+  await configureCredentials(mashrConfigObj);
 
   const integrationName = mashrConfigObj.mashr.integration_name.trim();
+  const datasetId = mashrConfigObj.mashr.dataset_id.trim();
   // await validateIntegrationName(integrationName);
   // [TODO: add validateGCEInstanceName(integrationName)]
   // [TODO: createBuckets continue to happen in the background during createCloudFunction. Examine this.]
   // await createBuckets(integrationName);
   // await createCloudFunction(mashrConfigObj);
   // await createGCEInstance(mashrConfigObj);
+
+  await createDataset(datasetId);
 
   // await addIntegrationToDirectory(mashrConfigObj);
 
@@ -47,3 +50,8 @@ module.exports = async (args) => {
   //  - if default region doesn't exist in init, where is the bucket, GCE, and
   //  GCF created? Does it matter?
 };
+
+const createDataset = async (datasetId) => {
+  console.log(datasetId);
+};
+

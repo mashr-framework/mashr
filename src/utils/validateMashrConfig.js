@@ -3,13 +3,14 @@ const {
   exists,
   readResources,
 } = require('./fileUtils');
+const path = require('path');
 
-module.exports = async function validateMashrConfig(path) {
-  if (!(await exists(path))) {
-    throw new Error(`no mashr_config.yml file at path: ${path}.`);
+module.exports = async function validateMashrConfig(mashrConfigPath) {
+  if (!(await exists(mashrConfigPath))) {
+    throw new Error(`no mashr_config.yml file at path: ${mashrConfigPath}.`);
   }
 
-  const mashrConfigObj = await readYaml(path);
+  const mashrConfigObj = await readYaml(mashrConfigPath);
 
   checkRequiredValues(mashrConfigObj);
   await checkIntegrationExists(mashrConfigObj.mashr.integration_name);

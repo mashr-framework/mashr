@@ -68,7 +68,7 @@ const validateKeyfile = async (keyfileName) => {
 };
 
 const validateEmbulkRunCommand = (runCommand) => {
-  if (!runCommand.includes(' embulk_config.yml ')) {
+  if (!runCommand.includes(' embulk_config.yml')) {
     throw new Error("Embulk run command is missing, ' embulk_config.yml '.");
   }
 }

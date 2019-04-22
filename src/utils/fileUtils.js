@@ -1,3 +1,8 @@
+// TODO:
+// rename readResource to readMashrResource
+// rename writeResource to writeMashrResource
+// rename removeResource to removeMashrResource
+//
 const fs = require('fs');
 const { promisify } = require('util');
 
@@ -65,7 +70,17 @@ async function readYaml(path) {
 const readResources = async () => {
   const mashrPath = getMashrPath(homedir);
   const filePath = `${mashrPath}/info.json`;
-  const resourceInfo = await readFile(filePath);
+  let resourceInfo;
+
+  try {
+    resourceInfo = await readFile(filePath);
+  } catch(e) {
+    if (e.message.includes('no such file')) {
+      throw new Error('Please run `mashr init` first.' + `\n${e}`);
+    } else {
+      throw(e);
+    }
+  }
 
   return JSON.parse(resourceInfo);
 };

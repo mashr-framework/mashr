@@ -1,25 +1,18 @@
-// 3 - Create the archive and staging bucket
-// 4 - Check if BigQuery dataset exists, create the dataset
-//  if it does not
-// 5 - Create the code for the embulk_config.yml and the
-//  index.js of the function from the mashr_config.yml
-// 6 - Launches a GCS instance with a Mashr Container with our
-//  embulk_config.yml in it, and a cron job running
-// 7 - Launches a function with the same name
-
+const yaml = require('js-yaml');
 const { readYaml} = require('../utils/fileUtils');
 const configureCredentials = require('../utils/configureCredentials');
 const { validateIntegrationName } = require('../gcp/validateIntegrationName');
 const createBuckets = require('../gcp/createBuckets');
 const { createCloudFunction } = require('../gcp/createCloudFunction');
 const addIntegrationToDirectory = require('../utils/addIntegrationToDirectory');
-
-// Mat moved functions outside of deploy
-const yaml = require('js-yaml');
 const createGCEInstance = require('../gcp/createGCEInstance');
+const validateMashrConfig = require('../utils/validateMashrConfig');
 
 module.exports = async (args) => {
-  const mashrConfigObj = await readYaml('./mashr_config.yml');
+  // * configureCredentials
+  // * validateIntegrationName
+  //   - check GCE Instance exists?
+  //   - check bucket and function are available
 
   // TODO: add mashr_config validation
   // - move validateKeyFile from configureCredentials
@@ -34,17 +27,18 @@ module.exports = async (args) => {
   //    ... in worse case return the error 'Rename your integration...' w/ google's error
   // - validate that the dataset is there (or create it if not?)
 
-  await configureCredentials(mashrConfigObj);
+  await validateMashrConfig('./mashr_config.yml');
+  // await configureCredentials(mashrConfigObj);
 
   const integrationName = mashrConfigObj.mashr.integration_name.trim();
-  await validateIntegrationName(integrationName);
+  // await validateIntegrationName(integrationName);
   // [TODO: add validateGCEInstanceName(integrationName)]
   // [TODO: createBuckets continue to happen in the background during createCloudFunction. Examine this.]
-  await createBuckets(integrationName);
-  await createCloudFunction(mashrConfigObj);
-  await createGCEInstance(mashrConfigObj);
+  // await createBuckets(integrationName);
+  // await createCloudFunction(mashrConfigObj);
+  // await createGCEInstance(mashrConfigObj);
 
-  await addIntegrationToDirectory(mashrConfigObj);
+  // await addIntegrationToDirectory(mashrConfigObj);
 
   // TODO:
   //  - if deploy is run twice on the same mashr_config,

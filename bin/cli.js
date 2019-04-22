@@ -2,7 +2,6 @@
 const os = require('os');
 const minimist = require('minimist');
 const executeCommands = require('../src/commands/executeCommands');
-const catchSetupAndConfig = require('../src/utils/catchSetupAndConfig');
 
 const homedir = os.homedir();
 
@@ -14,7 +13,7 @@ let cmd = args._[0] || 'help';
 
     if (args.version || args.v) { cmd = 'version'; }
     if (args.help || args.h) { cmd = 'help'; }
-    if (args.list || args.ls) { cmd = 'list'; }
+    if (cmd === 'ls') { cmd = 'list'; }
 
     if (Object.keys(args) === 1) {
       // ...

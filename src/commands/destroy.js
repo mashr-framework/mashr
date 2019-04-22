@@ -22,12 +22,14 @@ module.exports = async (args) => {
     console.log(message);
   } else {
     await Promise.all([
-      removeResource('integrations', integrationName),
+      destroyGCEInstance(integrationName),
       destroyBuckets(integrationName),
       destroyCloudFunction(integrationName),
+      removeResource('integrations', integrationName)
     ]);
   }
 };
+
 
 const destroyCloudFunction = async (integrationName) => {
   const command = `gcloud functions delete ${integrationName} --quiet`;
@@ -38,14 +40,35 @@ const destroyCloudFunction = async (integrationName) => {
     console.log(`Cloud function "${integrationName}" is destroyed.`);
   } else {
     console.log(
-      `Cloud function "${integrationName}" does not exist ` +
-      'and cannot be destroyed.'
+      `Cloud function "${integrationName}" does not exist` +
+      '... continuing'
     );
   }
 };
 
-// gcp
-// destroyFunction(integrationName)
+const Compute = require('@google-cloud/compute');
 
-//gcp
-// destroyGCEInstance(integrationName)
+
+const destroyGCEInstance = async (integrationName) => {
+  const instance = await getGCEInstance(integrationName);
+
+  if (instance) {
+    const compute = new Compute();
+    const zone = compute.zone(instance.zone.id);
+    const vm = zone.vm(integrationName);
+    const [operation] = await vm.delete();
+    await operation.promise();
+    console.log(`GCE instance ${integrationName} is destroyed.`)
+  } else {
+    console.log(`GCE Instance "${integrationName}" does not exist` +
+      '... continuing')
+  }
+};
+
+const getGCEInstance = async (integrationName) => {
+  const compute = new Compute();
+  [instances] = await compute.getVMs({
+    filter: `name eq ${integrationName}`,
+  });
+  return instances[0];
+}

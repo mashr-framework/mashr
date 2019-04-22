@@ -13,6 +13,9 @@ const { validateIntegrationName } = require('../gcp/validateIntegrationName');
 const createBuckets = require('../gcp/createBuckets');
 const { createCloudFunction } = require('../gcp/createCloudFunction');
 const addIntegrationToDirectory = require('../utils/addIntegrationToDirectory');
+// Mat moved functions outside of deploy
+const yaml = require('js-yaml');
+const createEmbulkConfig = require('../utils/createEmbulkConfig');
 
 module.exports = async (args) => {
   const mashrConfigObj = await readYaml('./mashr_config.yml');
@@ -69,29 +72,6 @@ const generateGCEResources = async (mashrConfigObj) => {
   };
 };
 
-// const { readYaml } = require('../utils/fileUtils');
-const yaml = require('js-yaml');
-
-const createEmbulkConfig = (mashrConfigObj) => {
-  const mashrConfig = mashrConfigObj.mashr;
-  const embulkConfig = mashrConfigObj.embulk;
-  
-  const date = '{{ env.DATE }}';
-  embulkConfig['out'] = {
-    type: 'gcs',
-    bucket: mashrConfig.integration_name,
-    path_prefix: date,
-    file_ext: '.json',
-    auth_method: 'json_key',
-    service_account_email: mashrConfig.service_account_email,
-    json_keyfile: `/root/mashr/${mashrConfig.json_keyfile}`,
-    formatter: {
-      type: 'jsonl'
-    },
-  };
-
-  return yaml.safeDump(embulkConfig);
-}
 
 const createEmbulkScript = (runCommand) => {
   // TODO: place logs in stackdriver

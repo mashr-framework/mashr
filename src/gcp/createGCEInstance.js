@@ -55,25 +55,11 @@ module.exports = async function createGCEInstance(mashrConfigObj) {
   };
 
   const vm = zone.vm(mashrConfigObj.mashr.integration_name);
-  // const vm = zone.vm('newname');
 
   await vm.create(config);
-  // update this so the the object returned by vm.create's promise method
+  // TODO: update this so the the object returned by vm.create's promise method
   // is awaited, not vm.create
   console.log(`GCE instance ${mashrConfigObj.mashr.integration_name} created.`)
-  // vm.create(config, function(err, vm, operation, apiResponse) {
-  //   // `vm` is a VM object.
 
-  //   // `operation` is an Operation object that can be used to check the
-  //   // status of the request.
-  //   console.log('!!!!!!!!!!!!!!');
-  //   console.log('VM: ', vm);
-  //   console.log('!!!!!!!!!!!!!!');
-  //   console.log('operation: ', operation);
-  //   console.log('!!!!!!!!!!!!!!');
-  //   console.log('apiResponse: ', apiResponse);
-  //   console.log('!!!!!!!!!!!!!!');
-  //   console.log('error: ', err);
-  // });
 
 };

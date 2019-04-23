@@ -1,27 +1,57 @@
+// ${/*Object.keys(this).map((key) => this[key] ).join('\n')*/}
 const menus = {
-  main: `
-    No help for you!
-    `,
+  main: function() {
+    return Object.keys(this)
+                 .filter(key => key !== 'main')
+                 .map(key => this[key] ).join('\n\n'); 
+  },
+  help: `
+    help <command>
+    
+    init.............. show init help
+    deploy............ show deploy help
+    destroy........... show destroy help
+    list.............. show list help
+  `,
+  init: `
+    init
+
+    Initializes your current working directory with a template
+    mashr_config.yml file necessary for running 'mashr deploy'.
+  `,
+  deploy: `
+    deploy
+
+    Deploys the integration: adds it to the list of mashr
+    integrations and creates related GCP resources including
+    staging and archive GCS buckets, a cloud function and
+    a GCE instance. 
+
+    Creates a 'function' folder that stores the code the cloud
+    function used in this integration. You can edit and redeploy
+    the cloud function with gcloud.
+
+    A mashr_config.yml file in the user's working directory 
+    is required. Run 'mashr init' to see a template file you can 
+    use.
+  `,
+  destroy: `
+    destroy <integration name>
+
+    Destroys the integration: removes it from the list of mashr 
+    integrations and destroys related GCP resources including 
+    the staging and archive GCS buckets, the cloud function and
+    the GCE instance.
+  `,
+  list: `
+    list
+
+    Lists all integrations that the user has deployed.
+  `,
 }
 
 module.exports = (args) => {
   const subCmd = args._[0] === 'help' ? args._[1] : args._[0];
-
-  console.log(menus[subCmd] || menus.main);
+  
+  console.log(menus[subCmd] || menus.main());
 }
-
-
-// const menus = {
-//   main: `
-//     outside [command] <options>
-
-//     today.............. show weather for today
-//     version............ show package version
-//     help............... show help menu for a command
-//     `,
-//   today: `
-//     outside today <options>
-
-//     --location, -l .... the location to use
-//     `,
-// }

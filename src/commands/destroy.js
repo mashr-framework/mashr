@@ -25,8 +25,8 @@ module.exports = async (args) => {
       destroyGCEInstance(integrationName),
       destroyBuckets(integrationName),
       destroyCloudFunction(integrationName),
-      removeResource('integrations', integrationName)
     ]);
+    await removeResource('integrations', integrationName);
   }
 };
 

@@ -13,7 +13,7 @@ module.exports = async (args) => {
   await configureCredentials(mashrConfigObj);
 
   const integrationName = mashrConfigObj.mashr.integration_name.trim();
-  // await validateIntegrationName(integrationName);
+  await validateIntegrationName(integrationName);
 
   // [TODO: createBuckets continue to happen in the background during createCloudFunction. Examine this.]
   await addIntegrationToDirectory(mashrConfigObj);

@@ -1,4 +1,3 @@
-// ${/*Object.keys(this).map((key) => this[key] ).join('\n')*/}
 const menus = {
   main: function() {
     return Object.keys(this)
@@ -6,7 +5,7 @@ const menus = {
                  .map(key => this[key] ).join('\n\n'); 
   },
   help: `
-    help <command>
+    help <command> 
     
     init.............. show init help
     deploy............ show deploy help

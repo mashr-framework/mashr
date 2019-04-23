@@ -37,3 +37,10 @@
   - Click "enable" to enable the API
 * Download and install the [gcloud CLI
   SDK](https://cloud.google.com/sdk/docs/quickstarts) from Google.
+
+## Location considerations for your GCP Services
+
+Consider colocating as many as your services as possible. For example, it's
+required that your GCS (Google Cloud Storage) and GBQ (Google Big Query) be
+located in the same regions. See the [Locations Considerations
+document](./docs/gcp_locations_considewrations.md) for more information

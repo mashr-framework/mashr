@@ -7,8 +7,10 @@ const {
 const { destroyBuckets } = require('../gcp/destroyBuckets');
 const configureCredentials = require('../utils/configureCredentials');
 const { functionExists } = require('../gcp/validateIntegrationName');
+const ora = require('ora');
 
 module.exports = async (args) => {
+  const spinner = ora().start();
   const mashrConfigObj = await readYaml('./mashr_config.yml');
   await configureCredentials(mashrConfigObj);
 
@@ -28,6 +30,7 @@ module.exports = async (args) => {
     ]);
     await removeResource('integrations', integrationName);
   }
+  spinner.succeed();
 };
 
 

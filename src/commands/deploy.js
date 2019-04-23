@@ -7,8 +7,9 @@ const { createCloudFunction } = require('../gcp/createCloudFunction');
 const addIntegrationToDirectory = require('../utils/addIntegrationToDirectory');
 const createGCEInstance = require('../gcp/createGCEInstance');
 const validateMashrConfig = require('../utils/validateMashrConfig');
-
+const ora = require('ora');
 module.exports = async (args) => {
+  const spinner = ora().start();
   const mashrConfigObj = await validateMashrConfig('./mashr_config.yml');
   await configureCredentials(mashrConfigObj);
 
@@ -23,6 +24,7 @@ module.exports = async (args) => {
     createBuckets(integrationName).then(() => createCloudFunction(mashrConfigObj)),
     createDataset(mashrConfigObj)
   ]);
+  spinner.succeed();
   
   // TODO:
   //  - if deploy is run twice on the same mashr_config,

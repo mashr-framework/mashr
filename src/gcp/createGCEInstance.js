@@ -2,7 +2,7 @@ const Compute = require('@google-cloud/compute');
 const { generateGCEResources } = require('./generateGCEResources');
 
 module.exports = async function createGCEInstance(mashrConfigObj) {
-
+  console.log('Creating GCE instance...')
   const compute = new Compute();
 
   const zone = compute.zone('us-central1-a');
@@ -57,7 +57,10 @@ module.exports = async function createGCEInstance(mashrConfigObj) {
   const vm = zone.vm(mashrConfigObj.mashr.integration_name);
   // const vm = zone.vm('newname');
 
-  vm.create(config);
+  await vm.create(config);
+  // update this so the the object returned by vm.create's promise method
+  // is awaited, not vm.create
+  console.log(`GCE instance ${mashrConfigObj.mashr.integration_name} created.`)
   // vm.create(config, function(err, vm, operation, apiResponse) {
   //   // `vm` is a VM object.
 

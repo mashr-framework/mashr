@@ -87,7 +87,7 @@ const bucketExists = async (bucketName) => {
   try {
     data = await bucket.exists();
   } catch (e) {
-      if (e.errors[0].reason === 'forbidden') {
+      if (!!e.errors && e.errors[0].reason === 'forbidden') {
         return true;
       } else {
         throw(e);

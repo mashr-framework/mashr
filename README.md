@@ -43,4 +43,4 @@
 Consider colocating as many as your services as possible. For example, it's
 required that your GCS (Google Cloud Storage) and GBQ (Google Big Query) be
 located in the same regions. See the [Locations Considerations
-document](./docs/gcp_locations_considewrations.md) for more information
+document](./docs/gcp_locations_considerations.md) for more information

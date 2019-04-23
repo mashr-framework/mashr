@@ -1,9 +1,6 @@
 #!/usr/bin/env node
-const os = require('os');
 const minimist = require('minimist');
 const executeCommands = require('../src/commands/executeCommands');
-
-const homedir = os.homedir();
 
 const args = minimist(process.argv.slice(2));
 let cmd = args._[0] || 'help';

@@ -6,6 +6,19 @@
 
 ### Considerations when choosing Regions
 * **Colocate your BigQuery dataset and your external data source.**
+* **Colocate your Cloud Storage buckets for loading data.**
+  - If your BigQuery dataset is in a multi-regional location, the Cloud Storage
+    bucket containing the data you're loading must be in a regional or
+    multi-regional bucket in the same location.
+  - For example, if your BigQuery dataset is in the EU, the Cloud Storage
+    bucket must be in a regional or multi-regional bucket in the EU.
+  - If your dataset is in a regional location, your Cloud Storage bucket must
+    be a regional bucket in the same location.
+  - For example, if your dataset is in the Tokyo region, your Cloud Storage
+    bucket must be a regional bucket in Tokyo.
+  - Exception: If your dataset is in the US multi-regional location, you can
+    load data from a Cloud Storage bucket in any regional or multi-regional
+    location.
 * **When you query data in an external data source such as Cloud Storage, the
   data you're querying must be in the same [mulit-regional] location as your
   BigQuery dataset.**
@@ -23,19 +36,6 @@
   or the EU multi-regional location. Your Cloud Bigtable data must be in one of
   the supported Cloud Bigtable locations.
 * Location considerations do not apply to Google Drive external data sources.
-* **Colocate your Cloud Storage buckets for loading data.**
-  - If your BigQuery dataset is in a multi-regional location, the Cloud Storage
-    bucket containing the data you're loading must be in a regional or
-    multi-regional bucket in the same location.
-  - For example, if your BigQuery dataset is in the EU, the Cloud Storage
-    bucket must be in a regional or multi-regional bucket in the EU.
-  - If your dataset is in a regional location, your Cloud Storage bucket must
-    be a regional bucket in the same location.
-  - For example, if your dataset is in the Tokyo region, your Cloud Storage
-    bucket must be a regional bucket in Tokyo.
-  - Exception: If your dataset is in the US multi-regional location, you can
-    load data from a Cloud Storage bucket in any regional or multi-regional
-    location.
 
 * Colocate your Cloud Storage buckets for exporting data.
   - When you export data, the regional or multi-regional Cloud Storage bucket

@@ -1,11 +1,10 @@
 # GCP Locations, Regions, and Zones Considerations
 
--------------------------------------------------------------------------------
-### GBQ: Google Big Query, Dataset Regions and Multi-Regions
+## GBQ: Google Big Query, Dataset Regions and Multi-Regions
 
 * https://cloud.google.com/bigquery/docs/locations
 
-#### Considerations when choosing Regions
+### Considerations when choosing Regions
 * **Colocate your BigQuery dataset and your external data source.**
 * **When you query data in an external data source such as Cloud Storage, the
   data you're querying must be in the same [mulit-regional] location as your
@@ -67,7 +66,7 @@ can effect the price.
     the reservation with the largest number of slots is where the job runs.
 * You can specify the location to run a job explicitly
 
-#### Background
+### Background
 
 * You specify a location for storing your BigQuery data when you create a
   dataset. After you create the dataset, the location cannot be changed.
@@ -80,15 +79,12 @@ can effect the price.
 * For more information on Cloud Storage locations, see Bucket Locations in the
   Cloud Storage documentation.
 
--------------------------------------------------------------------------------
-##  Where does region matter for the services:
-
-### GCS: Google Cloud Storage Regions
+## GCS: Google Cloud Storage Regions
 
 * Regions only, zones not available for GCS.
 * https://cloud.google.com/storage/docs/locations
 
-#### How Region effects other services trying to access this service?
+### How Region effects other services trying to access this service?
 
 * **Compute Engine VM notes**
   - Storing data in the same region as your Compute Engine VM instances can
@@ -99,7 +95,7 @@ can effect the price.
     Compute Engine VM instances in zones within a certain regional location
     have similar performance when accessing buckets in that regional location.
 
-#### Background
+### Background
 * A good location balances latency, availability, and bandwidth costs for data
   consumers.
 * Use a **regional** location to help optimize latency, availability, and
@@ -136,12 +132,11 @@ can effect the price.
 * You can store Nearline Storage and Coldline Storage object data in any
   location.
 
--------------------------------------------------------------------------------
-### GCE: Google Compute Engine, Instance Regions and Zones
+## GCE: Google Compute Engine, Instance Regions and Zones
 
 * https://cloud.google.com/compute/docs/regions-zones/#choosing_a_region_and_zone
 
-#### Considerations when choosing Regions and Zones
+### Considerations when choosing Regions and Zones
 
 * Handling failures:
   - Distribute your resources across multiple zones and regions to tolerate
@@ -164,7 +159,7 @@ can effect the price.
     an unexpected failure. To mitigate the effects of these possible events,
     you should duplicate important systems in multiple zones and regions.
 
-#### Background
+### Background
 
 * Google designs zones to be independent from each other: a zone usually has
   power, cooling, networking, and control planes that are isolated from other
@@ -184,13 +179,12 @@ can effect the price.
   experiences a failure. For more tips on how to design systems for
   availability, see Designing Robust Systems.
 
--------------------------------------------------------------------------------
-### GCF: Google Cloud Function Regions
+## GCF: Google Cloud Function Regions
 
 * Regions only, zones not available for GCS.
 * https://cloud.google.com/functions/docs/locations
 
-#### Considerations when choosing Regions
+### Considerations when choosing Regions
 
 * Using services across multiple locations can affect your app's latency, as
   well as pricing.
@@ -204,16 +198,13 @@ can effect the price.
   insensitive) names, but functions across regions or across projects can share
   the same name.
 
-#### Background
+### Background
+
 * Cloud Functions is regional, which means the infrastructure that runs your
   Cloud Function is located in a specific region and is managed by Google to be
   redundantly available across all the zones within that region.
 
-*
-#### How does it effect other services trying to access this service?
-
--------------------------------------------------------------------------------
-### Global, Regional, and Zonal Resources
+## Global, Regional, and Zonal Resources
 
 * https://cloud.google.com/compute/docs/regions-zones/global-regional-zonal-resources
 

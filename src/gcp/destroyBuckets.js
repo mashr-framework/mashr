@@ -14,6 +14,7 @@ const destroyBucket = async (integrationName) => {
   const bucket = storage.bucket(integrationName);
   
   if (await bucketExists(integrationName)) {
+    await bucket.deleteFiles({ force: true });
     await bucket.delete();
     console.log(`Bucket "${integrationName}" is destroyed.`);
   } else {

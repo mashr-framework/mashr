@@ -15,9 +15,7 @@ let cmd = args._[0] || 'help';
     if (args.help || args.h) { cmd = 'help'; }
     if (cmd === 'ls') { cmd = 'list'; }
 
-    if (Object.keys(args) === 1) {
-      // ...
-    } else if (Object.keys(args).length > 1) {
+    if (Object.keys(args._).length > 2) {
       console.log('Invalid command - too many arguments');
       return;
     }

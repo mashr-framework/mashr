@@ -3,8 +3,8 @@ mashr:
   # the keyfile must be in the root directory of this file:
   json_keyfile: '' # keyfile.json
   table_id:     ''
-  dataset_id:   '' 
-  project_id:   '' 
+  dataset_id:   ''
+  project_id:   ''
   # name the integration for bucket, instance and function name.
   # integration_name must match regex (?:[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?)
   integration_name: ''
@@ -13,9 +13,7 @@ mashr:
   # file generated for embulk:
   embulk_run_command: 'embulk run embulk_config.yml' # 'embulk run embulk_config.yml -c embulk_diff.yml'
   embulk_gems:
-    # - embulk-output-gcs
     # - embulk-input-random
-    # - embulk-formatter-jsonl
 embulk:
   # exec:
   #   min_output_tasks: 1

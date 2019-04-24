@@ -9,6 +9,7 @@ const { destroyGCEInstance } = require('../gcp/destroyGCEInstance');
 const destroyCloudFunction = require('../gcp/destroyCloudFunction');
 const ora = require('ora');
 const mashrLogger = require('../utils/mashrLogger');
+const os = require('os');
 
 module.exports = async (args) => {
   const spinner = ora();
@@ -32,7 +33,11 @@ module.exports = async (args) => {
       destroyCloudFunction(integrationName),
     ]);
     await removeResource('integrations', integrationName);
-
-    mashrLogger(spinner, 'succeed', 'Integration is removed from "~/.mashr/info.json"');
+    const homedir = os.homedir();
+    mashrLogger(
+      spinner,
+      'succeed',
+      `Integration is removed from "${homedir}/.mashr/info.json"`
+    );
   }
 };

@@ -4,7 +4,8 @@ const mashrLogger = require('../utils/mashrLogger');
 
 module.exports = async (mashrConfigObj) => {
   const spinner = ora();
-  mashrLogger(spinner, 'start', 'Creating dataset...');
+  // mashrLogger(spinner, 'start', 'Creating dataset...');
+  mashrLogger(spinner, 'start');
 
   const integrationName = mashrConfigObj.mashr.integration_name.trim();
   const datasetId = mashrConfigObj.mashr.dataset_id.trim();

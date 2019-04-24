@@ -11,7 +11,8 @@ const destroyBuckets = async (integrationName) => {
 
 const destroyBucket = async (integrationName) => {
   const spinner = ora();
-  mashrLogger(spinner, 'start', `Destroying bucket "${integrationName}"...`);
+  // mashrLogger(spinner, 'start', `Destroying bucket "${integrationName}"...`);
+  mashrLogger(spinner, 'start');
 
   const bucket = storage.bucket(integrationName);
   

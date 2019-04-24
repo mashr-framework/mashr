@@ -7,11 +7,15 @@ const { exec } = require('../utils/fileUtils');
 module.exports = async (integrationName) => {
   const spinner = ora();
   mashrLogger(spinner, 'start', 'Destroying cloud function...');
+  // mashrLogger(spinner, 'start');
 
   const command = `gcloud functions delete ${integrationName} --quiet`;
 
   if (await functionExists(integrationName)) {
-    await exec(command);
+    await exec(command).catch((e) => {
+      mashrLogger(spinner, 'fail', 'Cloud function deletion failed');
+      throw(e);
+    });
 
     mashrLogger(spinner, 'succeed', `Cloud function "${integrationName}" is destroyed.`);
   } else {

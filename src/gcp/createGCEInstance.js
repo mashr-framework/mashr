@@ -28,6 +28,9 @@ module.exports = async function createGCEInstance(mashrConfigObj) {
     serviceAccounts: [
           {
             "email": mashrConfigObj.mashr.service_account_email,
+            "scopes": [
+              "https://www.googleapis.com/auth/cloud-platform"
+            ]
           }
         ],
     metadata: {

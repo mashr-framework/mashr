@@ -1,8 +1,12 @@
 const Compute = require('@google-cloud/compute');
 const { generateGCEResources } = require('./generateGCEResources');
+const ora = require('ora');
+const mashrLogger = require('../utils/mashrLogger');
 
 module.exports = async function createGCEInstance(mashrConfigObj) {
-  console.log('Creating GCE instance...')
+  const spinner = ora();
+  mashrLogger(spinner, 'start', 'Creating GCE instance...');
+
   const compute = new Compute();
 
   const zone = compute.zone('us-central1-a');
@@ -56,10 +60,19 @@ module.exports = async function createGCEInstance(mashrConfigObj) {
 
   const vm = zone.vm(mashrConfigObj.mashr.integration_name);
 
-  await vm.create(config);
+  const data = await vm.create(config).catch((e) => {
+    mashrLogger(spinner, 'fail', 'GCE Instance creation failed');
+    throw(e);
+  });
+
+  const operation = data[1];
+  await operation.promise();
+
   // TODO: update this so the the object returned by vm.create's promise method
   // is awaited, not vm.create
-  console.log(`GCE instance ${mashrConfigObj.mashr.integration_name} created.`)
-
-
+  mashrLogger(
+    spinner,
+    'succeed',
+    `GCE instance ${mashrConfigObj.mashr.integration_name} created.`
+  );
 };

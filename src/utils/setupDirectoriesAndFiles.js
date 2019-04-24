@@ -10,6 +10,6 @@ module.exports = async function setupDirectoriesAndFiles(homeDir) {
 
   let info = {integrations: {}};
   let integrationPath = `${getMashrPath(homeDir)}`;
-  console.log(integrationPath);
+
   await createJSONFile('info', integrationPath, info);
 }

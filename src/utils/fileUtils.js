@@ -15,6 +15,7 @@ const path = require('path');
 const os = require('os');
 const exec = promisify(require('child_process').exec);
 const rimraf = require("rimraf"); // similar to `rm -Rf` for recursive remove
+const mashrLogger = require('./mashrLogger');
 
 const homedir = os.homedir();
 
@@ -98,7 +99,7 @@ const writeResources = async (resource, key, object) => {
   info = JSON.stringify(info, null, 2);
 
   await writeFile(filePath, info);
-}
+};
 
 const removeResource = async (resource, key) => {
   const mashrDir = getMashrPath(homedir);
@@ -111,7 +112,7 @@ const removeResource = async (resource, key) => {
   info = JSON.stringify(info, null, 2);
 
   await writeFile(filePath, info);
-}
+};
 
 
 // const writeTemplateToStage = async (lambdaName, template, homedir) => {

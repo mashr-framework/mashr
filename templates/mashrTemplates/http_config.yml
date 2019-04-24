@@ -11,4 +11,3 @@ in:
         - { name: "id", type: long }
         - { name: "title", type: string }
         - { name: "body", type: string }
-

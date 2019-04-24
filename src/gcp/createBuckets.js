@@ -1,5 +1,7 @@
 const { Storage } = require('@google-cloud/storage');
 const storage = new Storage();
+const ora = require('ora');
+const mashrLogger = require('../utils/mashrLogger');
 
 module.exports = async function createBuckets(integrationName) {
   createBucket(integrationName);
@@ -7,15 +9,22 @@ module.exports = async function createBuckets(integrationName) {
 };
 
 async function createBucket(integrationName, options = {isArchive: false}) {
+  const spinner = ora();
+  // mashrLogger(spinner, 'start', `Creating bucket "${integrationName}"...`);
+  mashrLogger(spinner, 'start');
+
   const bucketOptions = {};
 
   if (options.isArchive) {
     bucketOptions.storageClass = 'COLDLINE';
   }
 
-  const bucket = await storage.createBucket(integrationName, bucketOptions);
+  const bucket = await storage.createBucket(integrationName, bucketOptions).catch((e) => {
+    mashrLogger(spinner, 'fail', `Bucket creation for ${integrationName} failed`);
+    throw(e);
+  });
 
-  console.log(`Bucket "${integrationName}" is created.`);
+  mashrLogger(spinner, 'succeed', `Bucket "${integrationName}" is created.`);
 
   return bucket;
 }

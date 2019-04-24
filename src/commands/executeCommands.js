@@ -1,3 +1,6 @@
+const ora = require('ora');
+const mashrLogger = require('../utils/mashrLogger');
+
 module.exports = async function executeCommand(cmd, args) {
   switch (cmd) {
     case 'init':
@@ -19,7 +22,8 @@ module.exports = async function executeCommand(cmd, args) {
       require('./help')(args);
       break;
     default:
-      console.log(`"${cmd}" is not a valid command`);
+      const spinner = ora();
+      mashrLogger(spinner, 'fail', `${cmd} is not a valid command`);
       break;
   }
 };

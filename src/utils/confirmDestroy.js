@@ -1,7 +1,7 @@
 const readline = require('readline-sync');
 
 module.exports = async function confirmDestroy() {
-  const confirmationMessage = ` You are about to delete these resources:
+  const confirmationMessage = `You are about to delete these resources:
   * Remove the integration from the list of mashr integrations
   * Destroy all related GCP resources, including:
     - The staging and archive GCS buckets

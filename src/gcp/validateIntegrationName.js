@@ -19,7 +19,7 @@ const validateIntegrationName = async (integrationName) => {
 };
 
 const validateBucketName = (bucketName, bucketsSpinner) => {
-  // mashrLogger(bucketsSpinner, 'start', `Validating bucket name "${bucketName}"...`);
+
   mashrLogger(bucketsSpinner, 'start');
 
   if (!bucketName.match(/^[a-z0-9]([a-z0-9_-]|\.)*[a-z0-9]$/)) {
@@ -88,11 +88,7 @@ const functionExists = async (integrationName) => {
 
 const functionNameIsAvailable = async (integrationName) => {
   const functionSpinner = ora();
-  // mashrLogger(
-  //   functionSpinner,
-  //   'start', 
-  //   'Validating cloud function name...'
-  // );
+
   mashrLogger(functionSpinner, 'start');
 
   if (await functionExists(integrationName)) {

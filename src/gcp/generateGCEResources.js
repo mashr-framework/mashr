@@ -26,12 +26,12 @@ const createEmbulkScript = (runCommand) => {
   // diff file run from root of container. Can't use it after?
   runCommand = runCommand.replace(
     'embulk_config.yml', '/root/mashr/embulk_config.yml.liquid');
-
+// sends logs of cron job to /proc/1/fd/1, where docker listens
   const script =
 `#!/bin/bash
 export DATE=$(date +"%Y-%m-%dT%H-%M-%S-%3N")
 
-${runCommand} >> /var/log/cron.log 2>&1
+${runCommand} >> /proc/1/fd/1
 `;
 
   return script;

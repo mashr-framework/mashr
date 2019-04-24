@@ -57,7 +57,11 @@ module.exports = async function createGCEInstance(mashrConfigObj) {
 
           sudo docker pull jacobleecd/mashr:latest
           sudo docker build -t mashr .
-          sudo docker run -d -v /mashr --name embulk-container mashr
+          sudo docker run -d -v /mashr --name embulk-container \
+          --log-driver=gcplogs \
+          --log-opt gcp-project=${mashrConfigObj.mashr.project_id} \
+          --label mashr_integration=${mashrConfigObj.mashr.integration_name} \
+          mashr
           `
         },
       ],
@@ -74,8 +78,6 @@ module.exports = async function createGCEInstance(mashrConfigObj) {
   const operation = data[1];
   await operation.promise();
 
-  // TODO: update this so the the object returned by vm.create's promise method
-  // is awaited, not vm.create
   mashrLogger(
     spinner,
     'succeed',

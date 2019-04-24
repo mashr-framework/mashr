@@ -3,6 +3,8 @@
 ## GBQ: Google Big Query, Dataset Regions and Multi-Regions
 
 * https://cloud.google.com/bigquery/docs/locations
+* The default location is US.
+  - https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets
 
 ### Considerations when choosing Regions
 * **Colocate your BigQuery dataset and your external data source.**
@@ -83,6 +85,9 @@ can effect the price.
 
 * Regions only, zones not available for GCS.
 * https://cloud.google.com/storage/docs/locations
+* The default bucket location is within the US. If you do not specify a
+  location constraint, then your bucket and data added to it are stored on
+  servers in the US.
 
 ### How Region effects other services trying to access this service?
 
@@ -135,6 +140,14 @@ can effect the price.
 ## GCE: Google Compute Engine, Instance Regions and Zones
 
 * https://cloud.google.com/compute/docs/regions-zones/#choosing_a_region_and_zone
+* When you create a new project, Compute Engine automatically selects a default
+  region and zone for the project, based on the location from where the project
+  was created. Compute Engine attempts to pick a region and a zone that are
+  close to where the project originated so that resources you create have
+  reduced latency to your customers or clients. You can override the default
+  zone and region for a project if you want to create resources in a different
+  region or zone instead.
+  - https://cloud.google.com/compute/docs/regions-zones/changing-default-zone-region
 
 ### Considerations when choosing Regions and Zones
 

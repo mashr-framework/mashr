@@ -46,7 +46,7 @@ const errorIfMissing = (key, value) => {
 };
 
 const checkIntegrationExists = async (integrationName) => {
-  const infoObj = await readResources(spinner);
+  const infoObj = await readResources();
 
   if (infoObj.integrations[integrationName]) {
     throw new Error('Integration already exists.');

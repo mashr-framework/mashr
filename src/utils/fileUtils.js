@@ -69,7 +69,7 @@ async function readYaml(path) {
 //   return JSON.parse(config);
 // };
 
-const readResources = async (spinner) => {
+const readResources = async () => {
   const mashrPath = getMashrPath(homedir);
   const filePath = `${mashrPath}/info.json`;
   let resourceInfo;
@@ -78,7 +78,6 @@ const readResources = async (spinner) => {
     resourceInfo = await readFile(filePath);
   } catch(e) {
     if (e.message.includes('no such file')) {
-      mashrLogger(spinner, 'fail', 'Read resources failed');
       throw new Error('Please run `mashr init` first.' + `\n${e}`);
     } else {
       throw(e);

@@ -6,6 +6,7 @@ COPY mashr/ mashr/
 RUN chmod +x mashr/install_gems.sh
 RUN mashr/install_gems.sh
 RUN embulk gem install embulk-output-gcs
+RUn embulk gem install embulk-formatter-jsonl
 
 # Copy and make executable embulkScript.sh
 COPY embulkScript.sh /etc/cron.d/embulkScript.sh

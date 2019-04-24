@@ -28,7 +28,7 @@ const createCloudFunction = async (mashrConfigObj) => {
   await writeFile('./function/package.json', packageJson);
 
   // function name cannot have '-' 
-  mashrConfigObj.functionName = mashrConfigObj.mashr.integration_name.replace('-', '_');
+  mashrConfigObj.functionName = mashrConfigObj.mashr.integration_name.replace(/\-/g, '_');
 
   await setupCloudFunction(functionTemplatePath, mashrConfigObj, spinner);
   await deployCloudFunction(mashrConfigObj, spinner);

@@ -1,6 +1,8 @@
 const { Storage } = require('@google-cloud/storage');
 const storage = new Storage();
 const { exec } = require('../utils/fileUtils');
+const ora = require('ora');
+const mashrLogger = require('../utils/mashrLogger');
 
 const validateIntegrationName = async (integrationName) => {
   try {
@@ -36,18 +38,29 @@ const functionExists = async (integrationName) => {
 
 
 async function functionNameIsAvailable(integrationName) {
-  console.log(`Validating function name "${integrationName}"...`);
+  const functionSpinner = ora();
+  mashrLogger(
+    functionSpinner,
+    'start', 
+    `Validating function name "${integrationName}"...`
+  );
 
   if (await functionExists(integrationName)) {
+    mashrLogger(functionSpinner, 'fail', 'Function name is unavailable');
+
     const error = new Error(`Cloud function name "${integrationName}" is taken. ` +
                             'Please provide a different integration_name in the ' + 
                             'mashr_config.yml file.');
     throw(error);
   }
+
+  mashrLogger(functionSpinner, 'succeed', 'Function name is valid');
 }
 
 const bucketsAreAvailable = async (bucketName) => {
-  validateBucketName(bucketName);
+  const bucketsSpinner = ora();
+
+  validateBucketName(bucketName, bucketsSpinner);
 
   const results = await Promise.all([
     bucketExists(bucketName),
@@ -59,16 +72,23 @@ const bucketsAreAvailable = async (bucketName) => {
   });
 
   if (anyExists) {
-    const error = new Error(`Bucket name "${bucketName}" unavailable. ` +
-                            ' Choose a different integration_name.');
+    mashrLogger(bucketsSpinner, 'fail', 'Bucket name is unavailable');
+
+    const error = new Error(`Bucket name "${bucketName}" is taken. ` +
+                            'Please provide a different integration_name in the ' +
+                            'mashr_config.yml file.');
     throw(error);
   }
+
+  mashrLogger(bucketsSpinner, 'succeed', 'Bucket name is valid');
 };
 
-const validateBucketName = (bucketName) => {
-  console.log(`Validating bucket name, "${bucketName}"...`);
+const validateBucketName = (bucketName, bucketsSpinner) => {
+  mashrLogger(bucketsSpinner, 'start', `Validating bucket name, "${bucketName}"...`);
 
   if (!bucketName.match(/^[a-z0-9]([a-z0-9_-]|\.)*[a-z0-9]$/)) {
+    mashrLogger(bucketsSpinner, 'fail', 'Bucket name is invalid');
+
     throw new Error(`Bucket name '${bucketName}' invalid, needs to only ` +
       'include lowercase numbers, dashes and underscores. Can only begin ' +
       'and end with number or letter.');

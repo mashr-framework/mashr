@@ -6,29 +6,34 @@ const {
   rimraf,
   writeFile,
 } = require('../utils/fileUtils');
+const ora = require('ora');
+const mashrLogger = require('../utils/mashrLogger');
 
 const createCloudFunction = async (mashrConfigObj) => {
+  const spinner = ora();
+  mashrLogger(spinner, 'start', 'Creating cloud function...');
+
   const functionTemplatePath = `${__dirname}/../../templates/functionTemplate`;
   const packageJson = await readFile(`${functionTemplatePath}/package.json`);
 
   if (await exists('./function')) {
-    console.log('Deleting previously existing function directory.');
+    mashrLogger(spinner, 'start', 'Deleting previously existing function directory.');
     rimraf.sync('./function');
   }
 
-  console.log('Creating function directory.');
+  mashrLogger(spinner, 'start', 'Creating function directory.');
   await mkdir('./function');
 
   await writeFile('./function/package.json', packageJson);
 
-  await setupCloudFunction(functionTemplatePath, mashrConfigObj);
-  await deployCloudFunction(mashrConfigObj);
+  await setupCloudFunction(functionTemplatePath, mashrConfigObj, spinner);
+  await deployCloudFunction(mashrConfigObj, spinner);
 };
 
 const { exec } = require('../utils/fileUtils');
 const path = require('path');
 
-const deployCloudFunction = async (mashrConfigObj) => {
+const deployCloudFunction = async (mashrConfigObj, spinner) => {
   const functionName = mashrConfigObj.mashr.integration_name;
   const bucketName = functionName;
 
@@ -37,16 +42,19 @@ const deployCloudFunction = async (mashrConfigObj) => {
                   `--trigger-resource ${bucketName} ` +
                   `--trigger-event google.storage.object.finalize`;
 
-  const { stdout, stderr } = await exec(command, {
+  await exec(command, {
     cwd: `${path.resolve('./')}/function`,
+  }).catch((e) => {
+    mashrLogger(spinner, 'fail', 'Cloud function creation failed');
+    throw(e);
   });
 
-  console.log(`Cloud function "${functionName}" is created.`);
+  mashrLogger(spinner, 'succeed', `Cloud function "${functionName}" is created.`);
 };
 
 
 // gcp
-const setupCloudFunction = async (functionTemplatePath, mashrConfigObj) => {
+const setupCloudFunction = async (functionTemplatePath, mashrConfigObj, spinner) => {
   let content = await readFile(`${functionTemplatePath}/index.js`);
   content = content.toString();
 
@@ -57,7 +65,9 @@ const setupCloudFunction = async (functionTemplatePath, mashrConfigObj) => {
 
   await writeFile('./function/index.js', content);
 
-  console.log('Created "./function/index.js" from Cloud Function template');
+  mashrLogger(spinner,
+    'start',
+    'Created "./function/index.js" from template. Deploying function...');
 };
 
 module.exports = {

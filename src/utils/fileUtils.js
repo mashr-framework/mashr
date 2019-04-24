@@ -15,6 +15,7 @@ const path = require('path');
 const os = require('os');
 const exec = promisify(require('child_process').exec);
 const rimraf = require("rimraf"); // similar to `rm -Rf` for recursive remove
+const mashrLogger = require('./mashrLogger');
 
 const homedir = os.homedir();
 
@@ -68,7 +69,7 @@ async function readYaml(path) {
 //   return JSON.parse(config);
 // };
 
-const readResources = async () => {
+const readResources = async (spinner) => {
   const mashrPath = getMashrPath(homedir);
   const filePath = `${mashrPath}/info.json`;
   let resourceInfo;
@@ -77,6 +78,7 @@ const readResources = async () => {
     resourceInfo = await readFile(filePath);
   } catch(e) {
     if (e.message.includes('no such file')) {
+      mashrLogger(spinner, 'fail', 'Read resources failed');
       throw new Error('Please run `mashr init` first.' + `\n${e}`);
     } else {
       throw(e);
@@ -98,7 +100,7 @@ const writeResources = async (resource, key, object) => {
   info = JSON.stringify(info, null, 2);
 
   await writeFile(filePath, info);
-}
+};
 
 const removeResource = async (resource, key) => {
   const mashrDir = getMashrPath(homedir);
@@ -111,7 +113,7 @@ const removeResource = async (resource, key) => {
   info = JSON.stringify(info, null, 2);
 
   await writeFile(filePath, info);
-}
+};
 
 
 // const writeTemplateToStage = async (lambdaName, template, homedir) => {

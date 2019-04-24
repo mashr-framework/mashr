@@ -12,9 +12,7 @@ mashr:
   # file generated for embulk:
   embulk_run_command: 'embulk run embulk_config.yml -c embulk_diff.yml'
   embulk_gems:
-    - embulk-output-gcs
     - embulk-filter-add_time
-    - embulk-formatter-jsonl
     - embulk-filter-timestamp_format
     - embulk-input-postgresql
 embulk:
@@ -42,5 +40,3 @@ embulk:
       default_to_timestamp_format: "yyyy-MM-dd HH:mm:ss"
       columns:
         - {name: mashr_added_at}
-
-

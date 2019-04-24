@@ -4,22 +4,30 @@ const {
   readResources,
 } = require('./fileUtils');
 const path = require('path');
+const ora = require('ora');
+const mashrLogger = require('./mashrLogger');
 
 module.exports = async function validateMashrConfig(mashrConfigPath) {
+  const spinner = ora();
+
   if (!(await exists(mashrConfigPath))) {
     throw new Error(`no mashr_config.yml file at path: ${mashrConfigPath}.`);
   }
 
   const mashrConfigObj = await readYaml(mashrConfigPath);
 
-  checkRequiredValues(mashrConfigObj);
-  await checkIntegrationExists(mashrConfigObj.mashr.integration_name);
-  validateIntegrationName(mashrConfigObj.mashr.integration_name);
-  validateKeyfile(mashrConfigObj.mashr.json_keyfile);
-  validateEmbulkRunCommand(mashrConfigObj.mashr.embulk_run_command);
+  try {
+    checkRequiredValues(mashrConfigObj);
+    await checkIntegrationExists(mashrConfigObj.mashr.integration_name);
+    validateIntegrationName(mashrConfigObj.mashr.integration_name);
+    validateKeyfile(mashrConfigObj.mashr.json_keyfile);
+    validateEmbulkRunCommand(mashrConfigObj.mashr.embulk_run_command);
+  } catch (e) {
+    throw(e);
+  }
 
   return mashrConfigObj;
-}
+};
 
 const checkRequiredValues = (mashrConfigObj) => {
   errorIfMissing('json_keyfile', mashrConfigObj.mashr.json_keyfile);
@@ -35,22 +43,22 @@ const errorIfMissing = (key, value) => {
   if (!value) {
     throw new Error(`${key} is missing a value.`);
   }
-}
+};
 
 const checkIntegrationExists = async (integrationName) => {
-  const infoObj = await readResources();
+  const infoObj = await readResources(spinner);
 
   if (infoObj.integrations[integrationName]) {
     throw new Error('Integration already exists.');
   }
-}
+};
 
 const validateIntegrationName = (integrationName) => {
   if ( !(/^(?:[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?)$/.test(integrationName)) ) {
     throw new Error(`Invalid integration name: ${integrationName}.
 Name must match regex: (?:[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?)`);
   }
-}
+};
 
 const validateKeyfile = async (keyfileName) => {
   const keyfilePath = `${path.resolve('./')}/${keyfileName}`;
@@ -71,4 +79,4 @@ const validateEmbulkRunCommand = (runCommand) => {
   if (!runCommand.includes(' embulk_config.yml')) {
     throw new Error("Embulk run command is missing, ' embulk_config.yml '.");
   }
-}
+};

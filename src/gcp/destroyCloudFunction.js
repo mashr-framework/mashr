@@ -11,7 +11,7 @@ module.exports = async (integrationName) => {
   const command = `gcloud functions delete ${integrationName} --quiet`;
 
   if (await functionExists(integrationName)) {
-    const { stdout, stderr } = await exec(command);
+    await exec(command);
 
     mashrLogger(spinner, 'succeed', `Cloud function "${integrationName}" is destroyed.`);
   } else {

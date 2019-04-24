@@ -14,7 +14,11 @@ const os = require('os');
 module.exports = async (args) => {
   const spinner = ora();
 
-  const mashrConfigObj = await readYaml('./mashr_config.yml');
+  const mashrConfigObj = await readYaml('./mashr_config.yml').catch((e) => {
+    mashrLogger(spinner, 'fail', 'Destroy integration error');
+    throw(e);
+  });
+
   await configureCredentials(mashrConfigObj);
 
   const integrationName = args._[1];

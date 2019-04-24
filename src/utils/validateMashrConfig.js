@@ -11,7 +11,6 @@ module.exports = async function validateMashrConfig(mashrConfigPath) {
   const spinner = ora();
 
   if (!(await exists(mashrConfigPath))) {
-    mashrLogger(spinner, 'fail', '"mashr_config.yml" validation failed');
     throw new Error(`no mashr_config.yml file at path: ${mashrConfigPath}.`);
   }
 

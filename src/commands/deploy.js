@@ -8,9 +8,16 @@ const createGCEInstance = require('../gcp/createGCEInstance');
 const addIntegrationToDirectory = require('../utils/addIntegrationToDirectory');
 const validateMashrConfig = require('../utils/validateMashrConfig');
 const createDataset = require('../gcp/createDataset');
+const ora = require('ora');
+const mashrLogger = require('../utils/mashrLogger');
 
 module.exports = async (args) => {
-  const mashrConfigObj = await validateMashrConfig('./mashr_config.yml');
+  const mashrConfigObj = await validateMashrConfig('./mashr_config.yml').catch((e) => {
+    const spinner = ora();
+    mashrLogger(spinner, 'fail', 'Deploy integration error');
+    throw(e);
+  });
+
   await configureCredentials(mashrConfigObj);
 
   const integrationName = mashrConfigObj.mashr.integration_name.trim();

@@ -33,6 +33,6 @@ module.exports = async (args) => {
     ]);
     await removeResource('integrations', integrationName);
 
-    mashrLogger(spinner, 'succeed', 'Integration is removed from ~/.mashr/info.json');
+    mashrLogger(spinner, 'succeed', 'Integration is removed from "~/.mashr/info.json"');
   }
 };

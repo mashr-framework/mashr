@@ -9,6 +9,7 @@ module.exports = async(mashrConfigObj) => {
 
   const bigquery = new BigQuery();
 
+  const datasetId = mashrConfigObj.mashr.dataset_id.trim();
   const dataset = bigquery.dataset(datasetId);
 
   const data = await dataset.exists();

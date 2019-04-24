@@ -1,7 +1,7 @@
 const ora = require('ora');
 const mashrLogger = require('../utils/mashrLogger');
 
-const { functionExists } = require('./validateIntegrationName');
+const { functionExists } = require('./validateIntegrationNameWithGCP');
 const { exec } = require('../utils/fileUtils');
 
 module.exports = async (integrationName) => {

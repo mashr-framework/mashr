@@ -4,7 +4,7 @@ const { exec } = require('../utils/fileUtils');
 const ora = require('ora');
 const mashrLogger = require('../utils/mashrLogger');
 
-const validateIntegrationName = async (integrationName) => {
+const validateIntegrationNameWithGCP = async (integrationName) => {
   const spinner = ora();
 
   try {
@@ -104,7 +104,7 @@ const functionNameIsAvailable = async (integrationName) => {
 };
 
 module.exports = {
-  validateIntegrationName,
+  validateIntegrationNameWithGCP,
   validateBucketName,
   bucketExists,
   functionExists,

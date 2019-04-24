@@ -1,6 +1,6 @@
 const {Storage} = require('@google-cloud/storage');
 const storage = new Storage();
-const { bucketExists } = require('./validateIntegrationName');
+const { bucketExists } = require('./validateIntegrationNameWithGCP');
 const ora = require('ora');
 const mashrLogger = require('../utils/mashrLogger');
 

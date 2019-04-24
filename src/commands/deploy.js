@@ -1,5 +1,6 @@
 const configureCredentials = require('../utils/configureCredentials');
-const { validateIntegrationName } = require('../gcp/validateIntegrationName');
+const { validateIntegrationNameWithGCP } =
+  require('../gcp/validateIntegrationNameWithGCP');
 const createBuckets = require('../gcp/createBuckets');
 const { createCloudFunction } = require('../gcp/createCloudFunction');
 const createGCEInstance = require('../gcp/createGCEInstance');
@@ -19,7 +20,7 @@ module.exports = async (args) => {
   await configureCredentials(mashrConfigObj);
 
   const integrationName = mashrConfigObj.mashr.integration_name.trim();
-  await validateIntegrationName(integrationName);
+  await validateIntegrationNameWithGCP(integrationName);
 
   await addIntegrationToDirectory(mashrConfigObj);
   createDataset(mashrConfigObj)

@@ -4,7 +4,7 @@ const mashrLogger = require('../utils/mashrLogger');
 
 const destroyGCEInstance = async (integrationName) => {
   const spinner = ora();
-  mashrLogger(spinner, 'start', 'destroying GCE instance...');
+  mashrLogger(spinner, 'start', 'Destroying GCE instance...');
 
   const instance = await getGCEInstance(integrationName);
 

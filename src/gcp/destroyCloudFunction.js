@@ -6,7 +6,7 @@ const { exec } = require('../utils/fileUtils');
 
 module.exports = async (integrationName) => {
   const spinner = ora();
-  mashrLogger(spinner, 'start', 'Deleting cloud function...');
+  mashrLogger(spinner, 'start', 'Destroying GCF...');
 
   const command = `gcloud functions delete ${integrationName} --quiet`;
 

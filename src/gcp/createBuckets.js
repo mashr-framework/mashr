@@ -10,7 +10,7 @@ module.exports = async function createBuckets(integrationName) {
 
 async function createBucket(integrationName, options = {isArchive: false}) {
   const spinner = ora();
-  mashrLogger(spinner, 'start', `Creating bucket "${integrationName}"...`);
+  mashrLogger(spinner, 'start', `Creating bucket...`);
 
   const bucketOptions = {};
 

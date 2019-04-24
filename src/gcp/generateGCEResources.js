@@ -6,16 +6,14 @@ const generateGCEResources = async (mashrConfigObj) => {
   const embulkScript = createEmbulkScript(mashrConfigObj.mashr.embulk_run_command);
   const embulkConfig = createEmbulkConfig(mashrConfigObj);
 
-  const [ dockerfile, keyfile, crontab ] = await Promise.all([
+  const [ dockerfile, crontab ] = await Promise.all([
     readFile(`${__dirname}/../../templates/docker/Dockerfile`),
-    readFile(`${mashrConfigObj.mashr.json_keyfile}`),
     readFile(`${__dirname}/../../templates/docker/crontab`),
   ]);
 
   return {
     dockerfile,
     gemInstallationScript,
-    keyfile,
     embulkScript,
     crontab,
     embulkConfig,
@@ -28,12 +26,12 @@ const createEmbulkScript = (runCommand) => {
   // diff file run from root of container. Can't use it after?
   runCommand = runCommand.replace(
     'embulk_config.yml', '/root/mashr/embulk_config.yml.liquid');
-
+// sends logs of cron job to /proc/1/fd/1, where docker listens
   const script =
 `#!/bin/bash
 export DATE=$(date +"%Y-%m-%dT%H-%M-%S-%3N")
 
-${runCommand} >> /var/log/cron.log 2>&1
+${runCommand} >> /proc/1/fd/1
 `;
 
   return script;
@@ -61,8 +59,7 @@ const createEmbulkConfig = (mashrConfigObj) => {
     bucket: mashrConfig.integration_name,
     path_prefix: date,
     file_ext: '.json',
-    auth_method: 'json_key', 
-    json_keyfile: `/root/mashr/${mashrConfig.json_keyfile}`,
+    auth_method: 'compute_engine',
     formatter: {
       type: 'jsonl'
     },

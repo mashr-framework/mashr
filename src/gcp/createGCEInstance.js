@@ -15,7 +15,6 @@ module.exports = async function createGCEInstance(mashrConfigObj) {
     dockerfile,
     gemInstallationScript,
     embulkConfig,
-    keyfile,
     embulkScript,
     crontab,
   } = await generateGCEResources(mashrConfigObj);
@@ -25,6 +24,14 @@ module.exports = async function createGCEInstance(mashrConfigObj) {
     http: true,
     machineType: 'g1-small',
     tags: ["mashr"],
+    serviceAccounts: [
+          {
+            "email": mashrConfigObj.mashr.service_account_email,
+            "scopes": [
+              "https://www.googleapis.com/auth/cloud-platform"
+            ]
+          }
+        ],
     metadata: {
       items: [
         {
@@ -47,11 +54,14 @@ module.exports = async function createGCEInstance(mashrConfigObj) {
           sudo mkdir mashr
           echo "${gemInstallationScript}" > mashr/install_gems.sh
           echo "${embulkConfig}" > mashr/embulk_config.yml.liquid
-          printf "%s\n" '${keyfile.toString()}' > mashr/keyfile.json
 
           sudo docker pull jacobleecd/mashr:latest
           sudo docker build -t mashr .
-          sudo docker run -d -v /mashr --name embulk-container mashr
+          sudo docker run -d -v /mashr --name embulk-container \
+          --log-driver=gcplogs \
+          --log-opt gcp-project=${mashrConfigObj.mashr.project_id} \
+          --label mashr_integration=${mashrConfigObj.mashr.integration_name} \
+          mashr
           `
         },
       ],
@@ -68,8 +78,6 @@ module.exports = async function createGCEInstance(mashrConfigObj) {
   const operation = data[1];
   await operation.promise();
 
-  // TODO: update this so the the object returned by vm.create's promise method
-  // is awaited, not vm.create
   mashrLogger(
     spinner,
     'succeed',

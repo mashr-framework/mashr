@@ -1,4 +1,5 @@
 mashr:
+  service_account_email: '' # user@project.iam.gserviceaccount.com
   # the keyfile must be in the root directory of this file:
   json_keyfile: '' # keyfile.json
   table_id:     ''

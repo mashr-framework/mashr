@@ -9,7 +9,7 @@ module.exports = async function confirmDestroy() {
     - The GCE instance
 Since the archive and staging GCS buckets will be permanently destroyed,
 Consider moving your data before running this command.
-Continue (y/n)> `
+Continue (y/n)> `;
 
   let response = readline.question(confirmationMessage);
   response = response.trim();

@@ -60,6 +60,7 @@ module.exports = async function createGCEInstance(mashrConfigObj) {
           sudo docker run -d -v /mashr --name embulk-container \
           --log-driver=gcplogs \
           --log-opt gcp-project=${mashrConfigObj.mashr.project_id} \
+          --log-opt mode=non-blocking \
           --label mashr_integration=${mashrConfigObj.mashr.integration_name} \
           mashr
           `

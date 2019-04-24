@@ -5,7 +5,7 @@ const mashrLogger = require('../utils/mashrLogger');
 
 module.exports = async function copyMashrConfigTemplate() {
   const spinner = ora();
-  const configTemplate = `${__dirname}/${'../../templates/mashr_template.yml'}`
+  const configTemplate = `${__dirname}/${'../../templates/mashrTemplates/defualt_config.yml'}`
 
   const workingDir = path.resolve('./');
   const destination = `${workingDir}/mashr_config.yml`;

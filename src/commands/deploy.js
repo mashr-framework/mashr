@@ -23,10 +23,10 @@ module.exports = async (args) => {
   await validateIntegrationNameWithGCP(integrationName);
 
   await addIntegrationToDirectory(mashrConfigObj);
-  createDataset(mashrConfigObj)
-  // await Promise.all([
-  //   createGCEInstance(mashrConfigObj),
-  //   createDataset(mashrConfigObj)
-  //   createBuckets(integrationName).then(() => createCloudFunction(mashrConfigObj)),
-  // ]);
+
+  await Promise.all([
+    createGCEInstance(mashrConfigObj),
+    createDataset(mashrConfigObj),
+    createBuckets(integrationName).then(() => createCloudFunction(mashrConfigObj)),
+  ]);
 };

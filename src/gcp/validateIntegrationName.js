@@ -19,7 +19,7 @@ const validateIntegrationName = async (integrationName) => {
 };
 
 const validateBucketName = (bucketName, bucketsSpinner) => {
-  mashrLogger(bucketsSpinner, 'start', `Validating bucket name, "${bucketName}"...`);
+  mashrLogger(bucketsSpinner, 'start', `Validating bucket name "${bucketName}"...`);
 
   if (!bucketName.match(/^[a-z0-9]([a-z0-9_-]|\.)*[a-z0-9]$/)) {
     mashrLogger(bucketsSpinner, 'fail', 'Bucket name is invalid');
@@ -90,7 +90,7 @@ const functionNameIsAvailable = async (integrationName) => {
   mashrLogger(
     functionSpinner,
     'start', 
-    `Validating function name "${integrationName}"...`
+    'Validating cloud function name...'
   );
 
   if (await functionExists(integrationName)) {

@@ -1,5 +1,3 @@
-const yaml = require('js-yaml');
-const { readYaml } = require('../utils/fileUtils');
 const configureCredentials = require('../utils/configureCredentials');
 const { validateIntegrationName } = require('../gcp/validateIntegrationName');
 const createBuckets = require('../gcp/createBuckets');
@@ -24,10 +22,10 @@ module.exports = async (args) => {
   await validateIntegrationName(integrationName);
 
   await addIntegrationToDirectory(mashrConfigObj);
-
-  await Promise.all([
-    createGCEInstance(mashrConfigObj),
-    createDataset(mashrConfigObj)
-    createBuckets(integrationName).then(() => createCloudFunction(mashrConfigObj)),
-  ]);
+  createDataset(mashrConfigObj)
+  // await Promise.all([
+  //   createGCEInstance(mashrConfigObj),
+  //   createDataset(mashrConfigObj)
+  //   createBuckets(integrationName).then(() => createCloudFunction(mashrConfigObj)),
+  // ]);
 };

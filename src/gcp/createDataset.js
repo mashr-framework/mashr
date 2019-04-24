@@ -7,8 +7,8 @@ module.exports = async(mashrConfigObj) => {
   const spinner = ora();
   mashrLogger(spinner, 'start');
 
-  const datasetId = mashrConfigObj.mashr.dataset_id.trim();
-  
+  const datasetId = mashrConfigObj.mashr.dataset_id.trim().replace(/\-/g, '_');
+
   const bigquery = new BigQuery();
 
   const dataset = bigquery.dataset(datasetId);

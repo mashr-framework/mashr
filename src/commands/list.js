@@ -1,6 +1,7 @@
 const { readResources } = require('../utils/fileUtils');
 const ora = require('ora');
 const mashrLogger = require('../utils/mashrLogger');
+const chalk = require('chalk');
 
 module.exports = async (args) => {
   const spinner = ora();
@@ -19,6 +20,7 @@ module.exports = async (args) => {
   }
   const result = integrationNames.map(function (name) {
     var integration = infoObj.integrations[name];
+    name = chalk.bold.red(name);
 
     return `
     ${name}:

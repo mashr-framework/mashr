@@ -12,7 +12,6 @@ const mashrLogger = require('../utils/mashrLogger');
 const createCloudFunction = async (mashrConfigObj) => {
   const spinner = ora();
   mashrLogger(spinner, 'start', 'Creating cloud function...');
-  // mashrLogger(spinner, 'start');
 
   const functionTemplatePath = `${__dirname}/../../templates/functionTemplate`;
   const packageJson = await readFile(`${functionTemplatePath}/package.json`);
@@ -28,7 +27,7 @@ const createCloudFunction = async (mashrConfigObj) => {
   await writeFile('./function/package.json', packageJson);
 
   // function name cannot have '-' 
-  mashrConfigObj.functionName = mashrConfigObj.mashr.integration_name.replace('-', '_');
+  mashrConfigObj.functionName = mashrConfigObj.mashr.integration_name.replace(/\-/g, '_');
 
   await setupCloudFunction(functionTemplatePath, mashrConfigObj, spinner);
   await deployCloudFunction(mashrConfigObj, spinner);
@@ -59,7 +58,6 @@ const deployCloudFunction = async (mashrConfigObj, spinner) => {
 };
 
 
-// gcp
 const setupCloudFunction = async (functionTemplatePath, mashrConfigObj, spinner) => {
   let content = await readFile(`${functionTemplatePath}/index.js`);
   content = content.toString();

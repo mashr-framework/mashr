@@ -23,19 +23,11 @@ module.exports = async (args) => {
   const integrationName = mashrConfigObj.mashr.integration_name.trim();
   await validateIntegrationName(integrationName);
 
-  // [TODO: createBuckets continue to happen in the background during createCloudFunction. Examine this.]
   await addIntegrationToDirectory(mashrConfigObj);
 
   await Promise.all([
     createGCEInstance(mashrConfigObj),
-    createDataset(mashrConfigObj),
+    createDataset(mashrConfigObj)
     createBuckets(integrationName).then(() => createCloudFunction(mashrConfigObj)),
   ]);
-
-  // TODO:
-  //  - if deploy is run twice on the same mashr_config,
-  //  does it provide an error (current action) or does it
-  //  overwrite?
-  //  - if default region doesn't exist in init, where is the bucket, GCE, and
-  //  GCF created? Does it matter?
 };

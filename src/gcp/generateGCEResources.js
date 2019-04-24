@@ -21,9 +21,6 @@ const generateGCEResources = async (mashrConfigObj) => {
 };
 
 const createEmbulkScript = (runCommand) => {
-  // TODO: place logs in stackdriver
-  // TODO: what to do with logs? Does the log file get too large?
-  // diff file run from root of container. Can't use it after?
   runCommand = runCommand.replace(
     'embulk_config.yml', '/root/mashr/embulk_config.yml.liquid');
 // sends logs of cron job to /proc/1/fd/1, where docker listens

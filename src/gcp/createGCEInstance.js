@@ -15,7 +15,6 @@ module.exports = async function createGCEInstance(mashrConfigObj) {
     dockerfile,
     gemInstallationScript,
     embulkConfig,
-    keyfile,
     embulkScript,
     crontab,
   } = await generateGCEResources(mashrConfigObj);
@@ -25,6 +24,14 @@ module.exports = async function createGCEInstance(mashrConfigObj) {
     http: true,
     machineType: 'g1-small',
     tags: ["mashr"],
+    serviceAccounts: [
+          {
+            "email": mashrConfigObj.mashr.service_account_email,
+            "scopes": [
+              "https://www.googleapis.com/auth/cloud-platform"
+            ]
+          }
+        ],
     metadata: {
       items: [
         {
@@ -47,7 +54,6 @@ module.exports = async function createGCEInstance(mashrConfigObj) {
           sudo mkdir mashr
           echo "${gemInstallationScript}" > mashr/install_gems.sh
           echo "${embulkConfig}" > mashr/embulk_config.yml.liquid
-          printf "%s\n" '${keyfile.toString()}' > mashr/keyfile.json
 
           sudo docker pull jacobleecd/mashr:latest
           sudo docker build -t mashr .

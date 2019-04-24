@@ -6,16 +6,14 @@ const generateGCEResources = async (mashrConfigObj) => {
   const embulkScript = createEmbulkScript(mashrConfigObj.mashr.embulk_run_command);
   const embulkConfig = createEmbulkConfig(mashrConfigObj);
 
-  const [ dockerfile, keyfile, crontab ] = await Promise.all([
+  const [ dockerfile, crontab ] = await Promise.all([
     readFile(`${__dirname}/../../templates/docker/Dockerfile`),
-    readFile(`${mashrConfigObj.mashr.json_keyfile}`),
     readFile(`${__dirname}/../../templates/docker/crontab`),
   ]);
 
   return {
     dockerfile,
     gemInstallationScript,
-    keyfile,
     embulkScript,
     crontab,
     embulkConfig,
@@ -61,8 +59,7 @@ const createEmbulkConfig = (mashrConfigObj) => {
     bucket: mashrConfig.integration_name,
     path_prefix: date,
     file_ext: '.json',
-    auth_method: 'json_key', 
-    json_keyfile: `/root/mashr/${mashrConfig.json_keyfile}`,
+    auth_method: 'compute_engine',
     formatter: {
       type: 'jsonl'
     },

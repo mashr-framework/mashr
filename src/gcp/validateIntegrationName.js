@@ -68,9 +68,9 @@ const bucketsAreAvailable = async (bucketName) => {
                             'Please provide a different integration_name in the ' +
                             'mashr_config.yml file.');
     throw(error);
-  } else {
-    mashrLogger(bucketsSpinner, 'succeed', 'Bucket name is valid');
   }
+  
+  mashrLogger(bucketsSpinner, 'succeed', 'Bucket name is valid');
 };
 
 const functionExists = async (integrationName) => {
@@ -100,9 +100,9 @@ const functionNameIsAvailable = async (integrationName) => {
                             'Please provide a different integration_name in the ' + 
                             'mashr_config.yml file.');
     throw(error);
-  } else {
-    mashrLogger(functionSpinner, 'succeed', 'Function name is valid');
   }
+
+  mashrLogger(functionSpinner, 'succeed', 'Function name is valid');
 };
 
 module.exports = {

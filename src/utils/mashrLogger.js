@@ -5,7 +5,8 @@ module.exports = function mashrLogger(spinner, state, text) {
 
   switch (state) {
     case 'start':
-      spinner.start(`${indicator} ${text}`);
+      spinner.start();
+      // spinner.start(`${indicator} ${text}`);
       break;
     case 'succeed':
       spinner.succeed(`${indicator} ${text}`);

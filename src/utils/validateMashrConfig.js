@@ -20,6 +20,8 @@ module.exports = async function validateMashrConfig(mashrConfigPath) {
     checkRequiredValues(mashrConfigObj);
     await checkIntegrationExists(mashrConfigObj.mashr.integration_name);
     validateIntegrationName(mashrConfigObj.mashr.integration_name);
+    validateBQNames(mashrConfigObj.mashr.table_id);
+    validateBQNames(mashrConfigObj.mashr.dataset_id);
     validateKeyfile(mashrConfigObj.mashr.json_keyfile);
     validateEmbulkRunCommand(mashrConfigObj.mashr.embulk_run_command);
   } catch (e) {
@@ -78,5 +80,11 @@ const validateKeyfile = async (keyfileName) => {
 const validateEmbulkRunCommand = (runCommand) => {
   if (!runCommand.includes(' embulk_config.yml')) {
     throw new Error("Embulk run command is missing, ' embulk_config.yml '.");
+  }
+
+const validateBQNames = (name) => {
+  if ( !(/^[_A-z0-9]{0,1024}$/.test(name)) ) {
+    throw new Error(`Invalid dataset or table name: ${name}.
+Name must match regex: ^[_A-z0-9]{0,1024}$`);
   }
 };

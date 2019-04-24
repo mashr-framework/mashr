@@ -15,7 +15,6 @@ module.exports = async function createGCEInstance(mashrConfigObj) {
     dockerfile,
     gemInstallationScript,
     embulkConfig,
-    keyfile,
     embulkScript,
     crontab,
   } = await generateGCEResources(mashrConfigObj);

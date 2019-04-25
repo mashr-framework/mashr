@@ -47,8 +47,8 @@ async function readYaml(path) {
   return yaml.safeLoad(fs.readFileSync(path, 'utf8'));
 }
 
-const readResources = async () => {
-  const mashrPath = getMashrPath(homedir);
+const readResources = async (home = homedir) => {
+  const mashrPath = getMashrPath(home);
   const filePath = `${mashrPath}/info.json`;
   let resourceInfo;
 
@@ -66,8 +66,8 @@ const readResources = async () => {
 };
 
 // [TODO: change to singular writeResource]
-const writeResources = async (resource, key, object) => {
-  const mashrDir = getMashrPath(homedir);
+const writeResources = async (resource, key, object, home = homedir) => {
+  const mashrDir = getMashrPath(home);
   const filePath = `${mashrDir}/info.json`;
   const data = await readFile(filePath);
 
@@ -79,8 +79,8 @@ const writeResources = async (resource, key, object) => {
   await writeFile(filePath, info);
 };
 
-const removeResource = async (resource, key) => {
-  const mashrDir = getMashrPath(homedir);
+const removeResource = async (resource, key, home = homedir) => {
+  const mashrDir = getMashrPath(home);
   const filePath = `${mashrDir}/info.json`;
   const data = await readFile(filePath);
 

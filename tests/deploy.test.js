@@ -31,10 +31,6 @@ describe('mashr deploy', function() {
       expect(credentials).toBe(expectedPath);
     });
 
-    it('Throws an error if there is no key file', async () => {
-      await expect(configureCredentials(mashrConfigObj)).rejects.toThrow(/No keyfile/);
-    });
-
     // it('Throws an error if there is no mashr_config file', async () => {
     //   const mashrConfig = await readFile(mashrConfigPath);
     //   fs.unlinkSync(mashrConfigPath);
@@ -103,3 +99,66 @@ describe('mashr deploy', function() {
   // });
 
 });
+
+// - validateMashrConfig.test.js (do last)
+//   (*work with original file, and remove / add values as needed*)
+//   (*read a template in and add values to the object*)
+//   - describe checkRequiredValues()
+//     - it throws an error if there are fields missing (*6 for each value)
+//     - doesnt do anything if all the fields are there (1)
+//   - describe validateIntegrationName()
+//     - throws an error if the name is invalid (*2-3 invalid strings)
+//     - does nothing if the name is valid (1 string)
+//   - describe validateEmbulkRunCommand()
+//     - throws an error if  embulk_config.yml is not in command
+//     - doesnt do anything if embulk_config.yml is in command
+//   - describe validateBQNames()
+//     - throws an error if the name is invalid (*2-3 invalid strings)
+//     - does nothing if the name is valid (1 string)
+// - configureCredentials.test.js
+//   - describe configureCredentials()
+//     - it Sets the keyfile in the mashr_config.yml to an env variable
+// - mashrResources.test.js;
+//   (*homedir is optional arg, check utils/fileUtils to see how to implement*)
+//   - describe setupDirectoriesAndFiles 
+//     - it creates a .mashr folder (homedir is './')
+//     - it creates a info.json in .mashr
+//   - writeResources
+//     - it adds an integration to the info.json file (* uses checkIntegrationExists())
+//   - readResrouces
+//     - it reads the integration to the info.json file
+//   - removeResource
+//     - it removes the integration from the info.json file
+//   (*teardown: remove .mashr folder and info.json file)
+// - GCEInstance.test.js -Jake
+//   - describe createGCEInstance()
+//     - expect createGCEInstance to not throw an error
+//     - expect getGCEInstance to return a value
+//   - describe destroyGCEInstance()
+//     - expect destroyGCEInstance to not throw an error
+//     - expect getGCEInstance to return undefined (?)
+// - createDataset.test.js
+//   - describe createDataSet
+//     - it creates a dataSet
+//     (*use BQ client to test if exist and destroy after*)
+// - buckets.test.js - Mat
+//   - describe createBuckets()
+//     - expect createBuckets to not throw an error
+//     - expect bucketExists to return true (x2 for archive)
+//   - describe destroyBuckets()
+//     - expect destroyBucket to not throw an error
+//     - expect bucketExists to return false
+// - cloudFunction.test.js - Linus
+//   - describe createCloudFunction()
+//     - expect createCloudFunction to not throw an error
+//     - expect functionExists to return true
+//   - describe destroyCloudFunction()
+//     - expect destroyCloudFunction to not throw an error
+//     - expect functionExists to return false
+
+
+
+
+
+
+

@@ -1,7 +1,9 @@
-const { exec } = require('../utils/fileUtils');
 const ora = require('ora');
-const mashrLogger = require('../utils/mashrLogger');
 const { BigQuery } = require('@google-cloud/bigquery');
+const { 
+  exec,
+  mashrLogger,
+ } = require('../utils');
 
 const createDataset =  async (mashrConfigObj) => {
   const spinner = ora();

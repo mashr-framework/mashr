@@ -1,8 +1,7 @@
 const {Storage} = require('@google-cloud/storage');
-const storage = new Storage();
 const { bucketExists } = require('./validateIntegrationNameWithGCP');
 const ora = require('ora');
-const mashrLogger = require('../utils/mashrLogger');
+const { mashrLogger } = require('../utils');
 
 const destroyBuckets = async (integrationName) => {
   await Promise.all([destroyBucket(integrationName),
@@ -14,6 +13,7 @@ const destroyBucket = async (integrationName) => {
 
   mashrLogger(spinner, 'start');
 
+  const storage = new Storage();
   const bucket = storage.bucket(integrationName);
   
   if (await bucketExists(integrationName)) {

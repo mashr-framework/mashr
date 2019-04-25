@@ -1,7 +1,6 @@
 const { Storage } = require('@google-cloud/storage');
-const storage = new Storage();
 const ora = require('ora');
-const mashrLogger = require('../utils/mashrLogger');
+const { mashrLogger } = require('../utils');
 
 const createBuckets = async (integrationName) => {
   createBucket(integrationName);
@@ -9,6 +8,7 @@ const createBuckets = async (integrationName) => {
 };
 
 const createBucket = async (integrationName, options = {isArchive: false}) => {
+  const storage = new Storage();
   const spinner = ora();
 
   mashrLogger(spinner, 'start');

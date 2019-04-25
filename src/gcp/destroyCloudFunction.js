@@ -1,8 +1,9 @@
 const ora = require('ora');
-const mashrLogger = require('../utils/mashrLogger');
-
 const { functionExists } = require('./validateIntegrationNameWithGCP');
-const { exec } = require('../utils/fileUtils');
+const { 
+  exec,
+  mashrLogger
+} = require('../utils');
 
 const destroyCloudFunction = async (integrationName) => {
   const spinner = ora();

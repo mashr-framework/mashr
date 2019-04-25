@@ -1,8 +1,9 @@
 const { Storage } = require('@google-cloud/storage');
-const storage = new Storage();
-const { exec } = require('../utils/fileUtils');
 const ora = require('ora');
-const mashrLogger = require('../utils/mashrLogger');
+const { 
+  exec,
+  mashrLogger
+ } = require('../utils');
 
 const validateIntegrationNameWithGCP = async (integrationName) => {
   const spinner = ora();
@@ -32,6 +33,7 @@ const validateBucketName = (bucketName, bucketsSpinner) => {
 };
 
 const bucketExists = async (bucketName) => {
+  const storage = new Storage();
   const bucket = storage.bucket(bucketName);
   let data;
 

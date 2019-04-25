@@ -1,3 +1,4 @@
+const ora = require('ora');
 const {
   copyFile,
   exists,
@@ -5,9 +6,10 @@ const {
   readFile,
   rimraf,
   writeFile,
-} = require('../utils/fileUtils');
-const ora = require('ora');
-const mashrLogger = require('../utils/mashrLogger');
+  mashrLogger,
+} = require('../utils');
+
+
 
 const createCloudFunction = async (mashrConfigObj) => {
   const spinner = ora();

@@ -3,14 +3,19 @@ const {
   readYaml,
   readResources,
 } = require('../utils/fileUtils');
-const { destroyBuckets } = require('../gcp/destroyBuckets');
+
+
 const configureCredentials = require('../utils/configureCredentials');
-const { destroyGCEInstance } = require('../gcp/destroyGCEInstance');
-const destroyCloudFunction = require('../gcp/destroyCloudFunction');
 const ora = require('ora');
 const confirmDestroy = require('../utils/confirmDestroy');
 const mashrLogger = require('../utils/mashrLogger');
 const os = require('os');
+
+const { 
+  destroyBuckets,
+  destroyGCEInstance,
+  destroyCloudFunction,
+} = require('../gcp');
 
 module.exports = async (args) => {
 

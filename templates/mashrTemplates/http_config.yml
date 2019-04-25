@@ -1,12 +1,29 @@
-exec:
-  min_output_tasks: 1
-in:
-  type: http
-  url: https://jsonplaceholder.typicode.com/posts/42
-  method: get
-  parser:
-    type: json
-    schema:
+# Template for http input. Change the required fields.
+mashr:
+  service_account_email: ''
+  # the keyfile must be in current working directory
+  json_keyfile: ''
+  table_id:     ''
+  dataset_id:   ''
+  project_id:   ''
+  # name the integration for bucket, instance and function name.
+  # integration_name must match regex (?:[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?)
+  integration_name: ''
+  # you can set the command that runs embulk here.
+  # embulk_config.yml is the required name of the config file generated for embulk:
+  embulk_run_command: 'embulk run embulk_config.yml' # 'embulk run embulk_config.yml -c embulk_diff.yml'
+  embulk_gems:
+    - embulk-input-http
+embulk: # read about embulk here: https://github.com/embulk/embulk
+  exec:
+    min_output_tasks: 1
+  in:
+    type: http
+    url: https://jsonplaceholder.typicode.com/posts/42
+    method: get
+    parser:
+      type: json
+      schema:
         - { name: "userId", type: string }
         - { name: "id", type: long }
         - { name: "title", type: string }

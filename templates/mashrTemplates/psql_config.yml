@@ -1,13 +1,16 @@
 # Template for psql input. Change the required fields.
 # Add a (ex: 'created_at') column at the end to include your column
 mashr:
-  # the keyfile must be in the root directory of this file:
-  json_keyfile: '' # postgres-234090-218q34tg8e4.json
-  table_id:     '' #'table_id'
-  dataset_id:   '' #'dataset_id'
-  project_id:   '' #'project_id'
-  integration_name: '' # name the integration for bucket and function name
-  # You can set the command that runs embulk here. The example given is for
+  service_account_email: ''
+  # the keyfile must be in current working directory
+  json_keyfile: ''
+  table_id:     ''
+  dataset_id:   ''
+  project_id:   ''
+  # name the integration for bucket, instance and function name.
+  # integration_name must match regex (?:[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?)
+  integration_name: ''
+  # you can set the command that runs embulk here. The example given is for
   # incremental loading. embulk_config.yml is the default name of the config 
   # file generated for embulk:
   embulk_run_command: 'embulk run embulk_config.yml -c embulk_diff.yml'
@@ -15,7 +18,7 @@ mashr:
     - embulk-filter-add_time
     - embulk-filter-timestamp_format
     - embulk-input-postgresql
-embulk:
+embulk: # read about embulk here: https://github.com/embulk/embulk
   exec:
     min_output_tasks: 1
   in:

@@ -1,7 +1,7 @@
 const { BigQuery } = require('@google-cloud/bigquery');
 const { Storage } = require('@google-cloud/storage');
 
-exports._FUNCTION_NAME_ = (event, callback) => {
+exports._FUNCTION_NAME_ = (event, context, callback) => {
 
   const fileName = event.name;
 

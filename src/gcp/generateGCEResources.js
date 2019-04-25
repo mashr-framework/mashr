@@ -1,4 +1,4 @@
-const { readFile } = require('../utils/fileUtils');
+const { readFile } = require('../utils');
 const yaml = require('js-yaml');
 
 const generateGCEResources = async (mashrConfigObj) => {

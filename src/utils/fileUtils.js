@@ -15,7 +15,6 @@ const path = require('path');
 const os = require('os');
 const exec = promisify(require('child_process').exec);
 const rimraf = require("rimraf"); // similar to `rm -Rf` for recursive remove
-const mashrLogger = require('./mashrLogger');
 
 const homedir = os.homedir();
 

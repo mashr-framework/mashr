@@ -1,7 +1,7 @@
 const path = require('path');
 const ora = require('ora');
-const { copyFile } = require('../utils/fileUtils');
-const { mashrLogger } = require('../utils/mashrLogger');
+const { copyFile } = require('./fileUtils');
+const { mashrLogger } = require('./mashrLogger');
 
 const copyMashrConfigTemplate = async (template) => {
 

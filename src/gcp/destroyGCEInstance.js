@@ -1,6 +1,6 @@
 const Compute = require('@google-cloud/compute');
 const ora = require('ora');
-const { mashrLogger } = require('../utils/mashrLogger');
+const { mashrLogger } = require('../utils');
 
 const destroyGCEInstance = async (integrationName) => {
   const spinner = ora();

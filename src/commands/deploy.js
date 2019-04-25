@@ -1,10 +1,4 @@
 const ora = require('ora');
-const {
-  configureCredentials,
-  addIntegrationToDirectory,
-  validateMashrConfig,
-  mashrLogger,
-} = require('../utils');
 
 const {
   createDataset,
@@ -13,6 +7,13 @@ const {
   createCloudFunction,
   createGCEInstance
 } = require('../gcp');
+
+const {
+  configureCredentials,
+  addIntegrationToDirectory,
+  validateMashrConfig,
+  mashrLogger,
+} = require('../utils');
 
 
 module.exports = async (args) => {

@@ -1,9 +1,9 @@
 const {
-        createDirectory,
-        createJSONFile,
-        getMashrPath,
-        writeFile,
-       } = require('./fileUtils');
+  createDirectory,
+  createJSONFile,
+  getMashrPath,
+  writeFile,
+} = require('./fileUtils');
 
 const setupDirectoriesAndFiles = async (homeDir) => {
   await createDirectory('.mashr', homeDir);

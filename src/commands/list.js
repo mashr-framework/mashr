@@ -3,7 +3,6 @@ const {
   mashrLogger
  } = require('../utils');
 const ora = require('ora');
-const chalk = require('chalk');
 const { table } = require('table');
 
 module.exports = async (args) => {
@@ -29,18 +28,55 @@ module.exports = async (args) => {
 
   integrationNames.forEach((name) => {
     const integration = infoObj.integrations[name];
-    const row = [styleField(name)];
+    const row = [name];
 
     Object.keys(integration).forEach((key) => {
       const val = integration[key];
-      row.push(styleField(val));
+      row.push(val);
     });
 
 
     data.push(row);
   });
 
-  console.log(table(data));
-};
+  const config = {
+    columns: {},
+  };
 
-const styleField = (field) => chalk.gray(field);
+  data[0].forEach((col, idx) => {
+    switch (col) {
+      case 'integration_name':
+        config.columns[idx] = {
+          width: col.length,
+          wrapWord: true,
+        };
+        break;
+      case 'projectId':
+        config.columns[idx] = {
+          width: col.length,
+          wrapWord: true,
+        };
+        break;
+      case 'datasetId':
+        config.columns[idx] = {
+          width: col.length,
+          wrapWord: true,
+        };
+        break;
+      case 'tableId':
+        config.columns[idx] = {
+          width: col.length,
+          wrapWord: true,
+        };
+        break;
+      case 'path':
+        config.columns[idx] = {
+          width: col.length + 16,
+          wrapWord: true,
+        };
+        break;
+    }
+  });
+
+  console.log(table(data, config));
+};

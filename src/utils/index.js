@@ -2,6 +2,7 @@ const { addIntegrationToDirectory } = require('./addIntegrationToDirectory');
 const { mashrLogger } = require('./mashrLogger');
 const { catchSetupAndConfig } = require('./catchSetupAndConfig');
 const { setupDirectoriesAndFiles } = require('./setupDirectoriesAndFiles');
+const { confirmDestroy } = require('./confirmDestroy');
 const {
   configureCredentials,
   getPathToKeyFile,
@@ -40,6 +41,7 @@ const {
 
 console.log('in utils/index.js: ', typeof mashrLogger);
 module.exports = {
+  confirmDestroy,
   addIntegrationToDirectory,
   mashrLogger,
   catchSetupAndConfig,

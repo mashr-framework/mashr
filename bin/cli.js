@@ -13,8 +13,11 @@ let cmd = args._[0] || 'help';
     if (args.help || args.h) { cmd = 'help'; }
     if (cmd === 'ls') { cmd = 'list'; }
 
-    const keys = Object.keys(args._);
-    if (keys.length > 2 && cmd === 'destroy' || keys.length > 1 && cmd !== 'destroy') {
+    const argsCount = Object.keys(args._).length - 1;
+    if (
+      argsCount > 1 && (cmd === 'destroy' || cmd === 'help')
+      || argsCount > 0 && !['destroy', 'help'].includes(cmd)
+    ) {
       console.log('Invalid command - too many arguments');
       return;
     }

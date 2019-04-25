@@ -57,6 +57,7 @@
     "minimist": "^1.2.0",
     "ora": "^3.4.0",
     "path": "^0.12.7",
-    "readline-sync": "^1.4.9"
+    "readline-sync": "^1.4.9",
+    "table": "^5.2.3"
   }
 }

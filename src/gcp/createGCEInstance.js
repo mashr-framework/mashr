@@ -3,7 +3,7 @@ const { generateGCEResources } = require('./generateGCEResources');
 const ora = require('ora');
 const mashrLogger = require('../utils/mashrLogger');
 
-module.exports = async function createGCEInstance(mashrConfigObj) {
+const createGCEInstance = async (mashrConfigObj) => {
   const spinner = ora();
   mashrLogger(spinner, 'start', 'Creating GCE instance...');
 
@@ -82,6 +82,10 @@ module.exports = async function createGCEInstance(mashrConfigObj) {
   mashrLogger(
     spinner,
     'succeed',
-    `GCE instance ${mashrConfigObj.mashr.integration_name} created.`
+    `GCE instance ${mashrConfigObj.mashr.integration_name} is created`
   );
 };
+
+module.exports = {
+  createGCEInstance
+}

@@ -3,12 +3,12 @@ const storage = new Storage();
 const ora = require('ora');
 const mashrLogger = require('../utils/mashrLogger');
 
-module.exports = async function createBuckets(integrationName) {
+const createBuckets = async (integrationName) => {
   createBucket(integrationName);
   createBucket(integrationName + '_archive', {isArchive: true});
 };
 
-async function createBucket(integrationName, options = {isArchive: false}) {
+const createBucket = async (integrationName, options = {isArchive: false}) => {
   const spinner = ora();
 
   mashrLogger(spinner, 'start');
@@ -24,7 +24,12 @@ async function createBucket(integrationName, options = {isArchive: false}) {
     throw(e);
   });
 
-  mashrLogger(spinner, 'succeed', `Bucket "${integrationName}" is created.`);
+  mashrLogger(spinner, 'succeed', `Bucket "${integrationName}" is created`);
 
   return bucket;
+}
+
+module.exports = {
+  createBuckets,
+  createBucket
 }

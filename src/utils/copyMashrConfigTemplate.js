@@ -16,7 +16,7 @@ const copyMashrConfigTemplate = async (template) {
  'Please fill out the empty fields in the `mashr_config.yml` ' +
  'file before running `mashr deploy`.\n'
   );
-}
+};
 
 const templatePath = (template) => {
   basePath =`${__dirname}/../../templates/mashrTemplates`;
@@ -33,7 +33,7 @@ const templatePath = (template) => {
   } else {
     return `${basePath}/${templates.default}`;
   }
-}
+};
 
 module.exports {
   copyMashrConfigTemplate,

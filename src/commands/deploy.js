@@ -1,14 +1,18 @@
 const configureCredentials = require('../utils/configureCredentials');
-const { validateIntegrationNameWithGCP } =
-  require('../gcp/validateIntegrationNameWithGCP');
-const createBuckets = require('../gcp/createBuckets');
-const { createCloudFunction } = require('../gcp/createCloudFunction');
-const createGCEInstance = require('../gcp/createGCEInstance');
 const addIntegrationToDirectory = require('../utils/addIntegrationToDirectory');
 const validateMashrConfig = require('../utils/validateMashrConfig');
-const createDataset = require('../gcp/createDataset');
+
 const ora = require('ora');
 const mashrLogger = require('../utils/mashrLogger');
+
+const {
+  createDataset,
+  validateIntegrationNameWithGCP,
+  createBuckets,
+  createCloudFunction,
+  createGCEInstance
+} = require('../gcp');
+
 
 module.exports = async (args) => {
   const mashrConfigObj = await validateMashrConfig('./mashr_config.yml').catch((e) => {

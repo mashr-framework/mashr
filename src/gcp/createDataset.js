@@ -3,7 +3,7 @@ const ora = require('ora');
 const mashrLogger = require('../utils/mashrLogger');
 const { BigQuery } = require('@google-cloud/bigquery');
 
-module.exports = async(mashrConfigObj) => {
+const createDataset =  async (mashrConfigObj) => {
   const spinner = ora();
   mashrLogger(spinner, 'start');
 
@@ -20,10 +20,14 @@ module.exports = async(mashrConfigObj) => {
   } else {
     try {
       await bigquery.createDataset(datasetId)
-      mashrLogger(spinner, 'succeed', `Dataset "${datasetId}" created.`);
+      mashrLogger(spinner, 'succeed', `Dataset "${datasetId}" is created`);
     } catch(e) {
-      mashrLogger(spinner, 'fail', 'Dataset creation failed.');
+      mashrLogger(spinner, 'fail', 'Dataset creation failed');
       throw(e);
     }
   }
 }
+
+module.exports = {
+  createDataset
+};

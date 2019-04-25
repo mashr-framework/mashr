@@ -13,7 +13,7 @@ module.exports = async (args) => {
     mashrLogger(
       spinner,
       'fail',
-      'No integrations. Run "mashr init" to start a new integration\n'
+      'No integrations. Run "mashr init" to start a new integration.\n'
     );
 
     return;

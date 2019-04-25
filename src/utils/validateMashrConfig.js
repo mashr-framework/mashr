@@ -68,7 +68,7 @@ const validateKeyfile = async (keyfileName) => {
   const hasValidName = parts[parts.length - 1] === 'json' && parts[0].length > 1;
 
   if (!hasValidName) {
-    throw new Error(`${keyfileName} is not a valid keyfile name`);
+    throw new Error(`${keyfileName} is not a valid keyfile name.`);
   }
 
   if (!(await exists(keyfilePath))) {
@@ -79,7 +79,7 @@ const validateKeyfile = async (keyfileName) => {
 
 const validateEmbulkRunCommand = (runCommand) => {
   if (!runCommand.includes(' embulk_config.yml')) {
-    throw new Error("Embulk run command is missing, ' embulk_config.yml '.");
+    throw new Error("Embulk run command is missing, ' embulk_config.yml'.");
   }
 };
 

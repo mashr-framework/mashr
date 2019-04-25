@@ -19,7 +19,7 @@ const templatePath = (template) => {
   basePath =`${__dirname}/../../templates/mashrTemplates`;
   
   const templates = {
-    default: 'defualt_config.yml',
+    default: 'default_config.yml',
     random: 'rand_config.yml',
     psql: 'psql_config.yml',
     http: 'http_config.yml'

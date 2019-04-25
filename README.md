@@ -9,7 +9,7 @@ analysis on.
 
 ## Mashr Architecture
 
-Diagram TBD
+[TODO: Diagram TBD]
 
 ## The Team
 
@@ -30,12 +30,12 @@ Francisco, CA
 * Node.js >= 8
 * NPM
 
-Mashr requires that users have a project with a service account on GCP and have
+Mashr requires that users have a project with a service account on GCP and
 set up the Cloud SDK CLI on their local machine. If you have not already done
 so, please [Download the Cloud
 SDK](https://cloud.google.com/appengine/docs/standard/go/download) and use the
 ["console" to create a
-project](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+project](https://cloud.google.com/resource-manager/docs/creating-managing-projects)
 and a [service
 account](https://cloud.google.com/iam/docs/creating-managing-service-accounts)
 with a role of "owner". Mashr will use the project id, service account email,
@@ -51,6 +51,8 @@ npm install -g mashr
 ## Documentation
 
 ### The Mashr Process
+
+[TODO: paragraph for the init process]
 
 Starting with a mashr_config.yml file and the terminal command `mashr deploy`,
 Mashr creates a Google Compute Engine (GCE) instance, Google Cloud Storage
@@ -135,7 +137,11 @@ Documentation of commands.
 
 ### Accessing the BigQuery Table
 
+[ TODO ]
+
 ### Accessing the Compute Engine Instance and Docker Container
+
+[ TODO ]
 
 -------------------------------------------------------------------------------
 ## Helpful Tips
@@ -171,5 +177,4 @@ document](./docs/gcp_locations_considerations.md) for more information
   - based on what user gives us from mashr_config
 
   Dockerfile > build > image > start a container from the image
-
 

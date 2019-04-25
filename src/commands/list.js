@@ -23,7 +23,7 @@ module.exports = async (args) => {
 
   let headers = Object.keys(infoObj.integrations[integrationNames[0]]);
   let data = [
-    ['integration_name'].concat(headers),
+    ['integrationName'].concat(headers),
   ];
 
   integrationNames.forEach((name) => {

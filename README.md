@@ -1,4 +1,3 @@
-# Mashr
 ![Mashr Header](https://i.imgur.com/nEuJ93S.png?1)
 
 ## Overview

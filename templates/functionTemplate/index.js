@@ -64,5 +64,6 @@ exports._FUNCTION_NAME_ = (event, callback) => {
       console.error('ERROR:', err);
     });
 
-  if (callback) { callback(); }
+  console.log('TEST_CALLBACK: ', callback);
+  console.log('TEST_TYPEOF: ', typeof callback);
 };

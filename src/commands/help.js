@@ -13,10 +13,13 @@ const menus = {
     list.............. show list help
   `,
   init: `
-    init
+    init --template <template_name>
 
     Initializes your current working directory with a template
     mashr_config.yml file necessary for running 'mashr deploy'.
+
+    Optionally include the --template flag and name of the template.
+    Template names include 'http', 'psql', 'random'.
   `,
   deploy: `
     deploy

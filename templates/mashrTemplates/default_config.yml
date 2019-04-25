@@ -1,6 +1,8 @@
+# Default template. Fill in the required fields.
 mashr:
-  service_account_email: '' # user@project.iam.gserviceaccount.com
-  json_keyfile: '' # the keyfile must be in current working directory
+  service_account_email: ''
+  # the keyfile must be in current working directory
+  json_keyfile: ''
   table_id:     ''
   dataset_id:   ''
   project_id:   ''

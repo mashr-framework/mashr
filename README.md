@@ -13,7 +13,7 @@ Diagram TBD
 
 ## The Team
 
-**[Jacob CD Lee](https://)** *Software Engineer* San
+**[Jacob Coker-Dukowitz](https://)** *Software Engineer* San
 Francisco, CA
 
 **[Linus Phan](https://)** *Software Engineer* Los Angeles/Riverside, CA

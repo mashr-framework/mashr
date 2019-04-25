@@ -1,6 +1,8 @@
-const { readResources } = require('../utils/fileUtils');
+const { 
+  readResources,
+  mashrLogger
+ } = require('../utils');
 const ora = require('ora');
-const mashrLogger = require('../utils/mashrLogger');
 const chalk = require('chalk');
 
 module.exports = async (args) => {

@@ -37,8 +37,8 @@ const {
   writeResources,
  } = require('./fileUtils');
 
-console.log('mashrLogger, index: ', mashrLogger);
-console.log('mashrLogger, index: ', typeof mashrLogger);
+
+console.log('in utils/index.js: ', typeof mashrLogger);
 module.exports = {
   addIntegrationToDirectory,
   mashrLogger,
@@ -70,4 +70,4 @@ module.exports = {
   rimraf,
   writeFile,
   writeResources,
-}
+};

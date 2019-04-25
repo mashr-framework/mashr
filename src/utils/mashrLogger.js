@@ -19,8 +19,8 @@ const mashrLogger = (spinner, state, text) => {
   }
 };
 
-console.log('mashrLogger, def: ', mashrLogger);
-console.log('mashrLogger, def: ', typeof mashrLogger);
+
+console.log('in utils/mashrLogger: ', typeof mashrLogger);
 module.exports = {
   mashrLogger,
 }

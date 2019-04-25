@@ -1,5 +1,5 @@
 const os = require('os');
-const { catchSetupAndConfig } = require('../utils/');
+const { catchSetupAndConfig } = require('../utils');
 
 const homedir = os.homedir();
 

@@ -3,11 +3,11 @@ const ora = require('ora');
 const {
   exec,
   mashrLogger,
- } = require('../utils');
+} = require('../utils');
 
 const validateIntegrationNameWithGCP = async (integrationName) => {
-    console.log('mashrLogger: ', mashrLogger);
-    console.log('mashrLogger: ', typeof mashrLogger);
+  console.log('in validateIntegrationNameWithGCP ', typeof mashrLogger);
+  
   const spinner = ora();
 
   try {
@@ -16,8 +16,6 @@ const validateIntegrationNameWithGCP = async (integrationName) => {
       functionNameIsAvailable(integrationName),
     ]);
   } catch (e) {
-    console.log('mashrLogger: ', mashrLogger);
-    console.log('mashrLogger: ', typeof mashrLogger);
     mashrLogger(spinner, 'fail', 'Integration name validation failed');
     throw(e);
   }

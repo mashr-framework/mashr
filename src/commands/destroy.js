@@ -1,15 +1,14 @@
+const ora = require('ora');
+const os = require('os');
+
 const {
+  configureCredentials,
+  confirmDestroy,
+  mashrLogger,
   removeResource,
   readYaml,
   readResources,
-} = require('../utils/fileUtils');
-
-
-const configureCredentials = require('../utils/configureCredentials');
-const ora = require('ora');
-const confirmDestroy = require('../utils/confirmDestroy');
-const mashrLogger = require('../utils/mashrLogger');
-const os = require('os');
+} = require('../utils');
 
 const { 
   destroyBuckets,

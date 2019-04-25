@@ -1,6 +1,6 @@
 const chalk = require('chalk');
 
-const mashrLogger = (spinner, state, text) {
+const mashrLogger = (spinner, state, text) => {
   const indicator = chalk.bold.italic.red('Mashr:');
 
   switch (state) {
@@ -19,6 +19,6 @@ const mashrLogger = (spinner, state, text) {
   }
 };
 
-module.exports {
+module.exports = {
   mashrLogger,
 }

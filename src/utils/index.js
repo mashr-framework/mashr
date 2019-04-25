@@ -37,7 +37,7 @@ const {
   writeResources,
  } = require('./fileUtils');
 
-module.exports {
+module.exports = {
   addIntegrationToDirectory,
   mashrLogger,
   catchSetupAndConfig,

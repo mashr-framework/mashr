@@ -5,7 +5,7 @@ const {
         writeFile,
        } = require('./fileUtils');
 
-const setupDirectoriesAndFiles = async (homeDir) {
+const setupDirectoriesAndFiles = async (homeDir) => {
   await createDirectory('.mashr', homeDir);
 
   let info = {integrations: {}};
@@ -14,6 +14,6 @@ const setupDirectoriesAndFiles = async (homeDir) {
   await createJSONFile('info', integrationPath, info);
 }
 
-module.exports {
+module.exports = {
   setupDirectoriesAndFiles,
 };

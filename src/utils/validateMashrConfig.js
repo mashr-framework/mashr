@@ -1,13 +1,13 @@
+const path = require('path');
+const ora = require('ora');
+const { mashrLogger } = require('./mashrLogger');
 const {
   readYaml,
   exists,
   readResources,
 } = require('./fileUtils');
-const path = require('path');
-const ora = require('ora');
-const mashrLogger = require('./mashrLogger');
 
-const validateMashrConfig =  async (mashrConfigPath) {
+const validateMashrConfig = async (mashrConfigPath) => {
   const spinner = ora();
 
   if (!(await exists(mashrConfigPath))) {
@@ -90,7 +90,7 @@ Name must match regex: ^[_A-z0-9]{0,1024}$`);
   }
 };
 
-module.exports {
+module.exports = {
   validateMashrConfig,
   checkRequiredValues,
   errorIfMissing,

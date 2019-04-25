@@ -1,9 +1,9 @@
 const path = require('path');
-const { copyFile } = require('../utils/fileUtils');
 const ora = require('ora');
-const mashrLogger = require('../utils/mashrLogger');
+const { copyFile } = require('../utils/fileUtils');
+const { mashrLogger } = require('../utils/mashrLogger');
 
-const copyMashrConfigTemplate = async (template) {
+const copyMashrConfigTemplate = async (template) => {
 
   const spinner = ora();
   const configTemplate = templatePath(template);
@@ -35,7 +35,7 @@ const templatePath = (template) => {
   }
 };
 
-module.exports {
+module.exports = {
   copyMashrConfigTemplate,
   templatePath,
 };

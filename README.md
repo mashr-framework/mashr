@@ -1,5 +1,5 @@
 # Mashr
-![Mashr Header](https://imgur.com/a/AWTdJ93)
+![Mashr Header](https://i.imgur.com/WCOG69b.png)
 
 ## Overview
 Mashr is an easy to use data pipeline framework that orchestrates moving data

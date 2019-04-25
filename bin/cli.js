@@ -3,6 +3,7 @@ const minimist = require('minimist');
 const executeCommands = require('../src/commands/executeCommands');
 
 const args = minimist(process.argv.slice(2));
+
 let cmd = args._[0] || 'help';
 
 (async () => {

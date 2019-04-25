@@ -108,4 +108,6 @@ module.exports = {
   validateBucketName,
   bucketExists,
   functionExists,
+  functionNameIsAvailable,
+  bucketsAreAvailable
 };

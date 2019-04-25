@@ -1,3 +1,7 @@
-module.exports = function setGoogleAppCredentials(keyPath) {
+const setGoogleAppCredentials = (keyPath) => {
   process.env.GOOGLE_APPLICATION_CREDENTIALS = keyPath;
 };
+
+module.exports = {
+  setGoogleAppCredentials
+}

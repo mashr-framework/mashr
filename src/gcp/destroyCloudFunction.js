@@ -4,7 +4,7 @@ const mashrLogger = require('../utils/mashrLogger');
 const { functionExists } = require('./validateIntegrationNameWithGCP');
 const { exec } = require('../utils/fileUtils');
 
-module.exports = async (integrationName) => {
+const destroyCloudFunction = async (integrationName) => {
   const spinner = ora();
   mashrLogger(spinner, 'start', 'Destroying cloud function...');
 
@@ -25,3 +25,7 @@ module.exports = async (integrationName) => {
     );
   }
 };
+
+module.exports = {
+  destroyCloudFunction
+}

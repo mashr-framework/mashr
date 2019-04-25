@@ -30,11 +30,3 @@ module.exports = {
   destroyBuckets,
   destroyBucket,
 };
-
-// https://cloud.google.com/nodejs/docs/reference/storage/2.3.x/Bucket
-// bucket.deleteFiles({
-//   force: true
-// }, function(errors) {
-//   // `errors`:
-//   //    Array of errors if any occurred, otherwise null.
-// });

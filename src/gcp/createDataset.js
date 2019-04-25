@@ -3,7 +3,7 @@ const ora = require('ora');
 const mashrLogger = require('../utils/mashrLogger');
 const { BigQuery } = require('@google-cloud/bigquery');
 
-module.exports = async(mashrConfigObj) => {
+const createDataset =  async (mashrConfigObj) => {
   const spinner = ora();
   mashrLogger(spinner, 'start');
 
@@ -27,3 +27,7 @@ module.exports = async(mashrConfigObj) => {
     }
   }
 }
+
+module.exports = {
+  createDataset
+};

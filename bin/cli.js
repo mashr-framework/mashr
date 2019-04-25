@@ -13,17 +13,15 @@ let cmd = args._[0] || 'help';
     if (args.help || args.h) { cmd = 'help'; }
     if (cmd === 'ls') { cmd = 'list'; }
 
-    if (Object.keys(args._).length > 2) {
+    const keys = Object.keys(args._);
+    if (keys.length > 2 && cmd === 'destroy' || keys.length > 1 && cmd !== 'destroy') {
       console.log('Invalid command - too many arguments');
       return;
     }
 
     await executeCommands(cmd, args);
 
-
   } catch (err) {
-
     throw(err);
-
   }
 })();

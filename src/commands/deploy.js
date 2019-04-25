@@ -23,7 +23,6 @@ module.exports = async (args) => {
   await validateIntegrationNameWithGCP(integrationName);
 
   await addIntegrationToDirectory(mashrConfigObj);
-
   await Promise.all([
     createGCEInstance(mashrConfigObj),
     createDataset(mashrConfigObj),

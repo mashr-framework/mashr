@@ -15,5 +15,6 @@ module.exports = async function catchSetupAndConfig(homeDir, template) {
   }
 
   copyMashrConfigTemplate(template);
+
   return true;
 };

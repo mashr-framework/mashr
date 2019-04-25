@@ -13,7 +13,6 @@ const mashrLogger = require('../utils/mashrLogger');
 const os = require('os');
 
 module.exports = async (args) => {
-  await confirmDestroy();
 
   const spinner = ora();
   const mashrConfigObj = await readYaml('./mashr_config.yml').catch((e) => {
@@ -33,6 +32,7 @@ module.exports = async (args) => {
 
     mashrLogger(spinner, 'fail', message);
   } else {
+    await confirmDestroy();
     await Promise.all([
       destroyGCEInstance(integrationName),
       destroyBuckets(integrationName),

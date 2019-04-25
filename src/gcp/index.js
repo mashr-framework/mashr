@@ -1,26 +1,31 @@
+const { createDataset } = require('./createDataset');
+const { createGCEInstance } = require('./createGCEInstance');
+const { destroyCloudFunction } = require('./destroyCloudFunction');
+const { setGoogleAppCredentials } = require('./setGoogleAppCredentials');
+
 const { 
   createBucket, 
-  createBuckets 
-} = require('createBuckets');
+  createBuckets,
+} = require('./createBuckets');
 const { 
   createCloudFunction,
   deployCloudFunction,
   setupCloudFunction 
-} = require('createCloudFunction');
+} = require('./createCloudFunction');
 const {   
   destroyBuckets,
   destroyBucket
-} = require('destroyBucket');
+} = require('./destroyBuckets');
 const {   
   destroyGCEInstance,
   getGCEInstance
-} = require('destroyGCEInstance');
+} = require('./destroyGCEInstance');
 const {   
   generateGCEResources,
   createEmbulkScript,
   createGemInstallationScript,
   createEmbulkConfig 
-} = require('generateGCEResourcees');
+} = require('./generateGCEResources');
 const {   
   validateIntegrationNameWithGCP,
   validateBucketName,
@@ -28,13 +33,7 @@ const {
   functionExists,
   functionNameIsAvailable,
   bucketsAreAvailable 
-} = require('validateIntegrationName');
-
-const { createDataset } = require('createDataset');
-const { createGCEInstance } = require('createGCEInstance');
-const { destroyCloudFunction } = require('destroyCloudFunction');
-const { setGoogleApplicationCredentials } = require('setGoogleApplicationCredentials');
-
+} = require('./validateIntegrationNameWithGCP');
 
 module.exports = {
   createBuckets,
@@ -53,7 +52,7 @@ module.exports = {
   createEmbulkScript,
   createGemInstallationScript,
   createEmbulkConfig,
-  setGoogleApplicationCredentials,
+  setGoogleAppCredentials,
   validateIntegrationNameWithGCP,
   validateBucketName,
   bucketExists,

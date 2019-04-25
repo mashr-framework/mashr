@@ -4,6 +4,7 @@ const {
  } = require('../utils');
 const ora = require('ora');
 const chalk = require('chalk');
+const { table } = require('table');
 
 module.exports = async (args) => {
   const spinner = ora();
@@ -20,18 +21,26 @@ module.exports = async (args) => {
 
     return;
   }
-  const result = integrationNames.map(function (name) {
-    var integration = infoObj.integrations[name];
-    name = chalk.bold.red(name);
 
-    return `
-    ${name}:
-      projectId: ${integration.projectId}
-      datasetId: ${integration.datasetId}
-        tableId: ${integration.tableId}
-           path: ${integration.path}
-    `;
+  let headers = Object.keys(infoObj.integrations[integrationNames[0]]);
+  let data = [
+    ['integration_name'].concat(headers),
+  ];
+
+  integrationNames.forEach((name) => {
+    const integration = infoObj.integrations[name];
+    const row = [styleField(name)];
+
+    Object.keys(integration).forEach((key) => {
+      const val = integration[key];
+      row.push(styleField(val));
+    });
+
+
+    data.push(row);
   });
 
-  console.log(result.join('\n'));
+  console.log(table(data));
 };
+
+const styleField = (field) => chalk.gray(field);

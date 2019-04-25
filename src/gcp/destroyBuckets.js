@@ -20,7 +20,7 @@ const destroyBucket = async (integrationName) => {
     await bucket.deleteFiles({ force: true });
     await bucket.delete();
 
-    mashrLogger(spinner, 'succeed', `Bucket "${integrationName}" is destroyed.`);
+    mashrLogger(spinner, 'succeed', `Bucket "${integrationName}" is destroyed`);
   } else {
     mashrLogger(spinner, 'warn', `Bucket "${integrationName}" does not exist... continuing`);
   }

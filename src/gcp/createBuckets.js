@@ -24,7 +24,7 @@ async function createBucket(integrationName, options = {isArchive: false}) {
     throw(e);
   });
 
-  mashrLogger(spinner, 'succeed', `Bucket "${integrationName}" is created.`);
+  mashrLogger(spinner, 'succeed', `Bucket "${integrationName}" is created`);
 
   return bucket;
 }

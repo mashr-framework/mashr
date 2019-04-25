@@ -17,11 +17,11 @@ const createCloudFunction = async (mashrConfigObj) => {
   const packageJson = await readFile(`${functionTemplatePath}/package.json`);
 
   if (await exists('./function')) {
-    mashrLogger(spinner, 'start', 'Deleting previously existing function directory.');
+    mashrLogger(spinner, 'start', 'Deleting previously existing function directory...');
     rimraf.sync('./function');
   }
 
-  mashrLogger(spinner, 'start', 'Creating function directory.');
+  mashrLogger(spinner, 'start', 'Creating function directory...');
   await mkdir('./function');
 
   await writeFile('./function/package.json', packageJson);
@@ -54,7 +54,7 @@ const deployCloudFunction = async (mashrConfigObj, spinner) => {
     throw(e);
   });
 
-  mashrLogger(spinner, 'succeed', `Cloud function "${functionName}" is created.`);
+  mashrLogger(spinner, 'succeed', `Cloud function "${functionName}" is created`);
 };
 
 

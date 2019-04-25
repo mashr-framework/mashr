@@ -20,9 +20,9 @@ module.exports = async(mashrConfigObj) => {
   } else {
     try {
       await bigquery.createDataset(datasetId)
-      mashrLogger(spinner, 'succeed', `Dataset "${datasetId}" created.`);
+      mashrLogger(spinner, 'succeed', `Dataset "${datasetId}" is created`);
     } catch(e) {
-      mashrLogger(spinner, 'fail', 'Dataset creation failed.');
+      mashrLogger(spinner, 'fail', 'Dataset creation failed');
       throw(e);
     }
   }

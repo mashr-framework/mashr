@@ -26,7 +26,6 @@ module.exports = async (args) => {
   await configureCredentials(mashrConfigObj);
 
   const integrationName = mashrConfigObj.mashr.integration_name.trim();
-  console.log('in commands/deploy: ', typeof mashrLogger);
 
   await validateIntegrationNameWithGCP(integrationName);
 

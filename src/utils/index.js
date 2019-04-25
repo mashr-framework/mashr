@@ -36,10 +36,8 @@ const {
   rimraf,
   writeFile,
   writeResources,
- } = require('./fileUtils');
+} = require('./fileUtils');
 
-
-console.log('in utils/index.js: ', typeof mashrLogger);
 module.exports = {
   confirmDestroy,
   addIntegrationToDirectory,

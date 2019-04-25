@@ -6,7 +6,6 @@ const {
 } = require('../utils');
 
 const validateIntegrationNameWithGCP = async (integrationName) => {
-  console.log('in validateIntegrationNameWithGCP ', typeof mashrLogger);
 
   const spinner = ora();
 

@@ -84,29 +84,51 @@ and then loads the data into the appropriate BigQuery table.
 ### Commands
 
 ```
-mashr init
+mashr init [--template <template_name>]
 ```
+
+Initializes your current working directory with a template mashr_config.yml
+file necessary for running `mashr deploy`.  Optionally include the `--template`
+flag and name of the template. Template names include `http`, `psql`,
+`random`.
 
 -------------------------------------------------------------------------------
 ```
 mashr deploy
 ```
 
+Deploys the integration: adds it to the list of mashr integrations and creates
+related GCP resources including staging and archive GCS buckets, a cloud
+function and a GCE instance.
+
+Creates a 'function' folder that stores the code the cloud function uses in
+this integration. You can edit and redeploy the cloud function with `gcloud`.
+
+A `mashr_config.yml` file in the user's working directory is required. Run
+`mashr init` to see a template file you can use.
+
 -------------------------------------------------------------------------------
 ```
 mashr list
 ```
 
+Lists all integrations that the user has deployed.
+
 -------------------------------------------------------------------------------
 ```
-mashr destroy
+mashr destroy <integration name>
 ```
+
+Destroys the integration: removes it from the list of mashr integrations and
+destroys related GCP resources including the staging and archive GCS buckets,
+the cloud function and the GCE instance.
 
 -------------------------------------------------------------------------------
 ```
 mashr help
 ```
 
+Documentation of commands.
 
 -------------------------------------------------------------------------------
 

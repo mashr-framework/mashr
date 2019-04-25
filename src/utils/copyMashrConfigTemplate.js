@@ -3,7 +3,7 @@ const { copyFile } = require('../utils/fileUtils');
 const ora = require('ora');
 const mashrLogger = require('../utils/mashrLogger');
 
-module.exports = async function copyMashrConfigTemplate(template) {
+const copyMashrConfigTemplate = async (template) {
 
   const spinner = ora();
   const configTemplate = templatePath(template);
@@ -34,3 +34,8 @@ const templatePath = (template) => {
     return `${basePath}/${templates.default}`;
   }
 }
+
+module.exports {
+  copyMashrConfigTemplate,
+  templatePath,
+};

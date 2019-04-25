@@ -7,7 +7,7 @@ const path = require('path');
 const ora = require('ora');
 const mashrLogger = require('./mashrLogger');
 
-module.exports = async function validateMashrConfig(mashrConfigPath) {
+const validateMashrConfig =  async (mashrConfigPath) {
   const spinner = ora();
 
   if (!(await exists(mashrConfigPath))) {
@@ -89,3 +89,14 @@ const validateBQNames = (name) => {
 Name must match regex: ^[_A-z0-9]{0,1024}$`);
   }
 };
+
+module.exports {
+  validateMashrConfig,
+  checkRequiredValues,
+  errorIfMissing,
+  checkIntegrationExists,
+  validateIntegrationName,
+  validateKeyfile,
+  validateEmbulkRunCommand,
+  validateBQNames,
+}

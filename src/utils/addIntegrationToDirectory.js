@@ -1,7 +1,7 @@
 const { writeResources } = require('./fileUtils');
 const path = require('path');
 
-module.exports = async function addIntegrationToDirectory(mashrConfigObj) {
+const addIntegrationToDirectory = async (mashrConfigObj) {
   const integrationName = mashrConfigObj.mashr.integration_name;
   const object = {
     projectId: mashrConfigObj.mashr.project_id,
@@ -11,4 +11,8 @@ module.exports = async function addIntegrationToDirectory(mashrConfigObj) {
   }
 
   await writeResources('integrations', integrationName, object);
+}
+
+module.exports {
+  addIntegrationToDirectory,
 }

@@ -19,10 +19,6 @@ const mashrLogger = require('./mashrLogger');
 
 const homedir = os.homedir();
 
-// const changePermissions = promisify(fs.chmod);
-
-// // clean up homedir parameters
-
 const exists = async path => (
   new Promise((res) => {
     fs.stat(path, (err) => {
@@ -48,26 +44,9 @@ const createJSONFile = async (fileName, path, json) => {
 
 const getMashrPath = homedir => (`${homedir}/.mashr`);
 
-// function mashrConfigExists(path) {
-
-// }
-
 async function readYaml(path) {
   return yaml.safeLoad(fs.readFileSync(path, 'utf8'));
 }
-
-// async function writeYaml(path, content) {
-//   const yamlContent = yaml.safeDump(content);
-//   await writeFile(path, yamlContent);
-// }
-
-// const getStagingPath = homedir => (`${getNamiPath(homedir)}/staging`);
-
-// const readConfig = async (homedir) => {
-//   const namiPath = getNamiPath(homedir);
-//   const config = await readFile(`${namiPath}/config.json`);
-//   return JSON.parse(config);
-// };
 
 const readResources = async () => {
   const mashrPath = getMashrPath(homedir);
@@ -113,54 +92,6 @@ const removeResource = async (resource, key) => {
 
   await writeFile(filePath, info);
 };
-
-
-// const writeTemplateToStage = async (lambdaName, template, homedir) => {
-//   await mkdir(`${getNamiPath(homedir)}/staging/${lambdaName}`);
-//   await writeFile(`${getNamiPath(homedir)}/staging/${lambdaName}/${lambdaName}.js`, template);
-// };
-
-// const writeTemplateLocally = async(lambdaName, template) => {
-//   await mkdir(`${process.cwd()}/${lambdaName}`);
-//   await writeFile(`${process.cwd()}/${lambdaName}/${lambdaName}.js`, template);
-// };
-
-// const createKeyPairFile = async (homedir, namiKeyPair) => {
-//   const namiPath = getNamiPath(homedir);
-//   await writeFile(`${namiPath}/${namiKeyPair.KeyName}.pem`, namiKeyPair.KeyMaterial);
-//   await writeFile(`${process.cwd()}/${namiKeyPair.KeyName}.pem`, namiKeyPair.KeyMaterial);
-//   console.log(`${namiKeyPair.KeyName}.pem key pair file has been saved to your current directory. Do not delete this file. You will need it to connect via SSH to all EC2 instances created by Nami.`);
-// };
-
-// const changePermissionsOnKeyPairFile = async (homedir, namiKeyPair) => {
-//   const namiPath = getNamiPath(homedir);
-//   await changePermissions(`${namiPath}/${namiKeyPair.KeyName}.pem`, 0o400);
-//   await changePermissions(`${process.cwd()}/${namiKeyPair.KeyName}.pem`, 0o400);
-// };
-
-// const copyEC2SetupScript = async (namiPath, sourceDir) => {
-//   const sourceFile = `${sourceDir}/docker_mongo_setup.sh`;
-//   const destinationFile = `${namiPath}/docker_mongo_setup.sh`;
-
-//   await copyFile(sourceFile, destinationFile);
-// };
-
-// module.exports = {
-//   readConfig,
-//   createDirectory,
-//   getNamiPath,
-//   exists,
-//   createKeyPairFile,
-//   copyFile,
-//   mkdir,
-//   getStagingPath,
-//   copyEC2SetupScript,
-//   readResources,
-//   writeResources,
-//   changePermissionsOnKeyPairFile,
-//   writeTemplateToStage,
-//   writeTemplateLocally,
-// };
 
 module.exports = {
   copyFile,

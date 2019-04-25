@@ -2,7 +2,7 @@ const path = require('path');
 const { exists } = require('./fileUtils');
 const setGoogleAppCredentials = require('../gcp/setGoogleAppCredentials');
 
-module.exports = async function configureCredentials(mashrConfigObj) {
+const configureCredentials = async (mashrConfigObj) {
   const keyPath = await getPathToKeyFile(mashrConfigObj);
   setGoogleAppCredentials(keyPath);
 };
@@ -10,4 +10,10 @@ module.exports = async function configureCredentials(mashrConfigObj) {
 const getPathToKeyFile = async (mashrConfigObj) => {
   const filename = mashrConfigObj.mashr.json_keyfile;
   return `${path.resolve('./')}/${filename}`;
+};
+
+
+module.exports {
+  configureCredentials,
+  getPathToKeyFile,
 };

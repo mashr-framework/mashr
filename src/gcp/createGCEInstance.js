@@ -1,7 +1,7 @@
 const Compute = require('@google-cloud/compute');
 const { generateGCEResources } = require('./generateGCEResources');
 const ora = require('ora');
-const mashrLogger = require('../utils');
+const { mashrLogger } = require('../utils');
 
 const createGCEInstance = async (mashrConfigObj) => {
   const spinner = ora();

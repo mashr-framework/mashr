@@ -9,8 +9,6 @@ const {
   mashrLogger,
 } = require('../utils');
 
-
-
 const createCloudFunction = async (mashrConfigObj) => {
   const spinner = ora();
   mashrLogger(spinner, 'start', 'Creating cloud function...');

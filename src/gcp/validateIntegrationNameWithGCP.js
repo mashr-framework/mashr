@@ -1,11 +1,13 @@
 const { Storage } = require('@google-cloud/storage');
 const ora = require('ora');
-const { 
+const {
   exec,
-  mashrLogger
+  mashrLogger,
  } = require('../utils');
 
 const validateIntegrationNameWithGCP = async (integrationName) => {
+    console.log('mashrLogger: ', mashrLogger);
+    console.log('mashrLogger: ', typeof mashrLogger);
   const spinner = ora();
 
   try {
@@ -14,6 +16,8 @@ const validateIntegrationNameWithGCP = async (integrationName) => {
       functionNameIsAvailable(integrationName),
     ]);
   } catch (e) {
+    console.log('mashrLogger: ', mashrLogger);
+    console.log('mashrLogger: ', typeof mashrLogger);
     mashrLogger(spinner, 'fail', 'Integration name validation failed');
     throw(e);
   }

@@ -1,5 +1,5 @@
-const { readFile } = require('../utils');
 const yaml = require('js-yaml');
+const { readFile } = require('../utils');
 
 const generateGCEResources = async (mashrConfigObj) => {
   const gemInstallationScript = createGemInstallationScript(mashrConfigObj.mashr.embulk_gems);

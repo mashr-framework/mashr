@@ -1,6 +1,6 @@
+const ora = require('ora');
 const {Storage} = require('@google-cloud/storage');
 const { bucketExists } = require('./validateIntegrationNameWithGCP');
-const ora = require('ora');
 const { mashrLogger } = require('../utils');
 
 const destroyBuckets = async (integrationName) => {

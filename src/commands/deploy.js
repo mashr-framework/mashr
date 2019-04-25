@@ -1,9 +1,10 @@
-const configureCredentials = require('../utils/configureCredentials');
-const addIntegrationToDirectory = require('../utils/addIntegrationToDirectory');
-const validateMashrConfig = require('../utils/validateMashrConfig');
-
 const ora = require('ora');
-const mashrLogger = require('../utils/mashrLogger');
+const {
+  configureCredentials,
+  addIntegrationToDirectory,
+  validateMashrConfig,
+  mashrLogger,
+} = require('../utils');
 
 const {
   createDataset,

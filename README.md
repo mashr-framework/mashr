@@ -1,9 +1,6 @@
 # Mashr
 ![Mashr Header](https://imgur.com/a/AWTdJ93)
 
-<blockquote class="imgur-embed-pub" lang="en" data-id="a/AWTdJ93"><a
-href="//imgur.com/AWTdJ93"></a></blockquote><script async
-src="" charset="utf-8"></script>
 ## Overview
 Mashr is an easy to use data pipeline framework that orchestrates moving data
 from external sources into BigQuery. It’s meant for small software applications

@@ -2,7 +2,6 @@ const {
   createDirectory,
   createJSONFile,
   getMashrPath,
-  writeFile,
 } = require('./fileUtils');
 
 const setupDirectoriesAndFiles = async (homeDir) => {

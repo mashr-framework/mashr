@@ -48,7 +48,7 @@ describe('cloud function', () => {
       if (typeof result !== 'undefined' && result.include(errorMsg)) {
         setTimeout(async () => {
           result = await createCloudFunction(mashrConfigObj);  
-        }, 50000);
+        }, 5000);
       }
   
       expect(result).toBe(undefined);

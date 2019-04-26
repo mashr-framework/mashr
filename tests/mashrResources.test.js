@@ -49,7 +49,7 @@ describe('mashrResources', () => {
       const infoObj = await readResources(testPath);
       const resource = infoObj.integrations.test_integration;
       expect(typeof resource).toBe('object');
-    })
+    });
 
   });
   

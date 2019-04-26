@@ -7,15 +7,27 @@ const {
 
 describe('validateMashrConfig()', () => {
   describe('checkRequiredValues()', () => {
-    
+
   });
 
   describe('validateIntegrationName()', () => {
-    
+
   });
 
   describe('validateEmbulkRunCommand()', () => {
-    
+    const invalidCommand = 'embulk run';
+    const validCommand = 'embulk run embulk_config.yml';
+
+    it('throws error if " embulk_config.yml" isn\'t in run command', () => {
+      expect(() => {
+        validateEmbulkRunCommand(invalidCommand);
+      }).toThrow();
+    });
+
+    it('successfully returns when " embulk_config.yml" is in run command', () => {
+      const result = validateEmbulkRunCommand(validCommand);
+      expect(result).toBe(undefined);
+    });
   });
 
   describe('validateBQNames()', () => {
@@ -38,9 +50,6 @@ describe('validateMashrConfig()', () => {
 //     - throws an error if the name is invalid (*2-3 invalid strings)
 //     - does nothing if the name is valid (1 string)
 
-
-//   - describe validateEmbulkRunCommand()
-//     - throws an error if  embulk_config.yml is not in command
 //     - doesnt do anything if embulk_config.yml is in command
 
 

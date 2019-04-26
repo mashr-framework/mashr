@@ -1,5 +1,6 @@
 const Compute = require('@google-cloud/compute');
 const { generateGCEResources } = require('./generateGCEResources');
+const { getDefaultZone } = require('./getDefaultZone');
 const ora = require('ora');
 const { mashrLogger } = require('../utils');
 
@@ -8,8 +9,8 @@ const createGCEInstance = async (mashrConfigObj) => {
   mashrLogger(spinner, 'start', 'Creating GCE instance...');
 
   const compute = new Compute();
-  console.log(compute);
-  const zone = compute.zone();
+
+  const zone = compute.zone(await getDefaultZone());
 
   const {
     dockerfile,

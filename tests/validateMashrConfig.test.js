@@ -13,8 +13,8 @@ describe('validateMashrConfig()', () => {
     const mashrConfigPath = path.resolve('./') + '/templates/mashrTemplates/rand_config.yml';
     let mashrConfigObj;
 
-    beforeEach(async () => {
-      mashrConfigObj = await readYaml(mashrConfigPath)
+    beforeEach(async() => {
+      mashrConfigObj = await readYaml(mashrConfigPath);
       mashrConfigObj.mashr.json_keyfile = './tests/keyfile.json';
       mashrConfigObj.mashr.service_account_email = 'email@email.com';
       mashrConfigObj.mashr.table_id = 'tableId';
@@ -82,43 +82,43 @@ describe('validateMashrConfig()', () => {
 
   describe('validateIntegrationName()', () => {
     it('returns undefined; no error is thrown if given a valid name', () => {
-      const name = 'happy-path-1test-name'
+      const name = 'happy-path-1test-name';
       const result = validateIntegrationName(name);
       expect(result).toBe(undefined);
     });
 
     it('throws an error if the name starts with an uppercase letter', () => {
       const name = 'Unhappy-path-test-name';
-      expect(() => { 
-        validateIntegrationName(name)
+      expect(() => {
+        validateIntegrationName(name);
       }).toThrow('Invalid integration name');
     });
 
     it('throws an error if the name starts with a number', () => {
       const name = '8nhappy-path-test-name';
-      expect(() => { 
-        validateIntegrationName(name)
+      expect(() => {
+        validateIntegrationName(name);
       }).toThrow('Invalid integration name');
     });
 
     it('throws an error if there are underscores', () => {
       const name = 'unhappy_path-test-name';
-      expect(() => { 
-        validateIntegrationName(name)
+      expect(() => {
+        validateIntegrationName(name);
       }).toThrow('Invalid integration name');
     });
 
     it('throws an error if it ends in a dash', () => {
       const name = 'unhappy-path-test-name-';
-      expect(() => { 
-        validateIntegrationName(name)
+      expect(() => {
+        validateIntegrationName(name);
       }).toThrow('Invalid integration name');
     });
 
     it('throws an error if there is an invalid character', () => {
       const name = 'unhappy-path~test-name';
-      expect(() => { 
-        validateIntegrationName(name)
+      expect(() => {
+        validateIntegrationName(name);
       }).toThrow('Invalid integration name');
     });
   });
@@ -140,20 +140,20 @@ describe('validateMashrConfig()', () => {
   });
 
   describe('validateBQNames()', () => {
-    it('returns undefined for a valid name.', async () => {
+    it('returns undefined for a valid name.', async() => {
       expect(validateBQNames('mashrtest')).toEqual(undefined);
     });
 
-    it('throws an error if there is a dash', async () => {
+    it('throws an error if there is a dash', async() => {
       expect(() => {
         validateBQNames('mashr-test');
-      }).toThrow("Name must match regex: ^[_A-z0-9]{0,1024}$");
+      }).toThrow('Name must match regex: ^[_A-z0-9]{0,1024}$');
     });
 
-    it('throws an error if there is a strange chracter `$`', async () => {
+    it('throws an error if there is a strange chracter `$`', async() => {
       expect(() => {
         validateBQNames('ma$hr-test');
-      }).toThrow("Name must match regex: ^[_A-z0-9]{0,1024}$");
+      }).toThrow('Name must match regex: ^[_A-z0-9]{0,1024}$');
     });
   });
 });

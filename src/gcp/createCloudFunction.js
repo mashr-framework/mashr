@@ -9,7 +9,7 @@ const {
   mashrLogger,
 } = require('../utils');
 
-const createCloudFunction = async (mashrConfigObj) => {
+const createCloudFunction = async(mashrConfigObj) => {
   const spinner = ora();
   mashrLogger(spinner, 'start', 'Creating cloud function...');
 
@@ -26,7 +26,7 @@ const createCloudFunction = async (mashrConfigObj) => {
 
   await writeFile('./function/package.json', packageJson);
 
-  // function name cannot have '-' 
+  // function name cannot have '-'
   mashrConfigObj.functionName = mashrConfigObj.mashr.integration_name.replace(/\-/g, '_');
 
   await setupCloudFunction(functionTemplatePath, mashrConfigObj, spinner);
@@ -36,7 +36,7 @@ const createCloudFunction = async (mashrConfigObj) => {
 const { exec } = require('../utils/fileUtils');
 const path = require('path');
 
-const deployCloudFunction = async (mashrConfigObj, spinner) => {
+const deployCloudFunction = async(mashrConfigObj, spinner) => {
   mashrLogger(spinner, 'start', 'Deploying cloud function...');
 
   const functionName = mashrConfigObj.mashr.integration_name;
@@ -45,27 +45,27 @@ const deployCloudFunction = async (mashrConfigObj, spinner) => {
 
   const command = `gcloud functions deploy ${mashrConfigObj.functionName} --runtime nodejs8 ` +
                   `--trigger-resource ${bucketName} ` +
-                  `--trigger-event google.storage.object.finalize`;
+                  '--trigger-event google.storage.object.finalize';
 
   await exec(command, {
     cwd: `${path.resolve('./')}/function`,
   }).catch((e) => {
     mashrLogger(spinner, 'fail', 'Cloud function creation failed');
-    throw(e);
+    throw (e);
   });
 
   mashrLogger(spinner, 'succeed', `Cloud function "${functionName}" is created`);
 };
 
 
-const setupCloudFunction = async (functionTemplatePath, mashrConfigObj, spinner) => {
+const setupCloudFunction = async(functionTemplatePath, mashrConfigObj, spinner) => {
   let content = await readFile(`${functionTemplatePath}/index.js`);
   content = content.toString();
 
   content = content.replace('_FUNCTION_NAME_', mashrConfigObj.functionName)
-                   .replace('_PROJECT_ID_', mashrConfigObj.mashr.project_id)
-                   .replace('_DATASET_ID_', mashrConfigObj.mashr.dataset_id)
-                   .replace('_TABLE_ID_', mashrConfigObj.mashr.table_id);
+    .replace('_PROJECT_ID_', mashrConfigObj.mashr.project_id)
+    .replace('_DATASET_ID_', mashrConfigObj.mashr.dataset_id)
+    .replace('_TABLE_ID_', mashrConfigObj.mashr.table_id);
 
   await writeFile('./function/index.js', content);
 

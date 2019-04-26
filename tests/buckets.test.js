@@ -9,7 +9,7 @@ const {
   configureCredentials,
   destroyBuckets,
   validateIntegrationNameWithGCP,
-} = require ('../src/gcp');
+} = require('../src/gcp');
 
 const {
   addIntegrationToDirectory,
@@ -18,13 +18,13 @@ const {
   readYaml,
   removeResource,
   validateMashrConfig,
-} = require ('../src/utils');
+} = require('../src/utils');
 
 describe('GCS buckets', function() {
   let mashrConfigObj;
   let integrationName;
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     const mashrConfigPath = './templates/mashrTemplates/default_config.yml';
     const keyfilePath = './tests/keyfile.json';
     mashrConfigObj = await readYaml(mashrConfigPath);
@@ -36,33 +36,33 @@ describe('GCS buckets', function() {
     await configureCredentials(mashrConfigObj);
   });
 
-  afterAll(async () => {
+  afterAll(async() => {
     await destroyBuckets(integrationName);
   });
 
-  beforeEach(async () => {
+  beforeEach(async() => {
     jest.setTimeout(120000);
   });
 
   describe('createBuckets()', () => {
-    it('throws error if mashrConfigObj is not passed', async () => {
+    it('throws error if mashrConfigObj is not passed', async() => {
       await expect(createBuckets())
         .rejects
         .toThrow(/A name is required to create a bucket/);
     });
 
-    it('successfully returns; does not throw an error', async () => {
-      const result = await createBuckets(integrationName)
+    it('successfully returns; does not throw an error', async() => {
+      const result = await createBuckets(integrationName);
 
       expect(result).toBe(undefined);
     });
 
-    it('created a bucket; bucketExists returns true', async () => {
+    it('created a bucket; bucketExists returns true', async() => {
       const result = await bucketExists(integrationName);
       expect(result).toBe(true);
     });
 
-    it('createBuckets throws an error; bucket already exists', async () => {
+    it('createBuckets throws an error; bucket already exists', async() => {
       await expect(createBuckets(integrationName))
         .rejects
         .toThrow('You already own this bucket. Please select another name.');
@@ -71,17 +71,17 @@ describe('GCS buckets', function() {
   });
 
   describe('destroyBuckets()', () => {
-    it('successfully returns; does not throw an error', async () => {
+    it('successfully returns; does not throw an error', async() => {
       const result = await destroyBuckets(integrationName);
       expect(result).toBe(undefined);
     });
 
-    it('destroyed staging bucket; bucketExists returns false', async () => {
+    it('destroyed staging bucket; bucketExists returns false', async() => {
       const result = await bucketExists(integrationName);
       expect(result).toBe(false);
     });
 
-    it('destroyed archive bucket; bucketExists returns false', async () => {
+    it('destroyed archive bucket; bucketExists returns false', async() => {
       const result = await bucketExists(integrationName + '_archive');
       expect(result).toBe(false);
     });

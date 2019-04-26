@@ -4,7 +4,7 @@ const { getDefaultZone } = require('./getDefaultZone');
 const ora = require('ora');
 const { mashrLogger } = require('../utils');
 
-const createGCEInstance = async (mashrConfigObj) => {
+const createGCEInstance = async(mashrConfigObj) => {
   const spinner = ora();
   mashrLogger(spinner, 'start', 'Creating GCE instance...');
 
@@ -24,15 +24,15 @@ const createGCEInstance = async (mashrConfigObj) => {
     os: 'debian-9',
     http: true,
     machineType: 'g1-small',
-    tags: ["mashr"],
+    tags: ['mashr'],
     serviceAccounts: [
-          {
-            "email": mashrConfigObj.mashr.service_account_email,
-            "scopes": [
-              "https://www.googleapis.com/auth/cloud-platform"
-            ]
-          }
+      {
+        email: mashrConfigObj.mashr.service_account_email,
+        scopes: [
+          'https://www.googleapis.com/auth/cloud-platform',
         ],
+      },
+    ],
     metadata: {
       items: [
         {
@@ -64,7 +64,7 @@ const createGCEInstance = async (mashrConfigObj) => {
           --log-opt mode=non-blocking \
           --label mashr_integration=${mashrConfigObj.mashr.integration_name} \
           mashr
-          `
+          `,
         },
       ],
     },
@@ -74,7 +74,7 @@ const createGCEInstance = async (mashrConfigObj) => {
 
   const data = await vm.create(config).catch((e) => {
     mashrLogger(spinner, 'fail', 'GCE Instance creation failed');
-    throw(e);
+    throw (e);
   });
 
   const operation = data[1];
@@ -88,5 +88,5 @@ const createGCEInstance = async (mashrConfigObj) => {
 };
 
 module.exports = {
-  createGCEInstance
-}
+  createGCEInstance,
+};

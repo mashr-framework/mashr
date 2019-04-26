@@ -7,7 +7,7 @@ const {
   readResources,
 } = require('./fileUtils');
 
-const validateMashrConfig = async (mashrConfigPath) => {
+const validateMashrConfig = async(mashrConfigPath) => {
   const spinner = ora();
 
   if (!(await exists(mashrConfigPath))) {
@@ -25,7 +25,7 @@ const validateMashrConfig = async (mashrConfigPath) => {
     validateKeyfile(mashrConfigObj.mashr.json_keyfile);
     validateEmbulkRunCommand(mashrConfigObj.mashr.embulk_run_command);
   } catch (e) {
-    throw(e);
+    throw (e);
   }
 
   return mashrConfigObj;
@@ -47,7 +47,7 @@ const errorIfMissing = (key, value) => {
   }
 };
 
-const checkIntegrationExists = async (integrationName) => {
+const checkIntegrationExists = async(integrationName) => {
   const infoObj = await readResources();
 
   if (infoObj.integrations[integrationName]) {
@@ -56,13 +56,13 @@ const checkIntegrationExists = async (integrationName) => {
 };
 
 const validateIntegrationName = (integrationName) => {
-  if ( !(/^(?:[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?)$/.test(integrationName)) ) {
+  if (!(/^(?:[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?)$/.test(integrationName))) {
     throw new Error(`Invalid integration name: ${integrationName}.
 Name must match regex: (?:[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?)`);
   }
 };
 
-const validateKeyfile = async (keyfileName) => {
+const validateKeyfile = async(keyfileName) => {
   const keyfilePath = `${path.resolve('./')}/${keyfileName}`;
   const parts = keyfilePath.split('.');
   const hasValidName = parts[parts.length - 1] === 'json' && parts[0].length > 1;
@@ -84,7 +84,7 @@ const validateEmbulkRunCommand = (runCommand) => {
 };
 
 const validateBQNames = (name) => {
-  if ( !(/^[_A-z0-9]{0,1024}$/.test(name)) ) {
+  if (!(/^[_A-z0-9]{0,1024}$/.test(name))) {
     throw new Error(`Invalid dataset or table name: ${name}.
 Name must match regex: ^[_A-z0-9]{0,1024}$`);
   }

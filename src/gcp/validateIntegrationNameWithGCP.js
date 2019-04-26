@@ -5,7 +5,7 @@ const {
   mashrLogger,
 } = require('../utils');
 
-const validateIntegrationNameWithGCP = async (integrationName) => {
+const validateIntegrationNameWithGCP = async(integrationName) => {
 
   const spinner = ora();
 
@@ -16,7 +16,7 @@ const validateIntegrationNameWithGCP = async (integrationName) => {
     ]);
   } catch (e) {
     mashrLogger(spinner, 'fail', 'Integration name validation failed');
-    throw(e);
+    throw (e);
   }
 };
 
@@ -33,7 +33,7 @@ const validateBucketName = (bucketName, bucketsSpinner) => {
   }
 };
 
-const bucketExists = async (bucketName) => {
+const bucketExists = async(bucketName) => {
   const storage = new Storage();
   const bucket = storage.bucket(bucketName);
   let data;
@@ -41,17 +41,17 @@ const bucketExists = async (bucketName) => {
   try {
     data = await bucket.exists();
   } catch (e) {
-      if (!!e.errors && e.errors[0].reason === 'forbidden') {
-        return true;
-      } else {
-        throw(e);
-      }
+    if (!!e.errors && e.errors[0].reason === 'forbidden') {
+      return true;
+    } else {
+      throw (e);
+    }
   }
 
   return data[0];
 };
 
-const bucketsAreAvailable = async (bucketName) => {
+const bucketsAreAvailable = async(bucketName) => {
   const bucketsSpinner = ora();
 
   validateBucketName(bucketName, bucketsSpinner);
@@ -61,7 +61,7 @@ const bucketsAreAvailable = async (bucketName) => {
     bucketExists(bucketName + '_archive'),
   ]);
 
-  const anyExists = results.some(function (result) {
+  const anyExists = results.some(function(result) {
     return result === true;
   });
 
@@ -71,13 +71,13 @@ const bucketsAreAvailable = async (bucketName) => {
     const error = new Error(`Bucket name "${bucketName}" is taken. ` +
                             'Please provide a different integration_name in the ' +
                             'mashr_config.yml file.');
-    throw(error);
+    throw (error);
   }
-  
+
   mashrLogger(bucketsSpinner, 'succeed', 'Bucket name is valid');
 };
 
-const functionExists = async (integrationName) => {
+const functionExists = async(integrationName) => {
   const { stdout, stderr } = await exec('gcloud functions list');
   let lines = stdout.split('\n');
 
@@ -89,7 +89,7 @@ const functionExists = async (integrationName) => {
   return false;
 };
 
-const functionNameIsAvailable = async (integrationName) => {
+const functionNameIsAvailable = async(integrationName) => {
   const functionSpinner = ora();
 
   mashrLogger(functionSpinner, 'start');
@@ -98,9 +98,9 @@ const functionNameIsAvailable = async (integrationName) => {
     mashrLogger(functionSpinner, 'fail', 'Function name is unavailable');
 
     const error = new Error(`Cloud function name "${integrationName}" is taken. ` +
-                            'Please provide a different integration_name in the ' + 
+                            'Please provide a different integration_name in the ' +
                             'mashr_config.yml file.');
-    throw(error);
+    throw (error);
   }
 
   mashrLogger(functionSpinner, 'succeed', 'Function name is valid');
@@ -112,5 +112,5 @@ module.exports = {
   bucketExists,
   functionExists,
   functionNameIsAvailable,
-  bucketsAreAvailable
+  bucketsAreAvailable,
 };

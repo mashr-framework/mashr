@@ -6,7 +6,7 @@ const args = minimist(process.argv.slice(2));
 
 let cmd = args._[0] || 'help';
 
-(async () => {
+(async() => {
 
   try {
 
@@ -26,6 +26,6 @@ let cmd = args._[0] || 'help';
     await executeCommands(cmd, args);
 
   } catch (err) {
-    throw(err);
+    throw (err);
   }
 })();

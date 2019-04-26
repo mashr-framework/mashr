@@ -3,7 +3,7 @@ const { BigQuery } = require('@google-cloud/bigquery');
 const ora = require('ora');
 const { mashrLogger } = require('../utils');
 
-const destroyDataset = async (datasetId) => {
+const destroyDataset = async(datasetId) => {
   const spinner = ora();
 
   const bigquery = new BigQuery();
@@ -17,7 +17,7 @@ const destroyDataset = async (datasetId) => {
       mashrLogger(spinner, 'succeed', `Dataset "${datasetId}" is destroyed`);
     } catch (e) {
       mashrLogger(spinner, 'fail', 'Dataset deletion failed');
-      throw(e);
+      throw (e);
     }
   }
 };

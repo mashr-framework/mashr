@@ -9,19 +9,19 @@ const {
   readResources,
 } = require('../utils');
 
-const { 
+const {
   configureCredentials,
   destroyBuckets,
   destroyGCEInstance,
   destroyCloudFunction,
 } = require('../gcp');
 
-module.exports = async (args) => {
+module.exports = async(args) => {
 
   const spinner = ora();
   const mashrConfigObj = await readYaml('./mashr_config.yml').catch((e) => {
     mashrLogger(spinner, 'fail', 'Destroy integration error');
-    throw(e);
+    throw (e);
   });
 
   await configureCredentials(mashrConfigObj);
@@ -32,7 +32,7 @@ module.exports = async (args) => {
 
   if (!integrations[integrationName]) {
     const message = `"${integrationName}" is not an integration. Run ` +
-                    `"mashr list" to see all integrations.`
+                    '"mashr list" to see all integrations.';
 
     mashrLogger(spinner, 'fail', message);
   } else {

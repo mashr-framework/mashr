@@ -6,7 +6,7 @@ const {
   createBuckets,
   createCloudFunction,
   createGCEInstance,
-  configureCredentials
+  configureCredentials,
 } = require('../gcp');
 
 const {
@@ -16,11 +16,11 @@ const {
 } = require('../utils');
 
 
-module.exports = async (args) => {
+module.exports = async(args) => {
   const mashrConfigObj = await validateMashrConfig('./mashr_config.yml').catch((e) => {
     const spinner = ora();
     mashrLogger(spinner, 'fail', 'Deploy integration error');
-    throw(e);
+    throw (e);
   });
 
   await configureCredentials(mashrConfigObj);

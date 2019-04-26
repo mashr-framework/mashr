@@ -1,7 +1,7 @@
 const yaml = require('js-yaml');
 const { readFile } = require('../utils');
 
-const generateGCEResources = async (mashrConfigObj) => {
+const generateGCEResources = async(mashrConfigObj) => {
   const gemInstallationScript = createGemInstallationScript(mashrConfigObj.mashr.embulk_gems);
   const embulkScript = createEmbulkScript(mashrConfigObj.mashr.embulk_run_command);
   const embulkConfig = createEmbulkConfig(mashrConfigObj);
@@ -23,7 +23,7 @@ const generateGCEResources = async (mashrConfigObj) => {
 const createEmbulkScript = (runCommand) => {
   runCommand = runCommand.replace(
     'embulk_config.yml', '/root/mashr/embulk_config.yml.liquid');
-// sends logs of cron job to /proc/1/fd/1, where docker listens
+  // sends logs of cron job to /proc/1/fd/1, where docker listens
   const script =
 `#!/bin/bash
 export DATE=$(date +"%Y-%m-%dT%H-%M-%S-%3N")
@@ -32,14 +32,14 @@ ${runCommand} >> /proc/1/fd/1
 `;
 
   return script;
-}
+};
 
 const createGemInstallationScript = (gems) => {
   if (!gems) return '#!/bin/bash';
 
   const installGemsArray = gems.map((name) => (
-      `embulk gem install ${name}`
-    )
+    `embulk gem install ${name}`
+  )
   );
 
   return `#!/bin/bash\n${installGemsArray.join('\n')}`;
@@ -58,16 +58,16 @@ const createEmbulkConfig = (mashrConfigObj) => {
     file_ext: '.json',
     auth_method: 'compute_engine',
     formatter: {
-      type: 'jsonl'
+      type: 'jsonl',
     },
   };
 
   return yaml.safeDump(embulkConfig);
-}
+};
 
 module.exports = {
   generateGCEResources,
   createEmbulkScript,
   createGemInstallationScript,
   createEmbulkConfig,
-}
+};

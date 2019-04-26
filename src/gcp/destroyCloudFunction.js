@@ -1,11 +1,11 @@
 const ora = require('ora');
 const { functionExists } = require('./validateIntegrationNameWithGCP');
-const { 
+const {
   exec,
-  mashrLogger
+  mashrLogger,
 } = require('../utils');
 
-const destroyCloudFunction = async (integrationName) => {
+const destroyCloudFunction = async(integrationName) => {
   const spinner = ora();
   mashrLogger(spinner, 'start', 'Destroying cloud function...');
 
@@ -14,7 +14,7 @@ const destroyCloudFunction = async (integrationName) => {
   if (await functionExists(integrationName)) {
     await exec(command).catch((e) => {
       mashrLogger(spinner, 'fail', 'Cloud function deletion failed');
-      throw(e);
+      throw (e);
     });
 
     mashrLogger(spinner, 'succeed', `Cloud function "${integrationName}" is destroyed`);
@@ -28,5 +28,5 @@ const destroyCloudFunction = async (integrationName) => {
 };
 
 module.exports = {
-  destroyCloudFunction
+  destroyCloudFunction,
 };

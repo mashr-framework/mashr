@@ -1,6 +1,6 @@
 const readline = require('readline-sync');
 
-const confirmDestroy = async () => {
+const confirmDestroy = async() => {
   const confirmationMessage = `You are about to delete these resources:
   * Remove the integration from the list of mashr integrations
   * Destroy all related GCP resources, including:
@@ -14,8 +14,8 @@ Continue (y/n)> `;
   let response = readline.question(confirmationMessage);
   response = response.trim();
 
-  if (response === 'y') { response = 'yes'}
-  if (response === 'n') { response = 'no'}
+  if (response === 'y') { response = 'yes'; }
+  if (response === 'n') { response = 'no'; }
 
   switch (response) {
     case 'yes':
@@ -28,7 +28,7 @@ Continue (y/n)> `;
       break;
     default:
       console.log('');
-      console.log(`Please choose 'y' or 'n'.`);
+      console.log('Please choose \'y\' or \'n\'.');
       console.log('');
       confirmDestroy();
       break;
@@ -36,7 +36,7 @@ Continue (y/n)> `;
 };
 
 module.exports = {
-  confirmDestroy
-}
+  confirmDestroy,
+};
 
 

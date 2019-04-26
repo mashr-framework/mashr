@@ -3,7 +3,7 @@ const ora = require('ora');
 const { copyFile } = require('./fileUtils');
 const { mashrLogger } = require('./mashrLogger');
 
-const copyMashrConfigTemplate = async (template) => {
+const copyMashrConfigTemplate = async(template) => {
 
   const spinner = ora();
   const configTemplate = templatePath(template);
@@ -19,13 +19,13 @@ const copyMashrConfigTemplate = async (template) => {
 };
 
 const templatePath = (template) => {
-  basePath =`${__dirname}/../../templates/mashrTemplates`;
+  basePath = `${__dirname}/../../templates/mashrTemplates`;
 
   const templates = {
     default: 'default_config.yml',
     random: 'rand_config.yml',
     psql: 'psql_config.yml',
-    http: 'http_config.yml'
+    http: 'http_config.yml',
   };
 
   if (templates[template]) {

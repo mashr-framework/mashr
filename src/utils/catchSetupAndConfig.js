@@ -3,10 +3,10 @@ const {
   exists,
   createDirectory,
 } = require('./fileUtils');
-const { setupDirectoriesAndFiles } = require ('./setupDirectoriesAndFiles');
+const { setupDirectoriesAndFiles } = require('./setupDirectoriesAndFiles');
 const { copyMashrConfigTemplate } = require('./copyMashrConfigTemplate');
 
-const catchSetupAndConfig = async (homeDir, template) => {
+const catchSetupAndConfig = async(homeDir, template) => {
   const mashrPath = await getMashrPath(homeDir);
   const mashrDirExists = await exists(mashrPath);
 
@@ -21,4 +21,4 @@ const catchSetupAndConfig = async (homeDir, template) => {
 
 module.exports = {
   catchSetupAndConfig,
-}
+};

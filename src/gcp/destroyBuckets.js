@@ -3,19 +3,19 @@ const {Storage} = require('@google-cloud/storage');
 const { bucketExists } = require('./validateIntegrationNameWithGCP');
 const { mashrLogger } = require('../utils');
 
-const destroyBuckets = async (integrationName) => {
+const destroyBuckets = async(integrationName) => {
   await Promise.all([destroyBucket(integrationName),
     destroyBucket(integrationName + '_archive')]);
 };
 
-const destroyBucket = async (integrationName) => {
+const destroyBucket = async(integrationName) => {
   const spinner = ora();
 
   mashrLogger(spinner, 'start');
 
   const storage = new Storage();
   const bucket = storage.bucket(integrationName);
-  
+
   if (await bucketExists(integrationName)) {
     await bucket.deleteFiles({ force: true });
     await bucket.delete();

@@ -1,8 +1,8 @@
 const menus = {
   main: function() {
     return Object.keys(this)
-                 .filter(key => key !== 'main')
-                 .map(key => this[key] ).join('\n\n'); 
+      .filter(key => key !== 'main')
+      .map(key => this[key]).join('\n\n');
   },
   help: `
     help <command> 
@@ -50,10 +50,10 @@ const menus = {
 
     Lists all integrations that the user has deployed.
   `,
-}
+};
 
 module.exports = (args) => {
   const subCmd = args._[0] === 'help' ? args._[1] : args._[0];
-  
+
   console.log(menus[subCmd] || menus.main());
-}
+};

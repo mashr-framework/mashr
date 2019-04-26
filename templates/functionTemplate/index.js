@@ -5,12 +5,12 @@ exports._FUNCTION_NAME_ = (event, context, callback) => {
 
   const fileName = event.name;
 
-  const projectId = "_PROJECT_ID_";
-  const datasetId = "_DATASET_ID_";
-  const tableId = "_TABLE_ID_";
+  const projectId = '_PROJECT_ID_';
+  const datasetId = '_DATASET_ID_';
+  const tableId = '_TABLE_ID_';
 
   const bucketName = event.bucket;
-  
+
   const gcsFile = `gs://${bucketName}/${fileName}`;
 
   console.log(`Loading ${fileName} into ${tableId}.`);

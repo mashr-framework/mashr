@@ -14,7 +14,7 @@ const yaml = require('js-yaml');
 const path = require('path');
 const os = require('os');
 const exec = promisify(require('child_process').exec);
-const rimraf = require("rimraf"); // similar to `rm -Rf` for recursive remove
+const rimraf = require('rimraf'); // similar to `rm -Rf` for recursive remove
 
 const homedir = os.homedir();
 
@@ -27,7 +27,7 @@ const exists = async path => (
   })
 );
 
-const createDirectory = async (name, path) => {
+const createDirectory = async(name, path) => {
   const dir = `${path}/${name}`;
 
   const dirExists = await exists(dir);
@@ -36,12 +36,12 @@ const createDirectory = async (name, path) => {
   }
 };
 
-const createJSONFile = async (fileName, path, json) => {
+const createJSONFile = async(fileName, path, json) => {
   const configStr = JSON.stringify(json, null, 2);
   await writeFile(`${path}/${fileName}.json`, configStr);
 };
 
-const readJsonFile = async (filePath) => {
+const readJsonFile = async(filePath) => {
   var contents = await readFile(filePath);
   return JSON.parse(contents);
 };
@@ -52,18 +52,18 @@ async function readYaml(path) {
   return yaml.safeLoad(fs.readFileSync(path, 'utf8'));
 }
 
-const readResources = async (home = homedir) => {
+const readResources = async(home = homedir) => {
   const mashrPath = getMashrPath(home);
   const filePath = `${mashrPath}/info.json`;
   let resourceInfo;
 
   try {
     resourceInfo = await readFile(filePath);
-  } catch(e) {
+  } catch (e) {
     if (e.message.includes('no such file')) {
       throw new Error('Please run `mashr init` first.' + `\n${e}`);
     } else {
-      throw(e);
+      throw (e);
     }
   }
 
@@ -71,7 +71,7 @@ const readResources = async (home = homedir) => {
 };
 
 // [TODO: change to singular writeResource]
-const writeResources = async (resource, key, object, home = homedir) => {
+const writeResources = async(resource, key, object, home = homedir) => {
   const mashrDir = getMashrPath(home);
   const filePath = `${mashrDir}/info.json`;
   const data = await readFile(filePath);
@@ -84,13 +84,13 @@ const writeResources = async (resource, key, object, home = homedir) => {
   await writeFile(filePath, info);
 };
 
-const removeResource = async (resource, key, home = homedir) => {
+const removeResource = async(resource, key, home = homedir) => {
   const mashrDir = getMashrPath(home);
   const filePath = `${mashrDir}/info.json`;
   const data = await readFile(filePath);
 
   let info = JSON.parse(data);
-  delete info[resource][key]
+  delete info[resource][key];
 
   info = JSON.stringify(info, null, 2);
 

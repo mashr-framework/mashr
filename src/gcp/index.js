@@ -5,36 +5,36 @@ const { setGoogleAppCredentials } = require('./setGoogleAppCredentials');
 const { configureCredentials } = require('./configureCredentials');
 const { getDefaultZone } = require('./getDefaultZone');
 const { destroyDataset } = require('./destroyDataset');
-const { 
-  createBucket, 
+const {
+  createBucket,
   createBuckets,
 } = require('./createBuckets');
-const { 
+const {
   createCloudFunction,
   deployCloudFunction,
-  setupCloudFunction 
+  setupCloudFunction,
 } = require('./createCloudFunction');
-const {   
+const {
   destroyBuckets,
-  destroyBucket
+  destroyBucket,
 } = require('./destroyBuckets');
-const {   
+const {
   destroyGCEInstance,
-  getGCEInstance
+  getGCEInstance,
 } = require('./destroyGCEInstance');
-const {   
+const {
   generateGCEResources,
   createEmbulkScript,
   createGemInstallationScript,
-  createEmbulkConfig 
+  createEmbulkConfig,
 } = require('./generateGCEResources');
-const {   
+const {
   validateIntegrationNameWithGCP,
   validateBucketName,
   bucketExists,
   functionExists,
   functionNameIsAvailable,
-  bucketsAreAvailable 
+  bucketsAreAvailable,
 } = require('./validateIntegrationNameWithGCP');
 
 module.exports = {
@@ -64,4 +64,4 @@ module.exports = {
   setGoogleAppCredentials,
   validateIntegrationNameWithGCP,
   validateBucketName,
-}
+};

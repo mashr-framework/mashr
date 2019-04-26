@@ -1,11 +1,11 @@
-const { 
+const {
   readResources,
-  mashrLogger
- } = require('../utils');
+  mashrLogger,
+} = require('../utils');
 const ora = require('ora');
 const { table } = require('table');
 
-module.exports = async (args) => {
+module.exports = async(args) => {
   const spinner = ora();
 
   const infoObj = await readResources();

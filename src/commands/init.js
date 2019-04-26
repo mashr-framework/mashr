@@ -3,8 +3,8 @@ const { catchSetupAndConfig } = require('../utils');
 
 const homedir = os.homedir();
 
-module.exports = async (args) => {
+module.exports = async(args) => {
   const template = args.template;
   await catchSetupAndConfig(homedir, template);
-}
+};
 

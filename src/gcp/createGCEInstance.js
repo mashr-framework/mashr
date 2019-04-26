@@ -8,8 +8,8 @@ const createGCEInstance = async (mashrConfigObj) => {
   mashrLogger(spinner, 'start', 'Creating GCE instance...');
 
   const compute = new Compute();
-
-  const zone = compute.zone('us-central1-a');
+  console.log(compute);
+  const zone = compute.zone();
 
   const {
     dockerfile,

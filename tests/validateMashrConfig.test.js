@@ -1,6 +1,6 @@
 const {
   validateMashrConfig,
-  validateIngrationName,
+  validateIntegrationName,
   validateEmbulkRunCommand,
   validateBQNames,
 } = require('../src/utils');
@@ -11,7 +11,46 @@ describe('validateMashrConfig()', () => {
   });
 
   describe('validateIntegrationName()', () => {
+    it('returns undefined; no error is thrown if given a valid name', () => {
+      const name = 'happy-path-1test-name'
+      const result = validateIntegrationName(name);
+      expect(result).toBe(undefined);
+    });
 
+    it('throws an error if the name starts with an uppercase letter', () => {
+      const name = 'Unhappy-path-test-name';
+      expect(() => { 
+        validateIntegrationName(name)
+      }).toThrow('Invalid integration name');
+    });
+
+    it('throws an error if the name starts with a number', () => {
+      const name = '8nhappy-path-test-name';
+      expect(() => { 
+        validateIntegrationName(name)
+      }).toThrow('Invalid integration name');
+    });
+
+    it('throws an error if there are underscores', () => {
+      const name = 'unhappy_path-test-name';
+      expect(() => { 
+        validateIntegrationName(name)
+      }).toThrow('Invalid integration name');
+    });
+
+    it('throws an error if it ends in a dash', () => {
+      const name = 'unhappy-path-test-name-';
+      expect(() => { 
+        validateIntegrationName(name)
+      }).toThrow('Invalid integration name');
+    });
+
+    it('throws an error if there is an invalid character', () => {
+      const name = 'unhappy-path~test-name';
+      expect(() => { 
+        validateIntegrationName(name)
+      }).toThrow('Invalid integration name');
+    });
   });
 
   describe('validateEmbulkRunCommand()', () => {

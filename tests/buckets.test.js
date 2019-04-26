@@ -1,14 +1,6 @@
 // to test, you need your service account keyfile.json
 // in the "tests" directory of the npm package
 
-// - buckets.test.js
-  // - describe createBuckets()
-    // - expect createBuckets to not throw an error
-    // - expect bucketExists to return true (x2 for archive)
-  // - describe destroyBuckets()
-    // - expect destroyBucket to not throw an error
-    // - expect bucketExists to return false
-
 const destroy = require('../src/commands/destroy');
 const {
   bucketExists,
@@ -36,10 +28,8 @@ describe('GCS buckets', function() {
     const mashrConfigPath = './templates/mashrTemplates/default_config.yml';
     const keyfilePath = './tests/keyfile.json';
     mashrConfigObj = await readYaml(mashrConfigPath);
-    // const keyfileObj = await readJsonFile(keyfilePath);
     integrationName = 'mashr-test-buckets';
 
-    // mashrConfigObj.mashr.service_account_email = keyfileObj.client_email;
     mashrConfigObj.mashr.json_keyfile = keyfilePath;
     mashrConfigObj.mashr.integration_name = integrationName;
 

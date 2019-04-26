@@ -42,7 +42,15 @@ describe('cloud function', () => {
     }, 120000);
 
     it('successfully returns; does not throw an error', async () => {
-      const result = await createCloudFunction(mashrConfigObj);
+      let result = await createCloudFunction(mashrConfigObj);  
+      const errorMsg = `is already in progress`;
+
+      if (typeof result !== 'undefined' && result.include(errorMsg)) {
+        setTimeout(async () => {
+          result = await createCloudFunction(mashrConfigObj);  
+        }, 50000);
+      }
+  
       expect(result).toBe(undefined);
     }, 120000);
 

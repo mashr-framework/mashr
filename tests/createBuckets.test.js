@@ -9,15 +9,17 @@
 const ora = require('ora');
 const {
   addIntegrationToDirectory,
-  validateMashrConfig,
-  mashrLogger,
   configureCredentials,
+  mashrLogger,
+  readJsonFile,
+  readYaml,
   removeResource,
+  validateMashrConfig,
 } = require ('../src/utils');
 const {
-  validateIntegrationNameWithGCP,
   createBuckets,
   destroyBuckets,
+  validateIntegrationNameWithGCP,
 } = require ('../src/gcp');
 const destroy = require('../src/commands/destroy');
 
@@ -26,28 +28,21 @@ describe('createBuckets()', function() {
   let integrationName;
 
   beforeAll(async () => {
-    mashrConfigObj = await validateMashrConfig('./tests/mashr_config.yml')
-      .catch((e) => {
-        const spinner = ora();
-        mashrLogger(spinner, 'fail', 'Deploy integration error');
-        throw(e);
-      });
+    const mashrConfigPath = './templates/mashrTemplates/default_config.yml';
+    mashrConfigObj = await readYaml(mashrConfigPath);
+    const keyfilePath = './tests/keyfile.json';
+    // const keyfileObj = await readJsonFile(keyfilePath);
+    integrationName = 'matmashr-test';
+
+    // mashrConfigObj.mashr.service_account_email = keyfileObj.client_email;
+    mashrConfigObj.mashr.json_keyfile = keyfilePath;
+    mashrConfigObj.mashr.integration_name = integrationName;
 
     await configureCredentials(mashrConfigObj);
-    integrationName = mashrConfigObj.mashr.integration_name.trim();
-    await validateIntegrationNameWithGCP(integrationName);
-    await addIntegrationToDirectory(mashrConfigObj);
   });
 
   afterAll(async () => {
-    console.log('teardown started');
-
-    await Promise.all([
-      removeResource('integrations', integrationName),
-      destroyBuckets(integrationName),
-    ]);
-
-    console.log('teardown complete');
+    await destroyBuckets(integrationName);
   });
 
   beforeEach(async () => {
@@ -74,11 +69,11 @@ describe('createBuckets()', function() {
     expect(errorThrown).toBe(true);
   });
 
-  it('Create buckets throw an error. Using `rejects`', async () => {
-    expect(
-      createBuckets(integrationName)
-    ).rejects.toEqual(new Error);
-  });
+  // it('Create buckets throw an error. Using `rejects`', async () => {
+    // expect(
+      // createBuckets(integrationName)
+    // ).rejects.toEqual(new Error);
+  // });
 
   // it('Staging bucket created?', async () => {
   // });

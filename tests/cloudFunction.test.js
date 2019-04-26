@@ -11,25 +11,19 @@ const {
 } = require('../src/gcp');
 
 const {
-  validateMashrConfig,
   rimraf,
   readYaml,
 } = require('../src/utils');
 
 describe('cloud function', () => {
   let mashrConfigObj;
-  let integrationName;
+  const integrationName = 'mashr_test_cloud_function';
 
   beforeAll(async () => {
     const mashrConfigPath = './templates/mashrTemplates/default_config.yml';
     mashrConfigObj = await readYaml(mashrConfigPath);
-
-    mashrConfigObj.mashr.json_keyfile = './tests/keyfile.json';
-    mashrConfigObj.mashr.integration_name = 'mashr_test_cloud_function';
-
-    console.log(mashrConfigObj);
-
-    integrationName = mashrConfigObj.mashr.integration_name;
+    mashrConfigObj.mashr.integration_name = integrationName;
+    mashrConfigObj.mashr.json_keyfile = './tests/keyfile.json'
 
     await configureCredentials(mashrConfigObj);
     await createBuckets(integrationName);
@@ -48,7 +42,6 @@ describe('cloud function', () => {
     }, 120000);
 
     it('successfully returns; does not throw an error', async () => {
-      console.log(mashrConfigObj);
       const result = await createCloudFunction(mashrConfigObj);
       expect(result).toBe(undefined);
     }, 120000);

@@ -148,17 +148,3 @@ describe('mashr deploy', function() {
 //   - describe destroyBuckets()
 //     - expect destroyBucket to not throw an error
 //     - expect bucketExists to return false
-// - cloudFunction.test.js - Linus
-//   - describe createCloudFunction()
-//     - expect createCloudFunction to not throw an error
-//     - expect functionExists to return true
-//   - describe destroyCloudFunction()
-//     - expect destroyCloudFunction to not throw an error
-//     - expect functionExists to return false
-
-
-
-
-
-
-

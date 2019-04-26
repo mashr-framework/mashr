@@ -9,7 +9,6 @@
 const ora = require('ora');
 const {
   addIntegrationToDirectory,
-  configureCredentials,
   mashrLogger,
   readJsonFile,
   readYaml,
@@ -18,6 +17,7 @@ const {
 } = require ('../src/utils');
 const {
   createBuckets,
+  configureCredentials,
   destroyBuckets,
   validateIntegrationNameWithGCP,
 } = require ('../src/gcp');

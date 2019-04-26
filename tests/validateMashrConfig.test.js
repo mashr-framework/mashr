@@ -7,11 +7,11 @@ const {
 
 describe('validateMashrConfig()', () => {
   describe('checkRequiredValues()', () => {
-
+    
   });
 
   describe('validateIntegrationName()', () => {
-
+    
   });
 
   describe('validateEmbulkRunCommand()', () => {
@@ -19,7 +19,7 @@ describe('validateMashrConfig()', () => {
   });
 
   describe('validateBQNames()', () => {
-    
+
   });
 });
 
@@ -29,7 +29,7 @@ describe('validateMashrConfig()', () => {
 
 
 //   - describe checkRequiredValues()
-//     - it throws an error if there are fields missing (*6 for each value)
+//     - it throws an error if there are fields missing (*7 + 1 (passing scenario) for each value)
 //     - doesnt do anything if all the fields are there (1)
 
 

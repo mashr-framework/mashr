@@ -29,4 +29,4 @@ const destroyCloudFunction = async (integrationName) => {
 
 module.exports = {
   destroyCloudFunction
-}
+};

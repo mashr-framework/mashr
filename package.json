@@ -41,7 +41,7 @@
     "mashr": "./bin/cli.js"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest --detectOpenHandles"
   },
   "devDependencies": {
     "jest": "^24.7.1"

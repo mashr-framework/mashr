@@ -21,4 +21,4 @@ const mashrLogger = (spinner, state, text) => {
 
 module.exports = {
   mashrLogger,
-}
+};

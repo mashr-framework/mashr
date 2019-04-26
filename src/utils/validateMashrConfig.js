@@ -99,4 +99,4 @@ module.exports = {
   validateKeyfile,
   validateEmbulkRunCommand,
   validateBQNames,
-}
+};

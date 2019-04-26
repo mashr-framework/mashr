@@ -1,5 +1,5 @@
 const ora = require('ora');
-const mashrLogger = require('../utils/mashrLogger');
+const { mashrLogger } = require('../utils');
 
 module.exports = async function executeCommand(cmd, args) {
   switch (cmd) {

@@ -1,0 +1,27 @@
+mashr:
+  service_account_email: 'mashr-service-account@mashr-mat.iam.gserviceaccount.com' # user@project.iam.gserviceaccount.com
+  # the keyfile must be in the root directory of this file:
+  json_keyfile: './tests/keyfile.json' # keyfile.json
+  table_id:     'matmashr_test'
+  dataset_id:   'matmashr_test'
+  project_id:   'mashr-mat'
+  # name the integration for bucket, instance and function name.
+  # integration_name must match regex (?:[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?)
+  integration_name: 'matmashr-test'
+  # You can set the command that runs embulk here. The example given is for
+  # incremental loading. embulk_config.yml is the default name of the config
+  # file generated for embulk:
+  embulk_run_command: 'embulk run embulk_config.yml' # 'embulk run embulk_config.yml -c embulk_diff.yml'
+  embulk_gems:
+    - embulk-input-random
+embulk:
+  exec:
+    min_output_tasks: 1
+  in:
+    type: random
+    rows: 10
+    threads: 1
+    schema:
+      myid: primary_key
+      name: string
+      score: integer

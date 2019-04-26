@@ -41,6 +41,11 @@ const createJSONFile = async (fileName, path, json) => {
   await writeFile(`${path}/${fileName}.json`, configStr);
 };
 
+const readJsonFile = async (filePath) => {
+  var contents = await readFile(filePath);
+  return JSON.parse(contents);
+};
+
 const getMashrPath = homedir => (`${homedir}/.mashr`);
 
 async function readYaml(path) {
@@ -101,6 +106,7 @@ module.exports = {
   getMashrPath,
   mkdir,
   readFile,
+  readJsonFile,
   readResources,
   readYaml,
   removeResource,

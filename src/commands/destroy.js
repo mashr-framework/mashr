@@ -2,7 +2,6 @@ const ora = require('ora');
 const os = require('os');
 
 const {
-  configureCredentials,
   confirmDestroy,
   mashrLogger,
   removeResource,
@@ -11,6 +10,7 @@ const {
 } = require('../utils');
 
 const { 
+  configureCredentials,
   destroyBuckets,
   destroyGCEInstance,
   destroyCloudFunction,

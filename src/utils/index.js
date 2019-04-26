@@ -4,10 +4,6 @@ const { catchSetupAndConfig } = require('./catchSetupAndConfig');
 const { setupDirectoriesAndFiles } = require('./setupDirectoriesAndFiles');
 const { confirmDestroy } = require('./confirmDestroy');
 const {
-  configureCredentials,
-  getPathToKeyFile,
-} = require('./configureCredentials');
-const {
   copyMashrConfigTemplate,
   templatePath,
 } = require('./copyMashrConfigTemplate');
@@ -44,8 +40,6 @@ module.exports = {
   mashrLogger,
   catchSetupAndConfig,
   setupDirectoriesAndFiles,
-  configureCredentials,
-  getPathToKeyFile,
   copyMashrConfigTemplate,
   templatePath,
   validateMashrConfig,

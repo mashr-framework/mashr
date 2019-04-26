@@ -37,7 +37,7 @@ describe('GCS buckets', function() {
     const keyfilePath = './tests/keyfile.json';
     mashrConfigObj = await readYaml(mashrConfigPath);
     // const keyfileObj = await readJsonFile(keyfilePath);
-    integrationName = 'matmashr-test';
+    integrationName = 'mashr-test-buckets';
 
     // mashrConfigObj.mashr.service_account_email = keyfileObj.client_email;
     mashrConfigObj.mashr.json_keyfile = keyfilePath;

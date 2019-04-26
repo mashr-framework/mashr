@@ -7,7 +7,50 @@ const {
 
 describe('validateMashrConfig()', () => {
   describe('checkRequiredValues()', () => {
+    beforeEach(async () => {
+      const mashrConfigPath = path.resolve('./') + '/templates/mashrTemplates/rand_config.yml';
+      const mashrConfigObj = await readYaml(mashrConfigPath);
+      mashrConfigObj.mashr.json_keyfile = './tests/keyfile.json';
+      mashrConfigObj.mashr.service_account_email = 'email@email.com';
+      mashrConfigObj.mashr.table_id = 'tableId';
+      mashrConfigObj.mashr.dataset_id = 'datasetId';
+      mashrConfigObj.mashr.project_id = 'projectId';
+      mashrConfigObj.mashr.integration_name = 'integrationName';
 
+      console.log(mashrConfigObj);
+    });
+
+    it('throws error if missing json_keyfile', () => {
+      
+    });
+
+    // it('throws error if missing dataset_id', () => {
+      
+    // });
+
+    // it('throws error if missing table_id', () => {
+      
+    // });
+
+    // it('throws error if missing project_id', () => {
+      
+    // });
+
+    // it('throws error if missing integration_name', () => {
+      
+    // });
+
+    // it('throws error if missing embulk_run_command', () => {
+      
+    // });
+
+    // it('throws error if missing embulk.in.type', () => {
+      
+    // });
+
+    // it('successfully returns when there are no missing values', () => {
+      
+    // });
   });
 
   describe('validateIntegrationName()', () => {

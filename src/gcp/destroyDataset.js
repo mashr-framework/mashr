@@ -6,6 +6,7 @@ const { mashrLogger } = require('../utils');
 const destroyDataset = async (datasetId) => {
   const spinner = ora();
 
+  const bigquery = new BigQuery();
   const dataset = bigquery.dataset(datasetId);
   const data = await dataset.exists();
   const exists = data[0];

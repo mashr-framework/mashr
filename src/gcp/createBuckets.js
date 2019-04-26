@@ -6,7 +6,7 @@ const createBuckets = async (integrationName) => {
   await Promise.all([
     createBucket(integrationName),
     createBucket(integrationName + '_archive', {isArchive: true}),
-  ]);
+  ]).catch((e) => { throw(e) });
 };
 
 const createBucket = async (integrationName, options = {isArchive: false}) => {

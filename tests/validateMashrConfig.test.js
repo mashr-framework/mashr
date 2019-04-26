@@ -31,7 +31,21 @@ describe('validateMashrConfig()', () => {
   });
 
   describe('validateBQNames()', () => {
+    it('returns undefined for a valid name.', async () => {
+      expect(validateBQNames('mashrtest')).toEqual(undefined);
+    });
 
+    it('throws an error if there is a dash', async () => {
+      expect(() => {
+        validateBQNames('mashr-test');
+      }).toThrow("Name must match regex: ^[_A-z0-9]{0,1024}$");
+    });
+
+    it('throws an error if there is a strange chracter `$`', async () => {
+      expect(() => {
+        validateBQNames('ma$hr-test');
+      }).toThrow("Name must match regex: ^[_A-z0-9]{0,1024}$");
+    });
   });
 });
 

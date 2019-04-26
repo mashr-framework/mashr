@@ -30,10 +30,6 @@ describe('GCE Instance', () => {
     await configureCredentials(mashrConfigObj);
   }, 60000);
 
-  afterAll(async () => {
-
-  });
-
   describe('CreateGCEInstance()', () => {
     it('successfully returns; does not throw an error', async () => {
       const result = await createGCEInstance(mashrConfigObj);

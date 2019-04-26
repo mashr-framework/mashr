@@ -1,11 +1,8 @@
 // to test, you need your service account keyfile.json
-// in the root directory of the npm package
-
-// TODO: teardown: delete function folder that's created in root dir of project
-
-const { configureCredentials } = require('../src/utils');
+// in the "tests" directory of the npm package
 
 const {
+  configureCredentials,
   createBuckets,
   destroyBuckets,
   createCloudFunction,
@@ -13,39 +10,25 @@ const {
   functionExists,
 } = require('../src/gcp');
 
-const { validateMashrConfig } = require('../src/utils');
-
-// unneeded fields for test are commented out
-const mashrConfigObj = {
-  mashr: {
-    // service_account_email: 'user@project.iam.gserviceaccount.com',
-    json_keyfile: 'keyfile.json',
-    // table_id: 'table',
-    // dataset_id: 'dataset',
-    // project_id: 'project',
-    integration_name: 'mashr_test_cloud_function',
-    // embulk_run_command: 'embulk run embulk_config.yml',
-    // embulk_gems: [ 'embulk-input-random' ],
-  },
-  // embulk: {
-  //   exec: { min_output_tasks: 1 },
-  //   in: {
-  //     type: 'random',
-  //     rows: 10,
-  //     threads: 1,
-  //     schema: {
-  //       myid: 'primary_key',
-  //       name: 'string',
-  //       score: 'integer',
-  //     },
-  //   },
-  // },
-};
+const {
+  validateMashrConfig,
+  rimraf,
+  readYaml,
+} = require('../src/utils');
 
 describe('cloud function', () => {
+  let mashrConfigObj;
   let integrationName;
 
   beforeAll(async () => {
+    const mashrConfigPath = './templates/mashrTemplates/default_config.yml';
+    mashrConfigObj = await readYaml(mashrConfigPath);
+
+    mashrConfigObj.mashr.json_keyfile = './tests/keyfile.json';
+    mashrConfigObj.mashr.integration_name = 'mashr_test_cloud_function';
+
+    console.log(mashrConfigObj);
+
     integrationName = mashrConfigObj.mashr.integration_name;
 
     await configureCredentials(mashrConfigObj);
@@ -54,6 +37,7 @@ describe('cloud function', () => {
 
   afterAll(async () => {
     await destroyBuckets(integrationName);
+    rimraf.sync('./function');
   }, 60000);
 
   describe('createCloudFunction()', () => {
@@ -64,6 +48,7 @@ describe('cloud function', () => {
     }, 120000);
 
     it('successfully returns; does not throw an error', async () => {
+      console.log(mashrConfigObj);
       const result = await createCloudFunction(mashrConfigObj);
       expect(result).toBe(undefined);
     }, 120000);

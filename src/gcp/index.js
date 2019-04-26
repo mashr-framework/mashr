@@ -2,7 +2,7 @@ const { createDataset } = require('./createDataset');
 const { createGCEInstance } = require('./createGCEInstance');
 const { destroyCloudFunction } = require('./destroyCloudFunction');
 const { setGoogleAppCredentials } = require('./setGoogleAppCredentials');
-
+const { configureCredentials } = require('./configureCredentials');
 const { 
   createBucket, 
   createBuckets,
@@ -46,6 +46,7 @@ module.exports = {
   createEmbulkScript,
   createGemInstallationScript,
   createEmbulkConfig,
+  configureCredentials,
   destroyBuckets,
   destroyBucket,
   destroyCloudFunction,

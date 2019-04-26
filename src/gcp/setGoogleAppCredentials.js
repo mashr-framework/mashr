@@ -3,5 +3,5 @@ const setGoogleAppCredentials = (keyPath) => {
 };
 
 module.exports = {
-  setGoogleAppCredentials
-}
+  setGoogleAppCredentials,
+};

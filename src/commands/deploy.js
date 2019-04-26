@@ -5,11 +5,11 @@ const {
   validateIntegrationNameWithGCP,
   createBuckets,
   createCloudFunction,
-  createGCEInstance
+  createGCEInstance,
+  configureCredentials
 } = require('../gcp');
 
 const {
-  configureCredentials,
   addIntegrationToDirectory,
   validateMashrConfig,
   mashrLogger,

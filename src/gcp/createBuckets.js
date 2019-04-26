@@ -3,8 +3,10 @@ const ora = require('ora');
 const { mashrLogger } = require('../utils');
 
 const createBuckets = async (integrationName) => {
-  createBucket(integrationName);
-  createBucket(integrationName + '_archive', {isArchive: true});
+  await Promise.all([
+    createBucket(integrationName),
+    createBucket(integrationName + '_archive', {isArchive: true}),
+  ]);
 };
 
 const createBucket = async (integrationName, options = {isArchive: false}) => {

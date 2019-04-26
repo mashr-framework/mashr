@@ -3,10 +3,12 @@ const { mashrLogger } = require('./mashrLogger');
 const { catchSetupAndConfig } = require('./catchSetupAndConfig');
 const { setupDirectoriesAndFiles } = require('./setupDirectoriesAndFiles');
 const { confirmDestroy } = require('./confirmDestroy');
+
 const {
   copyMashrConfigTemplate,
   templatePath,
 } = require('./copyMashrConfigTemplate');
+
 const {
   validateMashrConfig,
   checkRequiredValues,
@@ -17,6 +19,7 @@ const {
   validateEmbulkRunCommand,
   validateBQNames,
 } = require('./validateMashrConfig');
+
 const {
   copyFile,
   createDirectory,

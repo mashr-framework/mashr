@@ -18,5 +18,3 @@ const getDefaultZone = async () => {
 module.exports = {
   getDefaultZone
 }
-
-getDefaultZone().then(res => console.log(res));

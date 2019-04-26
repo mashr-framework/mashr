@@ -3,6 +3,8 @@ const { createGCEInstance } = require('./createGCEInstance');
 const { destroyCloudFunction } = require('./destroyCloudFunction');
 const { setGoogleAppCredentials } = require('./setGoogleAppCredentials');
 const { configureCredentials } = require('./configureCredentials');
+const { getDefaultZone } = require('./getDefaultZone');
+const { destroyDataset } = require('./destroyDataset');
 const { 
   createBucket, 
   createBuckets,
@@ -50,11 +52,13 @@ module.exports = {
   destroyBuckets,
   destroyBucket,
   destroyCloudFunction,
+  destroyDataset,
   destroyGCEInstance,
   deployCloudFunction,
   functionExists,
   functionNameIsAvailable,
   getGCEInstance,
+  getDefaultZone,
   generateGCEResources,
   setupCloudFunction,
   setGoogleAppCredentials,

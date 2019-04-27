@@ -21,8 +21,16 @@ const createBucket = async(integrationName, options = {isArchive: false}) => {
     bucketOptions.storageClass = 'COLDLINE';
   }
 
-  const bucket = await storage.createBucket(integrationName, bucketOptions).catch((e) => {
-    mashrLogger(spinner, 'fail', `Bucket creation for ${integrationName} failed`);
+  const bucket = await storage.createBucket(
+    integrationName,
+    bucketOptions
+  ).catch((e) => {
+    mashrLogger(
+      spinner,
+      'fail',
+      `Bucket creation for ${integrationName} failed`
+    );
+
     throw (e);
   });
 

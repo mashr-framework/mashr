@@ -1,7 +1,6 @@
 const {
   getMashrPath,
   exists,
-  createDirectory,
 } = require('./fileUtils');
 const { setupDirectoriesAndFiles } = require('./setupDirectoriesAndFiles');
 const { copyMashrConfigTemplate } = require('./copyMashrConfigTemplate');

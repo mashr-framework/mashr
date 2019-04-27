@@ -11,8 +11,6 @@ exports._FUNCTION_NAME_ = (event, context, callback) => {
 
   const bucketName = event.bucket;
 
-  const gcsFile = `gs://${bucketName}/${fileName}`;
-
   console.log(`Loading ${fileName} into ${tableId}.`);
 
   const bigquery = new BigQuery({

@@ -1,6 +1,4 @@
 const path = require('path');
-const ora = require('ora');
-const { mashrLogger } = require('./mashrLogger');
 const {
   readYaml,
   exists,
@@ -8,8 +6,6 @@ const {
 } = require('./fileUtils');
 
 const validateMashrConfig = async(mashrConfigPath) => {
-  const spinner = ora();
-
   if (!(await exists(mashrConfigPath))) {
     throw new Error(`no mashr_config.yml file at path: ${mashrConfigPath}.`);
   }
@@ -65,7 +61,8 @@ Name must match regex: (?:[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?)`);
 const validateKeyfile = async(keyfileName) => {
   const keyfilePath = `${path.resolve('./')}/${keyfileName}`;
   const parts = keyfilePath.split('.');
-  const hasValidName = parts[parts.length - 1] === 'json' && parts[0].length > 1;
+  const hasValidName = parts[parts.length - 1] === 'json'
+                       && parts[0].length > 1;
 
   if (!hasValidName) {
     throw new Error(`${keyfileName} is not a valid keyfile name.`);

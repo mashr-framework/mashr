@@ -1,24 +1,13 @@
 // to test, you need your service account keyfile.json
 // in the "tests" directory of the npm package
 
-const destroy = require('../src/commands/destroy');
+const { readYaml } = require('../src/utils');
 const {
   bucketExists,
   createBuckets,
-  createBucket,
   configureCredentials,
   destroyBuckets,
-  validateIntegrationNameWithGCP,
 } = require('../src/gcp');
-
-const {
-  addIntegrationToDirectory,
-  mashrLogger,
-  readJsonFile,
-  readYaml,
-  removeResource,
-  validateMashrConfig,
-} = require('../src/utils');
 
 describe('GCS buckets', function() {
   let mashrConfigObj;

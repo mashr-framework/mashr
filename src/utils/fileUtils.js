@@ -11,7 +11,6 @@ const writeFile = promisify(fs.writeFile);
 const readFile = promisify(fs.readFile);
 const copyFile = promisify(fs.copyFile);
 const yaml = require('js-yaml');
-const path = require('path');
 const os = require('os');
 const exec = promisify(require('child_process').exec);
 const rimraf = require('rimraf'); // similar to `rm -Rf` for recursive remove

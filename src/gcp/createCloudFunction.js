@@ -1,6 +1,5 @@
 const ora = require('ora');
 const {
-  copyFile,
   exists,
   mkdir,
   readFile,
@@ -17,7 +16,12 @@ const createCloudFunction = async(mashrConfigObj) => {
   const packageJson = await readFile(`${functionTemplatePath}/package.json`);
 
   if (await exists('./function')) {
-    mashrLogger(spinner, 'start', 'Deleting previously existing function directory...');
+    mashrLogger(
+      spinner,
+      'start',
+      'Deleting previously existing function directory...'
+    );
+
     rimraf.sync('./function');
   }
 
@@ -27,7 +31,8 @@ const createCloudFunction = async(mashrConfigObj) => {
   await writeFile('./function/package.json', packageJson);
 
   // function name cannot have '-'
-  mashrConfigObj.functionName = mashrConfigObj.mashr.integration_name.replace(/\-/g, '_');
+  mashrConfigObj.functionName = mashrConfigObj.mashr.integration_name
+    .replace(/\-/g, '_');
 
   await setupCloudFunction(functionTemplatePath, mashrConfigObj, spinner);
   await deployCloudFunction(mashrConfigObj, spinner);
@@ -43,7 +48,8 @@ const deployCloudFunction = async(mashrConfigObj, spinner) => {
   const bucketName = functionName;
 
 
-  const command = `gcloud functions deploy ${mashrConfigObj.functionName} --runtime nodejs8 ` +
+  const command = `gcloud functions deploy ${mashrConfigObj.functionName} ` +
+                  '--runtime nodejs8 ' +
                   `--trigger-resource ${bucketName} ` +
                   '--trigger-event google.storage.object.finalize';
 
@@ -54,12 +60,16 @@ const deployCloudFunction = async(mashrConfigObj, spinner) => {
     throw (e);
   });
 
-  mashrLogger(spinner, 'succeed', `Cloud function "${functionName}" is created`);
+  mashrLogger(
+    spinner,
+    'succeed',
+    `Cloud function "${functionName}" is created`
+  );
 };
 
 
-const setupCloudFunction = async(functionTemplatePath, mashrConfigObj, spinner) => {
-  let content = await readFile(`${functionTemplatePath}/index.js`);
+const setupCloudFunction = async(templatePath, mashrConfigObj, spinner) => {
+  let content = await readFile(`${templatePath}/index.js`);
   content = content.toString();
 
   content = content.replace('_FUNCTION_NAME_', mashrConfigObj.functionName)

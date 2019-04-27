@@ -12,14 +12,17 @@ const copyMashrConfigTemplate = async(template) => {
   const destination = `${workingDir}/mashr_config.yml`;
 
   await copyFile(configTemplate, destination);
-  mashrLogger(spinner, 'succeed', '"mashr_config.yml" template file created.\n\n' +
- 'Please fill out the empty fields in the `mashr_config.yml` ' +
- 'file before running `mashr deploy`.\n'
+  mashrLogger(
+    spinner,
+    'succeed',
+    '"mashr_config.yml" template file created.\n\n' +
+    'Please fill out the empty fields in the `mashr_config.yml` ' +
+    'file before running `mashr deploy`.\n'
   );
 };
 
 const templatePath = (template) => {
-  basePath = `${__dirname}/../../templates/mashrTemplates`;
+  const basePath = `${__dirname}/../../templates/mashrTemplates`;
 
   const templates = {
     default: 'default_config.yml',

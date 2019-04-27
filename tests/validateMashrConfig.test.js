@@ -1,7 +1,6 @@
 const path = require('path');
 const {
   checkRequiredValues,
-  validateMashrConfig,
   validateIntegrationName,
   validateEmbulkRunCommand,
   validateBQNames,
@@ -10,7 +9,8 @@ const {
 
 describe('validateMashrConfig()', () => {
   describe('checkRequiredValues()', () => {
-    const mashrConfigPath = path.resolve('./') + '/templates/mashrTemplates/rand_config.yml';
+    const mashrConfigPath = path.resolve('./') +
+                            '/templates/mashrTemplates/rand_config.yml';
     let mashrConfigObj;
 
     beforeEach(async() => {
@@ -133,7 +133,7 @@ describe('validateMashrConfig()', () => {
       }).toThrow();
     });
 
-    it('successfully returns when " embulk_config.yml" is in run command', () => {
+    it('returns when " embulk_config.yml" is in run command', () => {
       const result = validateEmbulkRunCommand(validCommand);
       expect(result).toBe(undefined);
     });

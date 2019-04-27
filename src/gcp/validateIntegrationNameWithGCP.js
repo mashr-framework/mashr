@@ -68,9 +68,12 @@ const bucketsAreAvailable = async(bucketName) => {
   if (anyExists) {
     mashrLogger(bucketsSpinner, 'fail', 'Bucket name is unavailable');
 
-    const error = new Error(`Bucket name "${bucketName}" is taken. ` +
-                            'Please provide a different integration_name in the ' +
-                            'mashr_config.yml file.');
+    const error = new Error(
+      `Bucket name "${bucketName}" is taken. ` +
+      'Please provide a different integration_name in the ' +
+      'mashr_config.yml file.'
+    );
+
     throw (error);
   }
 
@@ -78,8 +81,9 @@ const bucketsAreAvailable = async(bucketName) => {
 };
 
 const functionExists = async(integrationName) => {
-  const { stdout, stderr } = await exec('gcloud functions list');
+  const { stdout } = await exec('gcloud functions list');
   let lines = stdout.split('\n');
+  let name;
 
   for (let i = 1; i < lines.length; i++) {
     name = lines[i].split(/\s/)[0].trim();
@@ -97,9 +101,12 @@ const functionNameIsAvailable = async(integrationName) => {
   if (await functionExists(integrationName)) {
     mashrLogger(functionSpinner, 'fail', 'Function name is unavailable');
 
-    const error = new Error(`Cloud function name "${integrationName}" is taken. ` +
-                            'Please provide a different integration_name in the ' +
-                            'mashr_config.yml file.');
+    const error = new Error(
+      `Cloud function name "${integrationName}" is taken. ` +
+      'Please provide a different integration_name in the ' +
+      'mashr_config.yml file.'
+    );
+
     throw (error);
   }
 

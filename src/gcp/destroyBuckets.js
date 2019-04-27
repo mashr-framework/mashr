@@ -22,7 +22,11 @@ const destroyBucket = async(integrationName) => {
 
     mashrLogger(spinner, 'succeed', `Bucket "${integrationName}" is destroyed`);
   } else {
-    mashrLogger(spinner, 'warn', `Bucket "${integrationName}" does not exist... continuing`);
+    mashrLogger(
+      spinner,
+      'warn',
+      `Bucket "${integrationName}" does not exist... continuing`
+    );
   }
 };
 

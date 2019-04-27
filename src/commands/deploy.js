@@ -17,7 +17,8 @@ const {
 
 
 module.exports = async(args) => {
-  const mashrConfigObj = await validateMashrConfig('./mashr_config.yml').catch((e) => {
+  const path = './mashr_config.yml';
+  const mashrConfigObj = await validateMashrConfig(path).catch((e) => {
     const spinner = ora();
     mashrLogger(spinner, 'fail', 'Deploy integration error');
     throw (e);
@@ -33,6 +34,8 @@ module.exports = async(args) => {
   await Promise.all([
     createGCEInstance(mashrConfigObj),
     createDataset(mashrConfigObj),
-    createBuckets(integrationName).then(() => createCloudFunction(mashrConfigObj)),
+    createBuckets(integrationName).then(() => {
+      createCloudFunction(mashrConfigObj);
+    }),
   ]);
 };

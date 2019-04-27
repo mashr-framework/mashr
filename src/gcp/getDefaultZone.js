@@ -7,7 +7,7 @@ const getDefaultZone = async() => {
 
   const {
     stdout,
-    stderr
+    stderr,
   } = await exec('gcloud config get-value compute/zone');
 
   const zone = stdout;

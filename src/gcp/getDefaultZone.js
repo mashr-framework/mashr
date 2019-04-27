@@ -1,30 +1,17 @@
-const { exec } = require('../utils/fileUtils');
-const { mashrLogger } = require('../utils/mashrLogger');
+const { exec, mashrLogger } = require('../utils');
 const ora = require('ora');
 
 const getDefaultZone = async() => {
   const zoneSpinner = ora();
 
-  const {
-    stdout,
-    stderr,
-  } = await exec('gcloud config get-value compute/zone');
-
-  const zone = stdout;
-
-  if (stderr) {
+  let zone;
+  try {
+    const { stdout } = await exec('gcloud config get-value compute/zone');
+    zone = stdout;
+  } catch (e) {
     mashrLogger(zoneSpinner, 'fail', 'Unable to get default zone');
-
-    if (stderr.includes('(unset)')) {
-      throw new Error(
-        'gcloud default zone is unset.\n\n' +
-        'run "gcloud config set compute/zone <zoneName>"\n'
-      );
-    } else {
-      throw new Error(stderr);
-    }
+    throw (e);
   }
-
   return zone.trim();
 };
 

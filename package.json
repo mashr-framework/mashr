@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "author": "mashr",
-  "repository": "git@github.com:last-error-benders/mashr.git",
+  "repository": "git@github.com:mashr-gcp/mashr.git",
   "description": "Simple data pipeline framework for GCP's BigQuery",
   "engines": {
     "node": ">=8"
@@ -56,7 +56,6 @@
     "eslint-plugin-jest": "^22.5.1",
     "fs": "0.0.1-security",
     "google-cloud-storage": "^2.0.2",
-    "http": "0.0.0",
     "js-yaml": "^3.13.1",
     "minimist": "^1.2.0",
     "ora": "^3.4.0",

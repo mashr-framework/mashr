@@ -7,6 +7,7 @@ const {
   createCloudFunction,
   createGCEInstance,
   configureCredentials,
+  getDefaultZone,
 } = require('../gcp');
 
 const {
@@ -17,6 +18,7 @@ const {
 
 
 module.exports = async(args) => {
+  await getDefaultZone();
   const mashrConfigObj = await validateMashrConfig('./mashr_config.yml').catch((e) => {
     const spinner = ora();
     mashrLogger(spinner, 'fail', 'Deploy integration error');

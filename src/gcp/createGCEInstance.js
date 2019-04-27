@@ -9,8 +9,15 @@ const createGCEInstance = async(mashrConfigObj) => {
   mashrLogger(spinner, 'start', 'Creating GCE instance...');
 
   const compute = new Compute();
+  let defaultZone;
 
-  const zone = compute.zone(await getDefaultZone());
+  try {
+    defaultZone = await getDefaultZone();
+  } catch(e) {
+    throw(e);
+  }
+
+  const zone = compute.zone(defaultZone);
 
   const {
     dockerfile,

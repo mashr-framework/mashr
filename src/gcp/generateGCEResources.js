@@ -2,8 +2,11 @@ const yaml = require('js-yaml');
 const { readFile } = require('../utils');
 
 const generateGCEResources = async(mashrConfigObj) => {
-  const gemInstallationScript = createGemInstallationScript(mashrConfigObj.mashr.embulk_gems);
-  const embulkScript = createEmbulkScript(mashrConfigObj.mashr.embulk_run_command);
+  const embulkGems = mashrConfigObj.mashr.embulk_gems;
+  const runCommand = mashrConfigObj.mashr.embulk_run_command;
+
+  const gemInstallationScript = createGemInstallationScript(embulkGems);
+  const embulkScript = createEmbulkScript(runCommand);
   const embulkConfig = createEmbulkConfig(mashrConfigObj);
 
   const [ dockerfile, crontab ] = await Promise.all([

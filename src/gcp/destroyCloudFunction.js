@@ -17,7 +17,11 @@ const destroyCloudFunction = async(integrationName) => {
       throw (e);
     });
 
-    mashrLogger(spinner, 'succeed', `Cloud function "${integrationName}" is destroyed`);
+    mashrLogger(
+      spinner,
+      'succeed',
+      `Cloud function "${integrationName}" is destroyed`
+    );
   } else {
     mashrLogger(
       spinner,

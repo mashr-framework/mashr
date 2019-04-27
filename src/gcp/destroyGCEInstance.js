@@ -15,7 +15,11 @@ const destroyGCEInstance = async(integrationName) => {
     const [operation] = await vm.delete();
     await operation.promise();
 
-    mashrLogger(spinner, 'succeed', `GCE instance ${integrationName} is destroyed`);
+    mashrLogger(
+      spinner,
+      'succeed',
+      `GCE instance ${integrationName} is destroyed`
+    );
   } else {
     mashrLogger(
       spinner,
@@ -27,7 +31,7 @@ const destroyGCEInstance = async(integrationName) => {
 
 const getGCEInstance = async(integrationName) => {
   const compute = new Compute();
-  [instances] = await compute.getVMs({
+  const [instances] = await compute.getVMs({
     filter: `name eq ${integrationName}`,
   });
   return instances[0];

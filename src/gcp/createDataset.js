@@ -1,9 +1,6 @@
 const ora = require('ora');
 const { BigQuery } = require('@google-cloud/bigquery');
-const {
-  exec,
-  mashrLogger,
-} = require('../utils');
+const { mashrLogger } = require('../utils');
 
 const createDataset = async(mashrConfigObj) => {
   const spinner = ora();
@@ -18,7 +15,11 @@ const createDataset = async(mashrConfigObj) => {
   const exists = data[0];
 
   if (exists) {
-    mashrLogger(spinner, 'warn', `Dataset "${datasetId}" already exists... continuing`);
+    mashrLogger(
+      spinner,
+      'warn',
+      `Dataset "${datasetId}" already exists... continuing`
+    );
   } else {
     try {
       await bigquery.createDataset(datasetId);

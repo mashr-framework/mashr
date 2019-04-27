@@ -4,7 +4,6 @@ const { copyMashrConfigTemplate } = require('./copyMashrConfigTemplate');
 const {
   getMashrPath,
   exists,
-  createDirectory,
 } = require('./fileUtils');
 
 const catchSetupAndConfig = async(homeDir, template) => {

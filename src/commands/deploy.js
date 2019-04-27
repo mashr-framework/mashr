@@ -13,10 +13,12 @@ const {
   addIntegrationToDirectory,
   validateMashrConfig,
   mashrLogger,
+  checkMashrInitialized,
 } = require('../utils');
 
-
 module.exports = async(args) => {
+  await checkMashrInitialized();
+
   const path = './mashr_config.yml';
   const mashrConfigObj = await validateMashrConfig(path).catch((e) => {
     const spinner = ora();

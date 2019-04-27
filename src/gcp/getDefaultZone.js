@@ -1,4 +1,5 @@
-const { exec, mashrLogger } = require('../utils');
+const { exec } = require('../utils/fileUtils');
+const { mashrLogger } = require('../utils/mashrLogger');
 const ora = require('ora');
 
 const getDefaultZone = async() => {

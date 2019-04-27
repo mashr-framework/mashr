@@ -7,6 +7,7 @@ const {
   removeResource,
   readYaml,
   readResources,
+  checkMashrInitialized,
 } = require('../utils');
 
 const {
@@ -17,6 +18,7 @@ const {
 } = require('../gcp');
 
 module.exports = async(args) => {
+  await checkMashrInitialized();
 
   const spinner = ora();
   const mashrConfigObj = await readYaml('./mashr_config.yml').catch((e) => {

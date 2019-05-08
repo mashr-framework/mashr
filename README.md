@@ -16,7 +16,7 @@ analysis on.
 **[Jacob Coker-Dukowitz](https://)** *Software Engineer* San
 Francisco, CA
 
-**[Linus Phan](https://)** *Software Engineer* Los Angeles/Riverside, CA
+**[Linus Phan](https://)** *Software Engineer* Los Angeles, CA
 
 **[Mat Sachs](https://matsachs.com)** *Software Engineer* Portland, OR
 

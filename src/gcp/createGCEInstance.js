@@ -5,7 +5,6 @@ const ora = require('ora');
 const { mashrLogger } = require('../utils');
 
 const createGCEInstance = async(mashrConfigObj) => {
-  console.log('Im Running');
   const spinner = ora();
   mashrLogger(spinner, 'start', 'Creating GCE instance...');
 

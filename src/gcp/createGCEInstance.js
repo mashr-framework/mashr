@@ -66,6 +66,7 @@ const createGCEInstance = async(mashrConfigObj) => {
           sudo docker pull jacobleecd/mashr:latest
           sudo docker build -t mashr .
           sudo docker run -d -v /mashr --name embulk-container \
+          --restart=always \
           --log-driver=gcplogs \
           --log-opt gcp-project=${mashrConfigObj.mashr.project_id} \
           --log-opt mode=non-blocking \

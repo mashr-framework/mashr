@@ -5,6 +5,7 @@ const ora = require('ora');
 const { mashrLogger } = require('../utils');
 
 const createGCEInstance = async(mashrConfigObj) => {
+  console.log('Im Running');
   const spinner = ora();
   mashrLogger(spinner, 'start', 'Creating GCE instance...');
 
@@ -39,17 +40,9 @@ const createGCEInstance = async(mashrConfigObj) => {
           value: `#! /bin/bash
 
           sudo apt-get update
-
-          sudo apt install apt-transport-https ca-certificates \
-          curl gnupg2 software-properties-common -y
-
-          curl -fsSL https://download.docker.com/linux/debian/gpg | \
-          sudo apt-key add -
-
-          sudo add-apt-repository \
-          "deb [arch=amd64] https://download.docker.com/linux/debian \
-          $(lsb_release -cs) stable"
-          
+          sudo apt install apt-transport-https ca-certificates curl gnupg2 software-properties-common -y
+          curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
+          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
           sudo apt update
           sudo apt install docker-ce -y
 
@@ -63,7 +56,8 @@ const createGCEInstance = async(mashrConfigObj) => {
           echo "${gemInstallationScript}" > mashr/install_gems.sh
           echo "${embulkConfig}" > mashr/embulk_config.yml.liquid
 
-          sudo docker pull jacobleecd/mashr:latest
+          sleep 1m
+
           sudo docker build -t mashr .
           sudo docker run -d -v /mashr --name embulk-container \
           --restart=always \

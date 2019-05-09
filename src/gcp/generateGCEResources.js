@@ -31,7 +31,7 @@ const createEmbulkScript = (runCommand) => {
 `#!/bin/bash
 export DATE=$(date +"%Y-%m-%dT%H-%M-%S-%3N")
 
-${runCommand} >> /proc/1/fd/1
+${runCommand} >> /proc/1/fd/1 2>&1
 `;
 
   return script;

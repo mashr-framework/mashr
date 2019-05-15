@@ -19,11 +19,8 @@ Continue (y/n)> `;
 
   switch (response) {
     case 'yes':
-      // console.log('goodbye world!');
-      // process.exit(0);
       break;
     case 'no':
-      // console.log('hello world!');
       process.exit(0);
       break;
     default:

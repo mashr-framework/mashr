@@ -31,7 +31,12 @@ const menus = {
 
     Creates a 'function' folder that stores the code the cloud
     function used in this integration. You can edit and redeploy
-    the cloud function with gcloud.
+    the cloud function with gcloud using this command:
+
+    gcloud functions deploy <FUNCTION_NAME> \\ 
+    --runtime nodejs8 \\
+    --trigger-resource <BUCKET_NAME> \\
+    --trigger-event google.storage.object.finalize
 
     A mashr_config.yml file in the user's working directory 
     is required. Run 'mashr init' to see a template file you can 

@@ -1,4 +1,5 @@
 const { Storage } = require('@google-cloud/storage');
+const { getGCEInstance } = require('./getGCEInstance');
 const ora = require('ora');
 const {
   exec,
@@ -13,6 +14,7 @@ const validateIntegrationNameWithGCP = async(integrationName) => {
     await Promise.all([
       bucketsAreAvailable(integrationName),
       functionNameIsAvailable(integrationName),
+      gceInstanceNameIsAvailable(integrationName)
     ]);
   } catch (e) {
     mashrLogger(spinner, 'fail', 'Integration name validation failed');
@@ -113,6 +115,26 @@ const functionNameIsAvailable = async(integrationName) => {
   mashrLogger(functionSpinner, 'succeed', 'Function name is valid');
 };
 
+const gceInstanceNameIsAvailable = async(integrationName) => {
+  const gceInstanceSpinner = ora();
+  
+  mashrLogger(gceInstanceSpinner, 'start');
+
+  if (await getGCEInstance(integrationName)) {
+    mashrLogger(gceInstanceSpinner, 'fail', 'GCE Instance name is unavailable');
+
+    const error = new Error(
+    `GCE Instance name "${integrationName} is taken. ` +
+    'Please provide a different integration_name in the ' +
+    'mashr_config.yml file.'
+    )
+
+    throw (error);
+  }
+
+  mashrLogger(gceInstanceSpinner, 'succeed', 'GCE Instance Name is available');
+}
+
 module.exports = {
   validateIntegrationNameWithGCP,
   validateBucketName,
@@ -120,4 +142,5 @@ module.exports = {
   functionExists,
   functionNameIsAvailable,
   bucketsAreAvailable,
+  gceInstanceNameIsAvailable,
 };

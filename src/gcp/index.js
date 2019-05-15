@@ -5,6 +5,8 @@ const { setGoogleAppCredentials } = require('./setGoogleAppCredentials');
 const { configureCredentials } = require('./configureCredentials');
 const { getDefaultZone } = require('./getDefaultZone');
 const { destroyDataset } = require('./destroyDataset');
+const { getGCEInstance } = require('./getGCEInstance');
+const { destroyGCEInstance } = require('./destroyGCEInstance');
 const {
   createBucket,
   createBuckets,
@@ -18,10 +20,6 @@ const {
   destroyBuckets,
   destroyBucket,
 } = require('./destroyBuckets');
-const {
-  destroyGCEInstance,
-  getGCEInstance,
-} = require('./destroyGCEInstance');
 const {
   generateGCEResources,
   createEmbulkScript,

@@ -1,6 +1,7 @@
 const Compute = require('@google-cloud/compute');
 const ora = require('ora');
 const { mashrLogger } = require('../utils');
+const { getGCEInstance } = require('./getGCEInstance');
 
 const destroyGCEInstance = async(integrationName) => {
   const spinner = ora();
@@ -29,15 +30,6 @@ const destroyGCEInstance = async(integrationName) => {
   }
 };
 
-const getGCEInstance = async(integrationName) => {
-  const compute = new Compute();
-  const [instances] = await compute.getVMs({
-    filter: `name eq ${integrationName}`,
-  });
-  return instances[0];
-};
-
 module.exports = {
   destroyGCEInstance,
-  getGCEInstance,
 };

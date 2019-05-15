@@ -14,7 +14,7 @@ const validateIntegrationNameWithGCP = async(integrationName) => {
     await Promise.all([
       bucketsAreAvailable(integrationName),
       functionNameIsAvailable(integrationName),
-      gceInstanceNameIsAvailable(integrationName)
+      gceInstanceNameIsAvailable(integrationName),
     ]);
   } catch (e) {
     mashrLogger(spinner, 'fail', 'Integration name validation failed');
@@ -117,23 +117,23 @@ const functionNameIsAvailable = async(integrationName) => {
 
 const gceInstanceNameIsAvailable = async(integrationName) => {
   const gceInstanceSpinner = ora();
-  
+
   mashrLogger(gceInstanceSpinner, 'start');
 
   if (await getGCEInstance(integrationName)) {
     mashrLogger(gceInstanceSpinner, 'fail', 'GCE Instance name is unavailable');
 
     const error = new Error(
-    `GCE Instance name "${integrationName} is taken. ` +
-    'Please provide a different integration_name in the ' +
-    'mashr_config.yml file.'
-    )
+      `GCE Instance name "${integrationName} is taken. ` +
+      'Please provide a different integration_name in the ' +
+      'mashr_config.yml file.'
+    );
 
     throw (error);
   }
 
   mashrLogger(gceInstanceSpinner, 'succeed', 'GCE Instance Name is available');
-}
+};
 
 module.exports = {
   validateIntegrationNameWithGCP,

@@ -9,5 +9,5 @@ const getGCEInstance = async(integrationName) => {
 };
 
 module.exports = {
-  getGCEInstance
-}
+  getGCEInstance,
+};

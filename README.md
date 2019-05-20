@@ -1,11 +1,11 @@
 ![Mashr Header](https://i.imgur.com/nEuJ93S.png?1)
 
 ## Overview
-Mashr is an easy to use data pipeline framework that orchestrates moving data
-from external sources into BigQuery. It’s meant for small software applications
-using Google Cloud Platform (GCP) who have their data spread out in a variety
-of external sources that they want to be able to aggregate and perform
-analysis on.
+Mashr is an easy-to-use data pipeline orchestration and monitoring framework for small applications. Mashr simplifies the process of taking your data from disparate sources and putting them into a single place so that you can use that data. It is optimized for data pipeline best practices including monitoring for each step of your data pipeline along with archiving and backup in case of failover. Mashr is built with Node.js, provides an easy-to-use CLI, and uses Docker to host Embulk on GCE Instances on Google Cloud Platform (GCP).
+
+[Read more about how we built Mashr](https://mashr-framework.github.io/).
+
+
 
 ## Mashr Architecture
 

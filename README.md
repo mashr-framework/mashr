@@ -7,10 +7,10 @@ Mashr is an easy-to-use data pipeline orchestration and monitoring framework for
 
 ## The Team
 
-**[Jacob Coker-Dukowitz](https://)** *Software Engineer* San
+**[Jacob Coker-Dukowitz](https://www.linkedin.com/in/jacob-coker-dukowitz/)** *Software Engineer* San
 Francisco, CA
 
-**[Linus Phan](https://)** *Software Engineer* Los Angeles, CA
+**[Linus Phan](https://linusphan.github.io/)** *Software Engineer* Los Angeles, CA
 
 **[Mat Sachs](https://matsachs.com)** *Software Engineer* Portland, OR
 

@@ -1,5 +1,7 @@
 # GCP Locations, Regions, and Zones Considerations
 
+**The only location consideration that is required is colocating the Google Cloud Storage buckets and BigQuery Dataset in the same location. Mashr will use your default region set in `gcloud` for creating GCP resources. For further details on improving performance and controlling costs by co-locating services, see the summaries and external links below.**
+
 ## GBQ: Google Big Query, Dataset Regions and Multi-Regions
 
 * https://cloud.google.com/bigquery/docs/locations

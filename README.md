@@ -3,13 +3,7 @@
 ## Overview
 Mashr is an easy-to-use data pipeline orchestration and monitoring framework for small applications. Mashr simplifies the process of taking your data from disparate sources and putting them into a single place so that you can use that data. It is optimized for data pipeline best practices including monitoring for each step of your data pipeline along with archiving and backup in case of failover. Mashr is built with Node.js, provides an easy-to-use CLI, and uses Docker to host Embulk on GCE Instances on Google Cloud Platform (GCP).
 
-[Read more about how we built Mashr](https://mashr-framework.github.io/).
-
-
-
-## Mashr Architecture
-
-[TODO: Diagram TBD]
+[Read our case study to learn more about how we built Mashr](https://mashr-framework.github.io/).
 
 ## The Team
 
@@ -46,27 +40,40 @@ and service account json keyfile to to interact with GCP services.
 ```
 npm install -g mashr
 ```
+### GCP Project and Service Account Setup
 
+* Make sure you have a Google Cloud Platform (GCP) account
+* Create a new project in your Google Cloud account
+* After creating a new project, you will need to enable the Cloud Functions
+  API from the web console.
+  - Go to the main menu and choose "APIs & Services"
+  - Click the "+ Enable APIs and Services" button at the top of the page
+  - Search for "Cloud Function" (no 's')
+  - Click "Cloud Functions API"
+  - Click "enable" to enable the API
+* Download and install the [gcloud CLI
+  SDK](https://cloud.google.com/sdk/docs/quickstarts) from Google.
 -------------------------------------------------------------------------------
 ## Documentation
 
 ### The Mashr Process
 
-[TODO: paragraph for the init process]
+![mashr deploy](https://github.com/mashr-framework/mashr-framework.github.io/blob/master/assets/images/mashr_deploy.gif)
 
-Starting with a mashr_config.yml file and the terminal command `mashr deploy`,
-Mashr creates a Google Compute Engine (GCE) instance, Google Cloud Storage
-(GCS) staging and archive buckets, BigQuery dataset and table, and a Google
-Cloud Function (GCF) to automate the porting of data between the GCS buckets
-and BigQuery table.
+Mashr was made to be an easy-to-use framework with just a few commands so that developers can get started quickly building their own data pipelines. Below are the main commands with a brief description:
 
-The GCE instance hosts a docker container with the
-[Embulk](https://www.embulk.org/docs/) data loader running on it. A cron job
-runs an embulk job every 10 minutes. The embulk job pulls data from an external
-source, like Salesforce or a postgres database, and puts it into a GCS staging
-bucket. When data is loaded to the GCS staging bucket, the GCF is triggered.
-The GCF moves the data to a coldline storage bucket for archiving and failover,
-and then loads the data into the appropriate BigQuery table.
+ - `init` - creates a YAML configuration file in the users working
+   directory 
+ - `deploy` - launches all of the GCP resources to create the
+   data pipeline 
+ - `destroy` - destroys all of the GCP resources of a specific data pipeline list - lists your current data pipelines 
+ - `help` help text for Mashr 
+
+First, you would run `mashr init` which sets up the user’s current working directory as a mashr directory. It would create a `mashr_config.yml` file in the user’s current working directory. The user then fills out the `mashr_config.yml` file to tell Mashr what data source it will be pulling from and what BigQuery dataset and table the data should go to. 
+
+After completing the `mashr_config.yml` file you run `mashr deploy`. This will create a data pipeline with monitoring, failover and archiving in your GCP account.
+
+[Read the case study to learn about what resources are created and why.](https://mashr-framework.github.io/)
 
 ### GCP Project and Service Account Setup
 
@@ -88,7 +95,6 @@ and then loads the data into the appropriate BigQuery table.
 ```
 mashr init [--template <template_name>]
 ```
-
 Initializes your current working directory with a template mashr_config.yml
 file necessary for running `mashr deploy`.  Optionally include the `--template`
 flag and name of the template. Template names include `http`, `psql`,
@@ -98,7 +104,6 @@ flag and name of the template. Template names include `http`, `psql`,
 ```
 mashr deploy
 ```
-
 Deploys the integration: adds it to the list of mashr integrations and creates
 related GCP resources including staging and archive GCS buckets, a cloud
 function and a GCE instance.
@@ -113,14 +118,12 @@ A `mashr_config.yml` file in the user's working directory is required. Run
 ```
 mashr list
 ```
-
 Lists all integrations that the user has deployed.
 
 -------------------------------------------------------------------------------
 ```
 mashr destroy <integration name>
 ```
-
 Destroys the integration: removes it from the list of mashr integrations and
 destroys related GCP resources including the staging and archive GCS buckets,
 the cloud function and the GCE instance.
@@ -129,19 +132,19 @@ the cloud function and the GCE instance.
 ```
 mashr help
 ```
-
 Documentation of commands.
 
 -------------------------------------------------------------------------------
 
+## Mashr Architecture
 
-### Accessing the BigQuery Table
+![mashr architecture](https://mashr-framework.github.io/assets/images/main.png)
 
-[ TODO ]
+This diagram shows a high-level overview of Mashr’s main components. When you run `mashr deploy` in your terminal, the following actions take place:
 
-### Accessing the Compute Engine Instance and Docker Container
+Mashr sets up a GCE instance, with Embulk running on a Docker container. The container has a cron job running that pulls data from the source and loads it into Google Cloud Storage. Adding the data to GCS triggers the Cloud Function. The Cloud Function attempts to load the data into BigQuery. If the load is successful, the Cloud Function moves the data file from the staging bucket to the archive bucket. If the load is not successful, the data file remains in the staging bucket for debugging purposes. Each step of this process has Stackdriver monitoring enabled so users can debug the data pipeline if necessary.
 
-[ TODO ]
+[Read the case study to more about the architecture of Mashr and the design choices we made.](https://mashr-framework.github.io/)
 
 -------------------------------------------------------------------------------
 ## Helpful Tips
@@ -152,29 +155,3 @@ Consider colocating as many as your services as possible. For example, it's
 required that your GCS (Google Cloud Storage) and GBQ (Google Big Query) be
 located in the same regions. See the [Locations Considerations
 document](./docs/gcp_locations_considerations.md) for more information
-
--------------------------------------------------------------------------------
-### Details / Notes / Delete
-* happens on the users machine:
-  - create the install_gems.sh
-  - create the embulk_config file
-* nodejs create a compute instance
-  - with a startup script in the nodejs create compute instance, script.
-  - cp the install_gems.sh
-  - cp the keyfile
-  - cp the embulk_config file
-  - cp Dockerfile from and build the image
-    OR
-    pull image from public directory on dockerhub
-  - run dockerfile
-* when Docker container first runs:
-  - copies the install_gems, keyfile, and embulk_config.yml into container
-  - installs the embulk gems
-  - sets volume for persisting data like a diff file, etc.
-  - starts cron job
-    - embulk run embulk_config.yml
-* need another .sh file for the cron job to run
-  - based on what user gives us from mashr_config
-
-  Dockerfile > build > image > start a container from the image
-

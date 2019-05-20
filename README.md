@@ -51,8 +51,6 @@ npm install -g mashr
   - Search for "Cloud Function" (no 's')
   - Click "Cloud Functions API"
   - Click "enable" to enable the API
-* Download and install the [gcloud CLI
-  SDK](https://cloud.google.com/sdk/docs/quickstarts) from Google.
 -------------------------------------------------------------------------------
 ## Documentation
 
@@ -62,12 +60,13 @@ npm install -g mashr
 
 Mashr was made to be an easy-to-use framework with just a few commands so that developers can get started quickly building their own data pipelines. Below are the main commands with a brief description:
 
- - `init` - creates a YAML configuration file in the users working
+ - `init` - creates a YAML configuration file in the user's working
    directory 
  - `deploy` - launches all of the GCP resources to create the
    data pipeline 
- - `destroy` - destroys all of the GCP resources of a specific data pipeline list - lists your current data pipelines 
- - `help` help text for Mashr 
+ - `destroy` - destroys all of the GCP resources of a specific data pipeline
+ - `list` - lists your current data pipelines 
+ - `help` - help text for Mashr 
 
 First, you would run `mashr init` which sets up the user’s current working directory as a mashr directory. It would create a `mashr_config.yml` file in the user’s current working directory. The user then fills out the `mashr_config.yml` file to tell Mashr what data source it will be pulling from and what BigQuery dataset and table the data should go to. 
 
@@ -83,8 +82,8 @@ mashr init [--template <template_name>]
 ```
 Initializes your current working directory with a template mashr_config.yml
 file necessary for running `mashr deploy`.  Optionally include the `--template`
-flag and name of the template. Template names include `http`, `psql`,
-`random`.
+flag and name of the template. Template names currently include: `http`, `psql`,
+and `random`.
 
 -------------------------------------------------------------------------------
 ```
@@ -94,11 +93,19 @@ Deploys the integration: adds it to the list of mashr integrations and creates
 related GCP resources including staging and archive GCS buckets, a cloud
 function and a GCE instance.
 
-Creates a 'function' folder that stores the code the cloud function uses in
-this integration. You can edit and redeploy the cloud function with `gcloud`.
+Creates a 'function' folder that stores the code the Cloud Function uses in
+this integration. You can edit and redeploy the Cloud Function with `gcloud`.
 
-A `mashr_config.yml` file in the user's working directory is required. Run
-`mashr init` to see a template file you can use.
+You can edit and redeploy the Cloud Function with `gcloud` using this command,
+where the `integration_name` from `mashr_config.yml` is the name of your function
+and bucket:
+
+```
+gcloud functions deploy <FUNCTION_NAME> \ 
+--runtime nodejs8 \
+--trigger-resource <BUCKET_NAME> \
+--trigger-event google.storage.object.finalize
+```
 
 -------------------------------------------------------------------------------
 ```
@@ -130,7 +137,7 @@ This diagram shows a high-level overview of Mashr’s main components. When you 
 
 Mashr sets up a GCE instance, with Embulk running on a Docker container. The container has a cron job running that pulls data from the source and loads it into Google Cloud Storage. Adding the data to GCS triggers the Cloud Function. The Cloud Function attempts to load the data into BigQuery. If the load is successful, the Cloud Function moves the data file from the staging bucket to the archive bucket. If the load is not successful, the data file remains in the staging bucket for debugging purposes. Each step of this process has Stackdriver monitoring enabled so users can debug the data pipeline if necessary.
 
-[Read the case study to more about the architecture of Mashr and the design choices we made.](https://mashr-framework.github.io/)
+[Read the case study to learn more about the architecture of Mashr and the design choices we made.](https://mashr-framework.github.io/)
 
 -------------------------------------------------------------------------------
 ## Helpful Tips
